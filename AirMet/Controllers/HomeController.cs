@@ -5,19 +5,47 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AirMet.ViewModels;
 
-namespace AirMet.Controllers;
+namespace AirMet.Controllers {
 
-public class HomeController : Controller
-{
-    // GET: /<controller>/
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-        return View();
-    }
-    public IActionResult aboutus()
-    {
-        return View();
+
+        private readonly PropertyDbContext _propertyDbContext;
+
+        public HomeController(PropertyDbContext propertyDbContext)
+        {
+            _propertyDbContext = propertyDbContext;
+        }
+
+        // GET: /<controller>/
+        public IActionResult Index()
+        {
+            List<Property> properties = _propertyDbContext.Properties.ToList();
+            var itemListViewModel = new PropertyListViewModel(properties, "Index");
+            return View(itemListViewModel);
+        }
+        public IActionResult Aboutus()
+        {
+            return View();
+        }
+
+        public IActionResult Details(int id)
+        {
+            //List<Item> items = await _itemDbContext.Items.ToListAsync();
+            var item =  _propertyDbContext.Properties.FirstOrDefault(i => i.PropertyId == id);
+            if (item == null)
+                return NotFound();
+            return View(item);
+        }
+
+        //public IActionResult Grid()
+        //{
+        //    List<Property> properties = _propertyDbContext.Properties.ToList();
+        //    var itemListViewModel = new PropertyListViewModel(properties, "Grid");
+        //    return View(itemListViewModel);
+        //}
     }
 }
 
