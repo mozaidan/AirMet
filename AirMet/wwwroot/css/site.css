@@ -16,3 +16,46 @@ html {
 body {
   margin-bottom: 60px;
 }
+/* Example CSS styles */
+.property-details-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+.property-address {
+    font-size: 24px;
+    color: #333;
+}
+
+.property-info {
+    margin-top: 20px;
+}
+
+.property-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.property-description {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+.property-price {
+    font-size: 30px;
+    color: #333;
+}
+
+.back-to-home-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-to-home-link:hover {
+    text-decoration: underline;
+}
+

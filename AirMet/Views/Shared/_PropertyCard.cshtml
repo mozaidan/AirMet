@@ -8,8 +8,9 @@
                 <h5 class="text-start">
                     <a asp-controller="Home"
                        asp-action="Details"
-                       asp-route-id="@Model.PropertyId">@Model.Address</a>
+                       asp-route-id="@Model.PropertyId">View Details</a>
                 </h5>
+                <h5 class="text-start">@Model.Address</h5>
                 <h5 class="text-nowrap">
                     @Model.Price.ToString("0.00 NOK")
                 </h5>

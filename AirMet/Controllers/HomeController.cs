@@ -40,12 +40,6 @@ namespace AirMet.Controllers {
             return View(item);
         }
 
-        //public IActionResult Grid()
-        //{
-        //    List<Property> properties = _propertyDbContext.Properties.ToList();
-        //    var itemListViewModel = new PropertyListViewModel(properties, "Grid");
-        //    return View(itemListViewModel);
-        //}
     }
 }
 
