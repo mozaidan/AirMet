@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AirMet.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace AirMet.Controllers {
 
@@ -38,6 +39,23 @@ namespace AirMet.Controllers {
             if (item == null)
                 return NotFound();
             return View(item);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Property property)
+        {
+            if (ModelState.IsValid)
+            {
+                _propertyDbContext.Properties.Add(property);
+                _propertyDbContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(property);
         }
 
     }
