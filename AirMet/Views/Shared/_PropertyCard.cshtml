@@ -2,7 +2,8 @@
 
 <div class="col">
     <div>
-        <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Description">
+        @if (Model.ImageData != null)
+        {<img src="data:@Model.ImageMimeType;base64,@Convert.ToBase64String(Model.ImageData)" alt="@Model.Description" />}
         <div>
             <div class="d-flex justify-content-between mt-2">
                 <h5 class="text-start">

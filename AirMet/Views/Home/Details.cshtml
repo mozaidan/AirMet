@@ -4,7 +4,9 @@
     <h3 class="property-address">@Model.Address</h3>
     <div class="row property-info">
         <div class="col-md-7">
-            <img alt="@Model.Description" src="@Model.ImageUrl" class="property-image img-fluid" />
+            @if (Model.ImageData != null)
+            {<img src="data:@Model.ImageMimeType;base64,@Convert.ToBase64String(Model.ImageData)" alt="@Model.Description" />}
+
         </div>
         <div class="col-md-5">
             <div class="property-description">
