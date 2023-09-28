@@ -59,3 +59,12 @@ body {
     text-decoration: underline;
 }
 
+.custom-card {
+    height: 100%; /* Adjust the height as needed */
+}
+
+.custom-card-img {
+    object-fit: cover;
+    height: 100%; /* Ensures the image fills the entire height of the card */
+    width: 100%; /* Ensures the image fills the entire width of the card */
+}
