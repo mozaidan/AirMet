@@ -51,6 +51,22 @@ namespace AirMet.Controllers {
         {
             if (ModelState.IsValid)
             {
+                if (property.File != null)
+                {
+                    var fileName = Path.GetFileName(property.File.FileName);
+                    var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    if (!Directory.Exists(uploads))
+                    {
+                        Directory.CreateDirectory(uploads);
+                    }
+                    var filePath = Path.Combine(uploads, fileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        property.File.CopyTo(fileStream);
+                    }
+
+                    property.ImageUrl = $"/images/{fileName}";
+                }
                 _propertyDbContext.Properties.Add(property);
                 _propertyDbContext.SaveChanges();
                 return RedirectToAction(nameof(Index));

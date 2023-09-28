@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AirMet.Models
 {
@@ -10,6 +11,8 @@ namespace AirMet.Models
         public string Address { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 		public string? ImageUrl { get; set; }
+		[NotMapped]
+		public IFormFile? File { get; set; }
     }
 }
 
