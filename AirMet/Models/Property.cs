@@ -10,9 +10,9 @@ namespace AirMet.Models
 		public decimal Price { get; set; }
         public string Address { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-		public string? ImageUrl { get; set; }
-		[NotMapped]
-		public IFormFile? File { get; set; }
+        public List<PropertyImage> Images { get; set; } = new List<PropertyImage>();
+        [NotMapped]
+        public List<IFormFile>? Files { get; set; }
     }
 }
 

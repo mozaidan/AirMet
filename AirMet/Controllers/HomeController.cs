@@ -23,7 +23,7 @@ namespace AirMet.Controllers {
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Property> properties = _propertyDbContext.Properties.ToList();
+            List<Property> properties = _propertyDbContext.Properties.Include(p => p.Images).ToList();
             var itemListViewModel = new PropertyListViewModel(properties, "Index");
             return View(itemListViewModel);
         }
@@ -34,7 +34,7 @@ namespace AirMet.Controllers {
 
         public IActionResult Details(int id)
         {
-            var property = _propertyDbContext.Properties.FirstOrDefault(i => i.PropertyId == id);
+            var property = _propertyDbContext.Properties.Include(p => p.Images).FirstOrDefault(i => i.PropertyId == id);
             if (property == null)
                 return NotFound();
             return View(property);
@@ -51,28 +51,38 @@ namespace AirMet.Controllers {
         {
             if (ModelState.IsValid)
             {
-                if (property.File != null)
+                if (property.Files != null)
                 {
-                    var fileName = Path.GetFileName(property.File.FileName);
                     var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
                     if (!Directory.Exists(uploads))
                     {
                         Directory.CreateDirectory(uploads);
                     }
-                    var filePath = Path.Combine(uploads, fileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+
+                    List<PropertyImage> images = new List<PropertyImage>();
+
+                    foreach (var file in property.Files)
                     {
-                        property.File.CopyTo(fileStream);
+                        var fileName = Path.GetFileName(file.FileName);
+                        var filePath = Path.Combine(uploads, fileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        images.Add(new PropertyImage { ImageUrl = $"/images/{fileName}" });
                     }
 
-                    property.ImageUrl = $"/images/{fileName}";
+                    property.Images = images;
                 }
+
                 _propertyDbContext.Properties.Add(property);
                 _propertyDbContext.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(property);
         }
+
 
 
 

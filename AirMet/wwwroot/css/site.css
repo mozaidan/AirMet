@@ -61,6 +61,8 @@ body {
 
 .custom-card {
     height: 100%; /* Adjust the height as needed */
+    overflow: hidden;
+    width: 100%;
 }
 
 .custom-card-img {

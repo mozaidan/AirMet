@@ -13,6 +13,8 @@ namespace AirMet.Models
         }
 
         public DbSet<Property> Properties { get; set; }
+        public DbSet<PropertyImage> PropertyImages { get; set; }
+
     }
 
 }
