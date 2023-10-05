@@ -26,29 +26,19 @@
         @if (Model.Images != null)
         {
             <div class="col-md-5">
-                <!-- Carousel Starts Here -->
-                <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @{
-                            var imageList = Model.Images.ToList(); <!-- Convert to List -->
-                        }
-                        @for (int i = 0; i < imageList.Count; i++)
-                        {
-                            <div class="carousel-item @(i == 0 ? "active" : "")">
-                                <img src="@imageList[i].ImageUrl" class="d-block w-100 property-image img-fluid" alt="@Model.Description">
-                            </div>
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                <div class="image-list">
+                    @{
+                        var imageList = Model.Images.ToList(); <!-- Convert to List -->
+                    }
+                    @for (int i = 0; i < imageList.Count; i++)
+                    {
+                        <div class="image-item">
+                            <img src="@imageList[i].ImageUrl" class="property-image img-fluid" alt="@Model.Description">
+                            <a asp-action="DeleteImage" asp-route-id="@imageList[i].Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    }
                 </div>
-                <!-- Carousel Ends Here -->
+
             </div>
         }
         else
@@ -59,8 +49,14 @@
 
     <!-- Allow users to upload new images if needed -->
     <div class="form-group">
-        <label>Upload New Images</label>
-        <input type="file" name="Files" multiple class="form-control-file" />
+        <label>Images</label>
+        <div id="image-container">
+            <!-- Placeholder for image inputs -->
+        </div>
+        <button type="button" id="add-image" class="btn btn-secondary">Add Image</button>
+        <div id="preview-container">
+            <!-- Placeholder for image previews -->
+        </div>
     </div>
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a asp-action="Index" class="btn btn-secondary">Cancel</a>

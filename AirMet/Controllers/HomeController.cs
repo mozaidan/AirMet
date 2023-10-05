@@ -151,6 +151,31 @@ namespace AirMet.Controllers {
         }
 
         [HttpGet]
+        public IActionResult DeleteImage(int id)
+        {
+            var image = _propertyDbContext.PropertyImages.FirstOrDefault(i => i.Id == id);
+            if (image == null)
+            {
+                return NotFound();
+            }
+
+            // Delete the image file from the server
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", image.ImageUrl.TrimStart('/'));
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
+
+            // Delete the image record from the database
+            _propertyDbContext.PropertyImages.Remove(image);
+            _propertyDbContext.SaveChanges();
+
+            // Redirect back to the Update view
+            return RedirectToAction("Update", new { id = image.PropertyId });
+        }
+
+
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             var property = _propertyDbContext.Properties.Find(id);

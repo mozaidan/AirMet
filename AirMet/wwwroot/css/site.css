@@ -70,3 +70,34 @@ body {
     height: 100%; /* Ensures the image fills the entire height of the card */
     width: 100%; /* Ensures the image fills the entire width of the card */
 }
+
+.img-div {
+    display: inline-block;
+    position: relative;
+    margin-right: 10px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+.image-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.image-item {
+    margin: 10px;
+    position: relative;
+}
+
+.btn-danger {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
