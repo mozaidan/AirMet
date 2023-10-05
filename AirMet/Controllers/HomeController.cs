@@ -21,9 +21,9 @@ namespace AirMet.Controllers {
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Property> properties = _propertyDbContext.Properties.Include(p => p.Images).ToList();
+            List<Property> properties = await _propertyDbContext.Properties.Include(p => p.Images).ToListAsync();
             var itemListViewModel = new PropertyListViewModel(properties, "Index");
             return View(itemListViewModel);
         }
@@ -32,9 +32,9 @@ namespace AirMet.Controllers {
             return View();
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var property = _propertyDbContext.Properties.Include(p => p.Images).FirstOrDefault(i => i.PropertyId == id);
+            var property = await _propertyDbContext.Properties.Include(p => p.Images).FirstOrDefaultAsync(i => i.PropertyId == id);
             if (property == null)
                 return NotFound();
             return View(property);
@@ -47,7 +47,7 @@ namespace AirMet.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Create(Property property)
+        public async Task<IActionResult> Create(Property property)
         {
             if (ModelState.IsValid)
             {
@@ -77,16 +77,16 @@ namespace AirMet.Controllers {
                 }
 
                 _propertyDbContext.Properties.Add(property);
-                _propertyDbContext.SaveChanges();
+                await _propertyDbContext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(property);
         }
 
         [HttpGet]
-        public IActionResult Update(int id)
+        public async Task<IActionResult> Update(int id)
         {
-            var property = _propertyDbContext.Properties.Include(p => p.Images).FirstOrDefault(i => i.PropertyId == id);
+            var property = await _propertyDbContext.Properties.Include(p => p.Images).FirstOrDefaultAsync(i => i.PropertyId == id);
             if (property == null)
             {
                 return NotFound();
@@ -95,7 +95,7 @@ namespace AirMet.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Update(int id, Property updatedProperty)
+        public async Task<IActionResult> Update(int id, Property updatedProperty)
         {
             if (ModelState.IsValid)
             {
@@ -142,7 +142,7 @@ namespace AirMet.Controllers {
                 }
 
                 _propertyDbContext.Properties.Update(propertyFromDb);
-                _propertyDbContext.SaveChanges();
+                await _propertyDbContext.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -151,9 +151,9 @@ namespace AirMet.Controllers {
         }
 
         [HttpGet]
-        public IActionResult DeleteImage(int id)
+        public async Task<IActionResult> DeleteImage(int id)
         {
-            var image = _propertyDbContext.PropertyImages.FirstOrDefault(i => i.Id == id);
+            var image = await _propertyDbContext.PropertyImages.FirstOrDefaultAsync(i => i.Id == id);
             if (image == null)
             {
                 return NotFound();
@@ -176,9 +176,9 @@ namespace AirMet.Controllers {
 
 
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var property = _propertyDbContext.Properties.Find(id);
+            var property = await _propertyDbContext.Properties.FindAsync(id);
             if (property == null)
             {
                 return NotFound();
@@ -187,15 +187,15 @@ namespace AirMet.Controllers {
         }
 
         [HttpPost]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var property = _propertyDbContext.Properties.Find(id);
+            var property = await _propertyDbContext.Properties.FindAsync(id);
             if (property == null)
             {
                 return NotFound();
             }
             _propertyDbContext.Properties.Remove(property);
-            _propertyDbContext.SaveChanges();
+            await _propertyDbContext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         
