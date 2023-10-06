@@ -7,23 +7,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using AirMet.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using AirMet.DAL;
 
 namespace AirMet.Controllers {
 
     public class HomeController : Controller
     {
 
-        private readonly PropertyDbContext _propertyDbContext;
+        private readonly IPropertyRepository _propertyRepository;
 
-        public HomeController(PropertyDbContext propertyDbContext)
+        public HomeController(IPropertyRepository propertyRepository)
         {
-            _propertyDbContext = propertyDbContext;
+            _propertyRepository = propertyRepository;
         }
 
         // GET: /<controller>/
         public async Task<IActionResult> Index()
         {
-            List<Property> properties = await _propertyDbContext.Properties.Include(p => p.Images).ToListAsync();
+            List<Property> properties = (List<Property>)await _propertyRepository.GetAll();
             var itemListViewModel = new PropertyListViewModel(properties, "Index");
             return View(itemListViewModel);
         }
@@ -34,7 +35,7 @@ namespace AirMet.Controllers {
 
         public async Task<IActionResult> Details(int id)
         {
-            var property = await _propertyDbContext.Properties.Include(p => p.Images).FirstOrDefaultAsync(i => i.PropertyId == id);
+            var property = await _propertyRepository.GetItemById(id);
             if (property == null)
                 return NotFound();
             return View(property);
@@ -76,8 +77,7 @@ namespace AirMet.Controllers {
                     property.Images = images;
                 }
 
-                _propertyDbContext.Properties.Add(property);
-                await _propertyDbContext.SaveChangesAsync();
+                await _propertyRepository.Create(property);
                 return RedirectToAction(nameof(Index));
             }
             return View(property);
@@ -86,7 +86,7 @@ namespace AirMet.Controllers {
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var property = await _propertyDbContext.Properties.Include(p => p.Images).FirstOrDefaultAsync(i => i.PropertyId == id);
+            var property = await _propertyRepository.GetItemById(id);
             if (property == null)
             {
                 return NotFound();
@@ -102,8 +102,7 @@ namespace AirMet.Controllers {
                 updatedProperty.PropertyId = id;
 
                 // Fetch the existing property from the database
-                var propertyFromDb = _propertyDbContext.Properties.Include(p => p.Images)
-                                      .FirstOrDefault(i => i.PropertyId == updatedProperty.PropertyId);
+                var propertyFromDb = await _propertyRepository.GetItemById(updatedProperty.PropertyId);
 
                 if (propertyFromDb == null)
                 {
@@ -119,6 +118,7 @@ namespace AirMet.Controllers {
                 if (updatedProperty.Files != null && updatedProperty.Files.Count > 0)
                 {
                     var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    var newImages = new List<PropertyImage>();
 
                     if (!Directory.Exists(uploads))
                     {
@@ -136,13 +136,12 @@ namespace AirMet.Controllers {
                         }
 
                         var newImage = new PropertyImage { ImageUrl = $"/images/{fileName}", PropertyId = propertyFromDb.PropertyId };
-                        _propertyDbContext.PropertyImages.Add(newImage);
-                        propertyFromDb.Images.Add(newImage);
+                        newImages.Add(newImage);
                     }
+                    await _propertyRepository.AddNewImages(propertyFromDb.PropertyId, newImages);
                 }
 
-                _propertyDbContext.Properties.Update(propertyFromDb);
-                await _propertyDbContext.SaveChangesAsync();
+                await _propertyRepository.Update(propertyFromDb);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -153,32 +152,22 @@ namespace AirMet.Controllers {
         [HttpGet]
         public async Task<IActionResult> DeleteImage(int id)
         {
-            var image = await _propertyDbContext.PropertyImages.FirstOrDefaultAsync(i => i.Id == id);
-            if (image == null)
+            int result = await _propertyRepository.DeleteImage(id);
+            if (result == -1)
             {
                 return NotFound();
             }
 
-            // Delete the image file from the server
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", image.ImageUrl.TrimStart('/'));
-            if (System.IO.File.Exists(imagePath))
-            {
-                System.IO.File.Delete(imagePath);
-            }
-
-            // Delete the image record from the database
-            _propertyDbContext.PropertyImages.Remove(image);
-            _propertyDbContext.SaveChanges();
-
             // Redirect back to the Update view
-            return RedirectToAction("Update", new { id = image.PropertyId });
+            // Note: You might need to find a way to get the PropertyId if it's needed for the redirect.
+            return RedirectToAction("Update", new {id = result});
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var property = await _propertyDbContext.Properties.FindAsync(id);
+            var property = await _propertyRepository.GetItemById(id);
             if (property == null)
             {
                 return NotFound();
@@ -189,13 +178,7 @@ namespace AirMet.Controllers {
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var property = await _propertyDbContext.Properties.FindAsync(id);
-            if (property == null)
-            {
-                return NotFound();
-            }
-            _propertyDbContext.Properties.Remove(property);
-            await _propertyDbContext.SaveChangesAsync();
+            await _propertyRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
         

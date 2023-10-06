@@ -10,7 +10,6 @@ namespace AirMet.Models
 		{
 			using var serviceScope = app.ApplicationServices.CreateScope();
 			PropertyDbContext context = serviceScope.ServiceProvider.GetRequiredService<PropertyDbContext>();
-            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
 			if(!context.Properties.Any())
