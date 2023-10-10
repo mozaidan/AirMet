@@ -10,14 +10,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231005105343_PropertyDbExpended")]
-    partial class PropertyDbExpended
+    [Migration("20231010101844_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true);
 
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {

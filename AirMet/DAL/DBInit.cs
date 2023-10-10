@@ -10,6 +10,7 @@ namespace AirMet.Models
 		{
 			using var serviceScope = app.ApplicationServices.CreateScope();
 			PropertyDbContext context = serviceScope.ServiceProvider.GetRequiredService<PropertyDbContext>();
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
 			if(!context.Properties.Any())
@@ -38,7 +39,7 @@ namespace AirMet.Models
 				var imageProperty = new List<PropertyImage>
 				{
 					new PropertyImage {ImageUrl = "/images/domes1.jpg", PropertyId = 1},
-					new PropertyImage {ImageUrl = "/images/domes2.jpg", PropertyId = 1}
+					new PropertyImage {ImageUrl = "/images/Home.jpg", PropertyId = 1}
 				};
 				context.AddRange(imageProperty);
 				context.SaveChanges();
