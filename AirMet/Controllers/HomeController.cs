@@ -15,16 +15,23 @@ namespace AirMet.Controllers {
     {
 
         private readonly IPropertyRepository _propertyRepository;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IPropertyRepository propertyRepository)
+        public HomeController(IPropertyRepository propertyRepository, ILogger<HomeController> logger)
         {
             _propertyRepository = propertyRepository;
+            _logger = logger;
         }
 
         // GET: /<controller>/
         public async Task<IActionResult> Index()
         {
             List<Property> properties = (List<Property>)await _propertyRepository.GetAll();
+            if (properties == null)
+            {
+                _logger.LogError("[HomeController] property list not found while executing _propertyRepository.GetAll()");
+                return NotFound("Properties list not found!");
+            }
             var itemListViewModel = new PropertyListViewModel(properties, "Index");
             return View(itemListViewModel);
         }
@@ -37,7 +44,10 @@ namespace AirMet.Controllers {
         {
             var property = await _propertyRepository.GetItemById(id);
             if (property == null)
-                return NotFound();
+            { 
+                _logger.LogError("[HomeController] property not found for the PropertyId {PropertyId:0000}", id);
+                return NotFound("Property not found for the PropertyId");
+            }
             return View(property);
         }
 
@@ -77,9 +87,11 @@ namespace AirMet.Controllers {
                     property.Images = images;
                 }
 
-                await _propertyRepository.Create(property);
-                return RedirectToAction(nameof(Index));
+                bool returnOk = await _propertyRepository.Create(property);
+                if (returnOk)
+                    return RedirectToAction(nameof(Index));
             }
+            _logger.LogWarning("[HomeController] Property creation failed {@property}", property);
             return View(property);
         }
 
@@ -89,7 +101,8 @@ namespace AirMet.Controllers {
             var property = await _propertyRepository.GetItemById(id);
             if (property == null)
             {
-                return NotFound();
+                _logger.LogWarning("[HomeController] Property not found when updating the PropertyId {PropertyId:0000}", id);
+                return BadRequest("Property not found for the PropertyId");
             }
             return View(property);
         }
@@ -145,7 +158,7 @@ namespace AirMet.Controllers {
 
                 return RedirectToAction(nameof(Index));
             }
-
+            _logger.LogWarning("[HomeController] Property update failed {@updatedProperty}", updatedProperty);
             return View(updatedProperty);
         }
 
@@ -155,7 +168,8 @@ namespace AirMet.Controllers {
             int result = await _propertyRepository.DeleteImage(id);
             if (result == -1)
             {
-                return NotFound();
+                _logger.LogError("[HomeController] Image not found when deleting the PropertyId {PropertyId:0000}", id);
+                return BadRequest("Property not found for the PropertyId");
             }
 
             // Redirect back to the Update view
@@ -170,7 +184,9 @@ namespace AirMet.Controllers {
             var property = await _propertyRepository.GetItemById(id);
             if (property == null)
             {
-                return NotFound();
+                _logger.LogError("[HomeController] Property not found for the PropertyId {PropertyId:0000}", id);
+                return BadRequest("Property not found for the PropertyId");
+
             }
             return View(property);
         }
@@ -178,7 +194,12 @@ namespace AirMet.Controllers {
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _propertyRepository.Delete(id);
+            bool returnOk = await _propertyRepository.Delete(id);
+            if (!returnOk)
+            {
+                _logger.LogError("[HomeController] Property deletion failed for the PropertyId {PropertyId:0000}", id);
+                return BadRequest("Property deletion failed");
+            }
             return RedirectToAction(nameof(Index));
         }
         
