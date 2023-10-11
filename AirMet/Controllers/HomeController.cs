@@ -92,6 +92,7 @@ namespace AirMet.Controllers {
 
                     property.Images = images;
                 }
+                property.UserId = _userManager.GetUserId(User);
 
                 bool returnOk = await _propertyRepository.Create(property);
                 if (returnOk)
@@ -213,7 +214,15 @@ namespace AirMet.Controllers {
             }
             return RedirectToAction(nameof(Index));
         }
-        
+
+        [Authorize]
+        public async Task<IActionResult> List()
+        {
+            var userId = _userManager.GetUserId(User);
+            List<Property>? properties = await _propertyRepository.GetAllByUserId(userId) as List<Property>;
+            var itemListViewModel = new PropertyListViewModel(properties, "List");
+            return View(itemListViewModel);
+        }
 
 
     }

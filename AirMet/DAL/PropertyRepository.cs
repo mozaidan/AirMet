@@ -135,6 +135,10 @@ namespace AirMet.DAL
                 return false;
             }
         }
-	}
+        public async Task<List<Property>> GetAllByUserId(string userId)
+        {
+            return await _db.Properties.Where(p => p.UserId == userId).ToListAsync();
+        }
+    }
 }
 

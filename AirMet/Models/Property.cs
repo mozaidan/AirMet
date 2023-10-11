@@ -6,7 +6,7 @@ namespace AirMet.Models
 {
 	public class Property
 	{
-
+        public string? UserId { get; set; }
         //her i wanna to add soverome , type ,senger og guster and antall pepo
 		public int PropertyId { get; set; }
 		public decimal Price { get; set; }

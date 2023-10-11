@@ -12,6 +12,7 @@ namespace AirMet.DAL
 		Task<bool> Delete(int id);
         Task<bool> AddNewImages(int propertyId, List<PropertyImage> newImages);
         Task<int> DeleteImage(int id);
+        Task<List<Property>> GetAllByUserId(string userId);
     }
 }
 
