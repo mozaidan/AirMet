@@ -9,6 +9,7 @@ using AirMet.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using AirMet.DAL;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AirMet.Controllers {
 
@@ -17,11 +18,13 @@ namespace AirMet.Controllers {
 
         private readonly IPropertyRepository _propertyRepository;
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(IPropertyRepository propertyRepository, ILogger<HomeController> logger)
+        public HomeController(IPropertyRepository propertyRepository, ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
         {
             _propertyRepository = propertyRepository;
             _logger = logger;
+            _userManager = userManager;
         }
 
         // GET: /<controller>/
