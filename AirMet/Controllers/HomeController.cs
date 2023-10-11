@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AirMet.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using AirMet.DAL;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AirMet.Controllers {
 
@@ -26,7 +27,7 @@ namespace AirMet.Controllers {
         // GET: /<controller>/
         public async Task<IActionResult> Index()
         {
-            List<Property> properties = (List<Property>)await _propertyRepository.GetAll();
+            List<Property>? properties = await _propertyRepository.GetAll() as List<Property>;
             if (properties == null)
             {
                 _logger.LogError("[HomeController] property list not found while executing _propertyRepository.GetAll()");
@@ -52,12 +53,14 @@ namespace AirMet.Controllers {
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(Property property)
         {
             if (ModelState.IsValid)
@@ -96,6 +99,7 @@ namespace AirMet.Controllers {
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Update(int id)
         {
             var property = await _propertyRepository.GetItemById(id);
@@ -108,6 +112,7 @@ namespace AirMet.Controllers {
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Update(int id, Property updatedProperty)
         {
             if (ModelState.IsValid)
@@ -163,6 +168,7 @@ namespace AirMet.Controllers {
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DeleteImage(int id)
         {
             int result = await _propertyRepository.DeleteImage(id);
@@ -179,6 +185,7 @@ namespace AirMet.Controllers {
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var property = await _propertyRepository.GetItemById(id);
@@ -192,6 +199,7 @@ namespace AirMet.Controllers {
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             bool returnOk = await _propertyRepository.Delete(id);

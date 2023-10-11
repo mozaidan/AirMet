@@ -1,11 +1,12 @@
 ﻿using System;
 using AirMet.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AirMet.Models
 {
 
-    public class PropertyDbContext : DbContext
+    public class PropertyDbContext : IdentityDbContext
     {
         public PropertyDbContext(DbContextOptions<PropertyDbContext> options) : base(options)
         {

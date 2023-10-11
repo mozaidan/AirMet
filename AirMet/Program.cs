@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using AirMet.Models;
 using AirMet.DAL;
 using Serilog;
 using Serilog.Events;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("PropertyDbContextConnection") ?? throw new InvalidOperationException("Connection string 'PropertyDbContextConnection' not found.");
 
 builder.Services.AddControllersWithViews();
 
@@ -13,7 +15,13 @@ builder.Services.AddDbContext<PropertyDbContext>(options => {
         builder.Configuration["ConnectionStrings:PropertyDbContextConnection"]);
 });
 
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddEntityFrameworkStores<PropertyDbContext>();
+
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+
+builder.Services.AddRazorPages();
+builder.Services.AddSession();
 
 var loggerConfiguration = new LoggerConfiguration().MinimumLevel.Information().WriteTo.File($"Logs/app_{DateTime.Now:yyyyMMdd_HHmmss}.log");
 
@@ -32,6 +40,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 
+app.UseSession();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseAuthentication();
+
 app.MapDefaultControllerRoute();
+
+app.MapRazorPages();
 
 app.Run();
