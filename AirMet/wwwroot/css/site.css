@@ -99,3 +99,15 @@ body {
 .btn-danger {
     margin-left : 85px;
 }
+
+#card-title{
+    text-decoration : none;
+    color: black;
+}
+#card-text{
+   text-decoration : none;
+}
+a {
+    text-decoration : none;
+    color: black;
+}
