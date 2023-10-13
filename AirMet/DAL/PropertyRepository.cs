@@ -139,6 +139,10 @@ namespace AirMet.DAL
         {
             return await _db.Properties.Where(p => p.UserId == userId).ToListAsync();
         }
+		public async Task<Customer?> Customer(string customerId)
+		{
+			return await _db.Customers.Where(p => p.CustomerId == customerId).FirstOrDefaultAsync();
+		}
     }
 }
 

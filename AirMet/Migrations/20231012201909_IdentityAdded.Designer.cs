@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231011130556_IdentityAdded")]
+    [Migration("20231012201909_IdentityAdded")]
     partial class IdentityAdded
     {
         /// <inheritdoc />
@@ -24,6 +24,33 @@ namespace AirMet.Migrations
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true);
 
+            modelBuilder.Entity("AirMet.Models.Customer", b =>
+                {
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Age")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CustomerId");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {
                     b.Property<int>("PropertyId")
@@ -32,6 +59,9 @@ namespace AirMet.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CustomerId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -45,6 +75,8 @@ namespace AirMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("PropertyId");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Properties");
                 });
@@ -265,6 +297,24 @@ namespace AirMet.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AirMet.Models.Customer", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.Navigation("IdentityUser");
+                });
+
+            modelBuilder.Entity("AirMet.Models.Property", b =>
+                {
+                    b.HasOne("AirMet.Models.Customer", "Customer")
+                        .WithMany("Properties")
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("AirMet.Models.PropertyImage", b =>
                 {
                     b.HasOne("AirMet.Models.Property", "Property")
@@ -325,6 +375,11 @@ namespace AirMet.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AirMet.Models.Customer", b =>
+                {
+                    b.Navigation("Properties");
                 });
 
             modelBuilder.Entity("AirMet.Models.Property", b =>

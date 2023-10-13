@@ -28,6 +28,7 @@ namespace AirMet.Models
         public virtual List<PropertyImage> Images { get; set; } = new List<PropertyImage>();
         [NotMapped]
         public virtual List<IFormFile>? Files { get; set; }
+        public virtual Customer? Customer { get; set; }
     }
 }
 
