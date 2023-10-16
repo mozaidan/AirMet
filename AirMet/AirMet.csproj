@@ -22,8 +22,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="DAL\" />
+    <None Remove="Views\Property\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DAL\" />
+    <Folder Include="Views\Property\" />
   </ItemGroup>
 </Project>

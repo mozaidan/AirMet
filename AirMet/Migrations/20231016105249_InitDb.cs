@@ -184,10 +184,15 @@ namespace AirMet.Migrations
                     PropertyId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(type: "TEXT", nullable: true),
+                    CustomerId = table.Column<string>(type: "TEXT", nullable: true),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    CustomerId = table.Column<string>(type: "TEXT", nullable: true)
+                    Guest = table.Column<int>(type: "INTEGER", nullable: false),
+                    Bed = table.Column<int>(type: "INTEGER", nullable: false),
+                    BedRooms = table.Column<int>(type: "INTEGER", nullable: false),
+                    BathRooms = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

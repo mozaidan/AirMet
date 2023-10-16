@@ -2,23 +2,45 @@
 <h2>Update</h2>
 
 <form asp-action="Update" method="post" enctype="multipart/form-data">
-
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
     <div class="form-group">
         <label asp-for="Description"></label>
         <input asp-for="Description" class="form-control" />
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
-
     <div class="form-group">
         <label asp-for="Price"></label>
         <input asp-for="Price" class="form-control" />
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
-
     <div class="form-group">
         <label asp-for="Address"></label>
         <input asp-for="Address" class="form-control" />
         <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest"></label>
+        <input asp-for="Guest" class="form-control" />
+        <span asp-validation-for="Guest" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Bed"></label>
+        <input asp-for="Bed" class="form-control" />
+        <span asp-validation-for="Bed" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BedRooms"></label>
+        <input asp-for="BedRooms" class="form-control" />
+        <span asp-validation-for="BedRooms" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BathRooms"></label>
+        <input asp-for="BathRooms" class="form-control" />
+        <span asp-validation-for="BathRooms" class="text-danger"></span>
     </div>
     <!-- Display existing images -->
     <div class="form-group">
@@ -59,5 +81,5 @@
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <a asp-controller="Home" asp-action="List" class="btn btn-secondary">Cancel</a>
 </form>

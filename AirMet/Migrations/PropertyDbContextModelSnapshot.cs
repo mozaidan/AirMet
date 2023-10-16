@@ -58,6 +58,15 @@ namespace AirMet.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("BathRooms")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Bed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BedRooms")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("CustomerId")
                         .HasColumnType("TEXT");
 
@@ -65,7 +74,14 @@ namespace AirMet.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Guest")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")

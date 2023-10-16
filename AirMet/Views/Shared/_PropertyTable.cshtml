@@ -15,22 +15,22 @@
             <tr>
                 <td>@item.PropertyId</td>
                 <td>
-                    <a asp-controller="Home"
+                    <a asp-controller="Property"
                        asp-action="Details"
                        asp-route-id="@item.PropertyId">@item.Address</a>
                 </td>
                 <td>@item.Price.ToString("0.00 NOK")</td>
                 <td>@item.Description</td>
                 <td>
-                    <a asp-action="Update" asp-route-id="@item.PropertyId">Update</a>
-                    <a asp-action="Delete" asp-route-id="@item.PropertyId">Delete</a>
+                    <a asp-controller="Property" asp-action="Update" asp-route-id="@item.PropertyId">Update</a>
+                    <a asp-controller="Property" asp-action="Delete" asp-route-id="@item.PropertyId">Delete</a>
                 </td>
             </tr>
         }
     </table>
     <p>
         <a class="btn btn-secondary"
-           asp-controller="Item"
-           asp-action="Create">Create New Item</a>
+           asp-controller="Property"
+           asp-action="Create">Add new home</a>
     </p>
 </div>
