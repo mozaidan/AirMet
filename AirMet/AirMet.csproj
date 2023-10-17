@@ -23,9 +23,11 @@
   <ItemGroup>
     <None Remove="DAL\" />
     <None Remove="Views\Property\" />
+    <None Remove="Views\Reservation\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DAL\" />
     <Folder Include="Views\Property\" />
+    <Folder Include="Views\Reservation\" />
   </ItemGroup>
 </Project>
