@@ -33,8 +33,23 @@
             <div class="property-description">
                 <h5>@Model.Description</h5>
                 <h3 class="property-price">@Model.Price.ToString("0.00 NOK")</h3>
+                <form method="post" asp-controller="Reservation" asp-action="Reserve" asp-route-propertyId="@Model.PropertyId">
+                    <div class="form-group">
+                        <label for="startDate">Start Date:</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End Date:</label>
+                        <input type="date" class="form-control" id="endDate" name="endDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numberOfGuests">Number of Guests:</label>
+                        <input type="number" class="form-control" id="numberOfGuests" name="numberOfGuests" required>
+                    </div>
+                    <button type="submit" id ="Reserve" class="btn btn-danger">Reserve</button>
+                </form>
                 <a class="back-to-home-link" asp-controller="Home" asp-action="Index">Back to Home</a>
-                
+
             </div>
         </div>
     </div>

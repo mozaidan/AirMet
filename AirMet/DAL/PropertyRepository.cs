@@ -143,6 +143,68 @@ namespace AirMet.DAL
 		{
 			return await _db.Customers.Where(p => p.CustomerId == customerId).FirstOrDefaultAsync();
 		}
+        public Reservation GetReservationById(int reservationId)
+        {
+            var reservation = _db.Reservations.FirstOrDefault(r => r.ReservationId == reservationId);
+            return reservation;
+        }
+
+        public List<Reservation> GetReservationsByUserId(string userId)
+        {
+            var reservations = _db.Reservations.Where(r => r.UserId == userId).ToList();
+            return reservations;
+        }
+
+        public async Task<bool> AddReservation(Reservation reservation)
+        {
+            _db.Reservations.Add(reservation);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateReservation(Reservation reservation)
+        {
+            // Implementation code to update a reservation
+            _db.Reservations.Update(reservation);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteReservation(int reservationId)
+        {
+            // Implementation code to delete a reservation
+            var reservation = await _db.Reservations.FindAsync(reservationId);
+            if (reservation == null) return false;
+            _db.Reservations.Remove(reservation);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+        public List<Reservation> GetReservationsByDate(DateTime date)
+        {
+            var reservations = _db.Reservations.Where(r => r.Date == date).ToList();
+            return reservations;
+        }
+
+        public List<Reservation> GetReservationsByNumberOfGuests(int numberOfGuests)
+        {
+            var reservations = _db.Reservations.Where(r => r.NumberOfGuests == numberOfGuests).ToList();
+            return reservations;
+        }
+
+        public async Task<bool> Add(Reservation reservation)
+        {
+            try
+            {
+                _db.Reservations.Add(reservation);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[PropertyRepository] reservation creation failed for reservation {@reservation}, error message: {e}", reservation, e.Message);
+                return false;
+            }
+        }
 
     }
 }
