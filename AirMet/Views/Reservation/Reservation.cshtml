@@ -13,7 +13,7 @@
     </thead>
     <tbody>
         @foreach (var reservation in Model.Reservations)
-        {
+            {
             <tr>
                 <td>@reservation.PropertyId</td>
                 <td>@reservation.StartDate.ToShortDateString()</td>

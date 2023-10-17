@@ -143,15 +143,15 @@ namespace AirMet.DAL
 		{
 			return await _db.Customers.Where(p => p.CustomerId == customerId).FirstOrDefaultAsync();
 		}
-        public Reservation GetReservationById(int reservationId)
+        public async Task<Reservation?> GetReservationById(int reservationId)
         {
-            var reservation = _db.Reservations.FirstOrDefault(r => r.ReservationId == reservationId);
+            var reservation = await _db.Reservations.FirstOrDefaultAsync(r => r.ReservationId == reservationId);
             return reservation;
         }
 
-        public List<Reservation> GetReservationsByUserId(string userId)
+        public async Task<List<Reservation>> GetReservationsByUserId(string userId)
         {
-            var reservations = _db.Reservations.Where(r => r.UserId == userId).ToList();
+            var reservations = await _db.Reservations.Where(r => r.UserId == userId).ToListAsync();
             return reservations;
         }
 
@@ -179,17 +179,7 @@ namespace AirMet.DAL
             await _db.SaveChangesAsync();
             return true;
         }
-        public List<Reservation> GetReservationsByDate(DateTime date)
-        {
-            var reservations = _db.Reservations.Where(r => r.Date == date).ToList();
-            return reservations;
-        }
-
-        public List<Reservation> GetReservationsByNumberOfGuests(int numberOfGuests)
-        {
-            var reservations = _db.Reservations.Where(r => r.NumberOfGuests == numberOfGuests).ToList();
-            return reservations;
-        }
+        
 
         public async Task<bool> Add(Reservation reservation)
         {
@@ -204,6 +194,11 @@ namespace AirMet.DAL
                 _logger.LogError("[PropertyRepository] reservation creation failed for reservation {@reservation}, error message: {e}", reservation, e.Message);
                 return false;
             }
+        }
+        public IEnumerable<Reservation> GetReservationsByPropertyId(int propertyId)
+        {
+            return _db.Reservations
+                .Where(r => r.PropertyId == propertyId).ToList();
         }
 
     }

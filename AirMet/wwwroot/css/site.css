@@ -115,3 +115,30 @@ a {
 #Reserve{
     margin-left: 5px;
 }
+
+.property-details-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 20px;
+}
+
+.property-title, .property-address, .property-price {
+    margin-bottom: 15px;
+}
+
+.property-info-item {
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+.property-description {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.back-to-home-link {
+    display: block;
+    margin-top: 15px;
+}

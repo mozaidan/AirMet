@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231017095539_IdentityAdded")]
-    partial class IdentityAdded
+    [Migration("20231017195317_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,6 +143,8 @@ namespace AirMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ReservationId");
+
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("Reservations");
                 });
@@ -372,6 +374,17 @@ namespace AirMet.Migrations
                     b.Navigation("Property");
                 });
 
+            modelBuilder.Entity("AirMet.Models.Reservation", b =>
+                {
+                    b.HasOne("AirMet.Models.Property", "Property")
+                        .WithMany("Reservations")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -431,6 +444,8 @@ namespace AirMet.Migrations
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }
