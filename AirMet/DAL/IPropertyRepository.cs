@@ -14,6 +14,16 @@ namespace AirMet.DAL
         Task<int> DeleteImage(int id);
         Task<List<Property>> GetAllByUserId(string userId);
 		Task<Customer?> Customer(string customerId);
+        Reservation GetReservationById(int reservationId);
+
+        Task<bool> AddReservation(Reservation reservation);
+        Task<bool> UpdateReservation(Reservation reservation);
+        Task<bool> DeleteReservation(int reservationId);
+        Task<bool> Add(Reservation reservation);
+        List<Reservation> GetReservationsByUserId(string userId);
+        List<Reservation> GetReservationsByDate(DateTime date);
+        List<Reservation> GetReservationsByNumberOfGuests(int numberOfGuests);
+
     }
 }
 
