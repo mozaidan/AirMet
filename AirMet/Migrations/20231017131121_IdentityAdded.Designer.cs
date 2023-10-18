@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231017095539_IdentityAdded")]
+    [Migration("20231017131121_IdentityAdded")]
     partial class IdentityAdded
     {
         /// <inheritdoc />
@@ -136,6 +136,9 @@ namespace AirMet.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")

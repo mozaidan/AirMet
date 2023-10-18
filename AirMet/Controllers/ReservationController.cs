@@ -19,6 +19,7 @@ namespace AirMet.Controllers
         private readonly IPropertyRepository _propertyRepository;
         private readonly ILogger<ReservationController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly string userId;
         private DateTime startDate;
         private DateTime endDate;
 
@@ -41,27 +42,35 @@ namespace AirMet.Controllers
 
         [HttpPost]
         [Authorize]
+        [HttpPost]
+        [Authorize]
         public IActionResult Reserve(int propertyId, DateTime reservationDate, int numberOfGuests, DateTime endReservationDate)
         {
-            startDate = reservationDate;
-            endDate = endReservationDate; // Initialize the end date
-            var userId = _userManager.GetUserId(User);
+            // Other existing code...
 
+            // Calculate the total price
+            
             // Create and save a reservation
             var reservation = new Reservation
             {
                 UserId = userId,
                 PropertyId = propertyId,
-                StartDate = startDate,
-                EndDate = endDate,
-                NumberOfGuests = numberOfGuests
+                StartDate = reservationDate,
+                EndDate = endReservationDate,
+                NumberOfGuests = numberOfGuests,
             };
+          
+
 
             // Save the reservation to your data store (e.g., a database)
-            _propertyRepository.Add(reservation); // Implement _reservationRepository accordingly
+            _propertyRepository.AddReservation(reservation); // Implement _propertyRepository.AddReservation accordingly
 
-            return RedirectToAction("Reservation"); // Redirect to the property list page after a successful reservation.
+            return RedirectToAction("Reservation"); // Redirect to the reservation list page after a successful reservation.
         }
+
+        
+        
+
 
         [Authorize]
         public async Task<IActionResult> Reservation()
