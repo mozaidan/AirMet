@@ -9,16 +9,22 @@
             <th>Start Date</th>
             <th>End Date</th>
             <th>Number of Guests</th>
+            <th>Total Days</th>
+            <th>Price per night</th>
+            <th>Total Price</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var reservation in Model.Reservations)
-        {
+            {
             <tr>
                 <td>@reservation.PropertyId</td>
                 <td>@reservation.StartDate.ToShortDateString()</td>
                 <td>@reservation.EndDate.ToShortDateString()</td>
                 <td>@reservation.NumberOfGuests</td>
+                <td>@reservation.TotalDays</td>
+                <td>@(reservation.Property != null ? reservation.Property.Price.ToString() : "Not Available")</td>
+                <td>@reservation.TotalPrice</td>
             </tr>
         }
     </tbody>

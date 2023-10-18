@@ -135,11 +135,19 @@ namespace AirMet.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("TotalDays")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ReservationId");
+
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("Reservations");
                 });
@@ -369,6 +377,17 @@ namespace AirMet.Migrations
                     b.Navigation("Property");
                 });
 
+            modelBuilder.Entity("AirMet.Models.Reservation", b =>
+                {
+                    b.HasOne("AirMet.Models.Property", "Property")
+                        .WithMany("Reservations")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -428,6 +447,8 @@ namespace AirMet.Migrations
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

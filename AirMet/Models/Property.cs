@@ -18,8 +18,8 @@ namespace AirMet.Models
         public int Bed { get; set; }
         public int BedRooms { get; set; }
         public int BathRooms { get; set; }
-             
 
+        public virtual List<Reservation> Reservations { get; set; } = new List<Reservation>();
          
         public virtual List<PropertyImage> Images { get; set; } = new List<PropertyImage>();
         [NotMapped]
