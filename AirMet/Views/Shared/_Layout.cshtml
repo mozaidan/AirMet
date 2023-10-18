@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AirMet</title>
+    <script src="/js/site.js"></script>
     <script src="https://kit.fontawesome.com/f931998368.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -27,11 +28,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs"> <i class="fas fa-info-circle"></i> About us</a>
                         </li>
                     </ul>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                    <div id="mySidenav" class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                         <ul class="navbar-nav">
                             @if (User?.Identity?.IsAuthenticated ?? false)
                             {
                                 <li class="nav-item">
+                                    <button class="nav-link text-dark" onclick="openNav()">Open Sidebar</button>
                                     <a class="nav-link text-dark" asp-controller="Customer" asp-action="Profile"> <i class="fas fa-user"></i> Profile</a>
                                 </li>
                                 <li class="nav-item">
@@ -46,14 +48,15 @@
                             }
                             @if (!User?.Identity?.IsAuthenticated ?? false)
                             {
-
                                 <li class="nav-item">
+                                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                                     <a class="nav-link text-dark" asp-controller="Property" asp-action="Create">Register as Publisher</a>
                                 </li>
                             }
-
                         </ul>
                     </div>
+                </div>
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>

@@ -4,6 +4,26 @@
 // Write your JavaScript code.
 
 
+/* Set the width of the side navigation to 250px */
+function openNav() {
+    var sideNav = document.getElementById("mySidenav");
+    if (sideNav) {
+        sideNav.style.width = "250px";
+    } else {
+        console.error("Element with ID 'mySidenav' not found.");
+    }
+}
+
+function closeNav() {
+    var sideNav = document.getElementById("mySidenav");
+    if (sideNav) {
+        sideNav.style.width = "0";
+    } else {
+        console.error("Element with ID 'mySidenav' not found.");
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     // Function to add new image input
     function addImageInput() {
