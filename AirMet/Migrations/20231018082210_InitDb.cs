@@ -51,28 +51,6 @@ namespace AirMet.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:AirMet/Migrations/20231017131109_InitDb.cs
-                name: "Reservations",
-                columns: table => new
-                {
-                    ReservationId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PropertyId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    NumberOfGuests = table.Column<int>(type: "INTEGER", nullable: false),
-                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reservations", x => x.ReservationId);
-                });
-
-            migrationBuilder.CreateTable(
-========
->>>>>>>> 88ff12886bbc724247f524f33a1f7d76152ce664:AirMet/Migrations/20231018074503_InitDb.cs
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {

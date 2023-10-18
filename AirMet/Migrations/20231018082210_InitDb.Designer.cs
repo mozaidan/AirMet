@@ -11,11 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-<<<<<<<< HEAD:AirMet/Migrations/20231017131109_InitDb.Designer.cs
-    [Migration("20231017131109_InitDb")]
-========
-    [Migration("20231018074503_InitDb")]
->>>>>>>> 88ff12886bbc724247f524f33a1f7d76152ce664:AirMet/Migrations/20231018074503_InitDb.Designer.cs
+    [Migration("20231018082210_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -142,12 +138,9 @@ namespace AirMet.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
-<<<<<<<< HEAD:AirMet/Migrations/20231017131109_InitDb.Designer.cs
-========
                     b.Property<int>("TotalDays")
                         .HasColumnType("INTEGER");
 
->>>>>>>> 88ff12886bbc724247f524f33a1f7d76152ce664:AirMet/Migrations/20231018074503_InitDb.Designer.cs
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("TEXT");
 

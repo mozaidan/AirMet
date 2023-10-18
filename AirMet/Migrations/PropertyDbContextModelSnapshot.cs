@@ -135,12 +135,9 @@ namespace AirMet.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
-<<<<<<< HEAD
-=======
                     b.Property<int>("TotalDays")
                         .HasColumnType("INTEGER");
 
->>>>>>> 88ff12886bbc724247f524f33a1f7d76152ce664
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("TEXT");
 
