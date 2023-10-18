@@ -142,3 +142,9 @@ a {
     display: block;
     margin-top: 15px;
 }
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-family: 'Verdana'/* Change this to your desired font */
+    
+}
