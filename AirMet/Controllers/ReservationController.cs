@@ -19,9 +19,7 @@ namespace AirMet.Controllers
         private readonly IPropertyRepository _propertyRepository;
         private readonly ILogger<ReservationController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly string userId;
-        private DateTime startDate;
-        private DateTime endDate;
+        
 
         public ReservationController(IPropertyRepository propertyRepository, ILogger<ReservationController> logger, UserManager<IdentityUser> userManager
             )
@@ -36,20 +34,33 @@ namespace AirMet.Controllers
         [Authorize]
         public IActionResult Reserve(int propertyId, DateTime reservationDate, int numberOfGuests)
         {
-            startDate = reservationDate; // Initialize the start date
+            var startDate = reservationDate; // Initialize the start date
             return View(new { PropertyId = propertyId, StartDate = reservationDate, NumberOfGuests = numberOfGuests });
         }
 
         [HttpPost]
         [Authorize]
-        [HttpPost]
-        [Authorize]
-        public IActionResult Reserve(int propertyId, DateTime reservationDate, int numberOfGuests, DateTime endReservationDate)
+        public async Task<IActionResult> Reserve(int propertyId, DateTime reservationDate, int numberOfGuests, DateTime endReservationDate)
         {
-            // Other existing code...
+            var startDate = reservationDate;
+            var endDate = endReservationDate; // Initialize the end date
+            var userId = _userManager.GetUserId(User);
+            var property = await _propertyRepository.GetItemById(propertyId);
+            if (property == null)
+            {
+                // Handle error: property not found
+                return RedirectToAction("ErrorPage"); // Replace with your actual error page
+            }
 
-            // Calculate the total price
-            
+            var existingReservations = _propertyRepository.GetReservationsByPropertyId(propertyId);
+            foreach (var res in existingReservations)
+            {
+                if ((startDate <= res.EndDate && endDate >= res.StartDate))
+                {
+                    TempData["ReservationMessage"] = "The chosen date is unavailable for this property, please choose another date!";
+                    return RedirectToAction("Details", "Property", new { id = propertyId });
+                }
+            }
             // Create and save a reservation
             var reservation = new Reservation
             {
@@ -62,8 +73,13 @@ namespace AirMet.Controllers
           
 
 
+            var days = (reservation.EndDate - reservation.StartDate).Days;
+            reservation.TotalDays = days;
+            reservation.Property = property;
+            reservation.TotalPrice = property.Price * days;
+
             // Save the reservation to your data store (e.g., a database)
-            _propertyRepository.AddReservation(reservation); // Implement _propertyRepository.AddReservation accordingly
+            _ = _propertyRepository.Add(reservation); // Implement _reservationRepository accordingly
 
             return RedirectToAction("Reservation"); // Redirect to the reservation list page after a successful reservation.
         }
@@ -78,10 +94,10 @@ namespace AirMet.Controllers
             var userId = _userManager.GetUserId(User);
 
             // Retrieve the user's reservations
-            var reservations = _propertyRepository.GetReservationsByUserId(userId);
+            var reservations = await _propertyRepository.GetReservationsByUserId(userId);
 
             // Create a view model and populate it
-            var viewModel = new ReservationsListViewModel
+            var viewModel = new ReservationsListViewModel(reservations)
             {
                 Reservations = reservations
             };
@@ -89,18 +105,14 @@ namespace AirMet.Controllers
             return View(viewModel);
         }
 
-        public IActionResult GetReservationsByDate(DateTime date)
+        [HttpGet]
+        public JsonResult GetUnavailableDates(int propertyId)
         {
-            var reservations = _propertyRepository.GetReservationsByDate(date);
-
-            // Process and return the reservations as JSON
-            return Json(reservations);
+            var reservations = _propertyRepository.GetReservationsByPropertyId(propertyId);
+            var unavailableDates = reservations.SelectMany(r => Enumerable.Range(0, (r.EndDate - r.StartDate).Days + 1).Select(offset => r.StartDate.AddDays(offset).ToString("yyyy-MM-dd"))).ToList();
+            return Json(new { UnavailableDates = unavailableDates });
         }
 
-        public IActionResult GetReservationsByNumberOfGuests(int numberOfGuests) =>
-
-            // Process and return the reservations as JSON
-            Json(_propertyRepository.GetReservationsByNumberOfGuests(numberOfGuests));
 
 
     }

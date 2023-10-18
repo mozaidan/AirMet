@@ -4,6 +4,7 @@ using AirMet.DAL;
 using Serilog;
 using Serilog.Events;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("PropertyDbContextConnection") ?? throw new InvalidOperationException("Connection string 'PropertyDbContextConnection' not found.");
@@ -15,7 +16,24 @@ builder.Services.AddDbContext<PropertyDbContext>(options => {
         builder.Configuration["ConnectionStrings:PropertyDbContextConnection"]);
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>()
+builder.Services.AddDefaultIdentity<IdentityUser> (options =>
+{
+    // Password settings
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 4;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredUniqueChars = 1;
+
+    // Lockout settings
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings
+    options.User.RequireUniqueEmail = true;
+})
     .AddEntityFrameworkStores<PropertyDbContext>();
 
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();

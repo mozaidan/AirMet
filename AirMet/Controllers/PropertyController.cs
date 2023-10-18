@@ -37,6 +37,7 @@ namespace AirMet.Controllers
                 _logger.LogError("[HomeController] property not found for the PropertyId {PropertyId:0000}", id);
                 return NotFound("Property not found for the PropertyId");
             }
+            ViewBag.ReservationMessage = TempData["ReservationMessage"]?.ToString();
             return View(property);
         }
         [HttpGet]
