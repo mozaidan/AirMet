@@ -1,11 +1,17 @@
 @using Microsoft.AspNetCore.Identity
+<script src="https://kit.fontawesome.com/f931998368.js" crossorigin="anonymous"></script>
+
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+<button class="nav-link text-dark" onclick="openNav()">Open Sidebar</button>
+
 
 <ul class="navbar-nav">
+
     @if (SignInManager.IsSignedIn(User))
     {
+
         <li class="nav-item">
             <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)</a>
         </li>
@@ -14,7 +20,9 @@
                 <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
             </form>
         </li>
+
     }
+
     else
     {
         <li class="nav-item">
@@ -25,3 +33,4 @@
         </li>
     }
 </ul>
+<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>

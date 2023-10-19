@@ -49,7 +49,6 @@
                             @if (!User?.Identity?.IsAuthenticated ?? false)
                             {
                                 <li class="nav-item">
-                                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                                     <a class="nav-link text-dark" asp-controller="Property" asp-action="Create">Register as Publisher</a>
                                 </li>
                             }

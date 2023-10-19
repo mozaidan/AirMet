@@ -46,53 +46,64 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
-/* Your existing styles */
-.nav-link i {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
+<!--
+Your existing styles -->
 /* Styles for the sidebar */
 #mySidenav {
     width: 0;
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
     height: 100%;
-    background-color: #111;
+    background-color: #333; /* Darker background color for better contrast */
     overflow-x: hidden;
     transition: 0.5s;
 }
 
+#mySidenav ul {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0;
+    margin: 0;
+}
+
 #mySidenav a {
-        padding: 15px 25px;
-        text-decoration: none;
-        font-size: 18px;
-        color: #818181;
-        display: block;
-        transition: 0.3s;
+    padding: 15px 25px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #fff; /* White text color for better visibility */
+    display: block;
+    transition: 0.3s;
+}
+
+    #mySidenav a:hover {
+        background-color: #555; /* Darker background color on hover */
+        color: #f1f1f1;
     }
 
-        #mySidenav a:hover {
-            color: #f1f1f1;
-        }
+#mySidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 0; /* Adjusted right position to align with the top-right corner */
+    font-size: 36px;
+    color: #fff; /* White text color for the close button */
+    cursor: pointer; /* Add cursor pointer for better interaction */
+    z-index: 2; /* Set a higher z-index to ensure it appears above the content */
+    padding: 15px;
+}
 
-    #mySidenav .closebtn {
-        position: absolute;
-        top: 0;
-        right: 25px;
-        font-size: 36px;
-        margin-left: 50px;
-    }
+/* Keep the list vertical */
+#mySidenav .navbar-nav {
+    flex-direction: column;
+}
 
 /* Styles for the main content (adjust as needed) */
 .main-content {
-    transition: margin-left 0.5s;
+    transition: margin-right 0.5s;
     padding: 16px;
 }
 
 /* Adjust the main content margin when the sidebar is open */
 #mySidenav.open {
-    margin-left: 250px;
+    margin-right: 250px;
 }
+
