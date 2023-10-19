@@ -185,35 +185,6 @@ namespace AirMet.DAL
             return reservations;
         }
 
-<<<<<<< HEAD
-        public async Task<bool> AddReservation(Reservation reservation)
-        {
-            _db.Reservations.Add(reservation);
-            await _db.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> UpdateReservation(Reservation reservation)
-        {
-            // Implementation code to update a reservation
-            _db.Reservations.Update(reservation);
-            await _db.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteReservation(int reservationId)
-        {
-            // Implementation code to delete a reservation
-            var reservation = await _db.Reservations.FindAsync(reservationId);
-            if (reservation == null) return false;
-            _db.Reservations.Remove(reservation);
-            await _db.SaveChangesAsync();
-            return true;
-        }
-        
-
-=======
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
         public async Task<bool> Add(Reservation reservation)
         {
             try
@@ -228,17 +199,10 @@ namespace AirMet.DAL
                 return false;
             }
         }
-<<<<<<< HEAD
-        public IEnumerable<Reservation> GetReservationsByPropertyId(int propertyId)
-        {
-            return _db.Reservations
-                .Where(r => r.PropertyId == propertyId).ToList();
-=======
         public async Task<IEnumerable<Reservation>> GetReservationsByPropertyId(int propertyId)
         {
             return await _db.Reservations
                 .Where(r => r.PropertyId == propertyId).ToListAsync();
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
         }
 
     }

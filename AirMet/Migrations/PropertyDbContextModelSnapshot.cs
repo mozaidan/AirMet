@@ -48,8 +48,6 @@ namespace AirMet.Migrations
                     b.ToTable("Customers");
                 });
 
-<<<<<<< HEAD
-=======
             modelBuilder.Entity("AirMet.Models.PType", b =>
                 {
                     b.Property<int>("PTypeId")
@@ -65,7 +63,6 @@ namespace AirMet.Migrations
                     b.ToTable("PTypes");
                 });
 
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {
                     b.Property<int>("PropertyId")
@@ -95,12 +92,9 @@ namespace AirMet.Migrations
                     b.Property<int>("Guest")
                         .HasColumnType("INTEGER");
 
-<<<<<<< HEAD
-=======
                     b.Property<int>("PTypeId")
                         .HasColumnType("INTEGER");
 
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
@@ -115,11 +109,8 @@ namespace AirMet.Migrations
 
                     b.HasIndex("CustomerId");
 
-<<<<<<< HEAD
-=======
                     b.HasIndex("PTypeId");
 
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
                     b.ToTable("Properties");
                 });
 
@@ -392,9 +383,6 @@ namespace AirMet.Migrations
                         .WithMany("Properties")
                         .HasForeignKey("CustomerId");
 
-<<<<<<< HEAD
-                    b.Navigation("Customer");
-=======
                     b.HasOne("AirMet.Models.PType", "PType")
                         .WithMany("Properties")
                         .HasForeignKey("PTypeId")
@@ -404,7 +392,6 @@ namespace AirMet.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("PType");
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
                 });
 
             modelBuilder.Entity("AirMet.Models.PropertyImage", b =>
@@ -485,14 +472,11 @@ namespace AirMet.Migrations
                     b.Navigation("Properties");
                 });
 
-<<<<<<< HEAD
-=======
             modelBuilder.Entity("AirMet.Models.PType", b =>
                 {
                     b.Navigation("Properties");
                 });
 
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {
                     b.Navigation("Images");

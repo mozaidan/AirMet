@@ -36,12 +36,8 @@ namespace AirMet.Models
 						Guest = 1,
 						Bed = 2,
 						BedRooms = 3,
-<<<<<<< HEAD
-						BathRooms = 4
-=======
 						BathRooms = 4,
 						PTypeId = 1
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
 					},
 
                     new Property
@@ -53,12 +49,8 @@ namespace AirMet.Models
                         Guest = 1,
                         Bed = 2,
                         BedRooms = 3,
-<<<<<<< HEAD
-                        BathRooms = 4
-=======
                         BathRooms = 4,
 						PTypeId = 1
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
                     }
                 };
 				context.AddRange(properties);
@@ -69,8 +61,7 @@ namespace AirMet.Models
 				var imageProperty = new List<PropertyImage>
 				{
 					new PropertyImage {ImageUrl = "/images/domes1.jpg", PropertyId = 1},
-					new PropertyImage {ImageUrl = "/images/Home.jpg", PropertyId = 1},
-					new PropertyImage {ImageUrl = "/images/domes1.jpg", PropertyId = 2}
+					new PropertyImage {ImageUrl = "/images/Home.jpg", PropertyId = 1}
 				};
 				context.AddRange(imageProperty);
 				context.SaveChanges();

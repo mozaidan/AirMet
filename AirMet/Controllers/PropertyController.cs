@@ -42,11 +42,6 @@ namespace AirMet.Controllers
         }
         [HttpGet]
         [Authorize]
-<<<<<<< HEAD
-        public IActionResult Create()
-        {
-            return View();
-=======
         public async Task<IActionResult> Create()
         {
             var PTypes = await _propertyRepository.GetAllTypes();
@@ -60,21 +55,15 @@ namespace AirMet.Controllers
                 }).ToList()
             };
             return View(createPropertyViewModel);
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(Property property)
         {
-<<<<<<< HEAD
-            if (ModelState.IsValid)
-            {
-=======
             try
             {
                 var newType = await _propertyRepository.GetPType(property.PTypeId);
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
                 if (property.Files != null)
                 {
                     var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
@@ -99,16 +88,6 @@ namespace AirMet.Controllers
 
                     property.Images = images;
                 }
-<<<<<<< HEAD
-                property.UserId = _userManager.GetUserId(User);
-
-                bool returnOk = await _propertyRepository.Create(property);
-                if (returnOk)
-                    return RedirectToAction("List", "Home");
-            }
-            _logger.LogWarning("[HomeController] Property creation failed {@property}", property);
-            return View(property);
-=======
                 var userId = _userManager.GetUserId(User);
                 Customer? customer = await _propertyRepository.Customer(userId);
                 property.UserId = _userManager.GetUserId(User);
@@ -147,7 +126,6 @@ namespace AirMet.Controllers
                 return BadRequest("OrderItem creation failed.");
             }
             
->>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
         }
 
 
