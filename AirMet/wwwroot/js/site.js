@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function addImageInput() {
         const imageInput = document.createElement("input");
         imageInput.type = "file";
-        imageInput.name = "Files";
+        imageInput.name = "Property.Files";
         imageInput.className = "form-control-file mb-2";
         imageInput.addEventListener("change", function () {
             const file = this.files[0];

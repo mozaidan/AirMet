@@ -1,47 +1,54 @@
-﻿@model Property
+﻿@model CreatePropertyViewModel
 
 <h2>Publish your home</h2>
 
 <form asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label asp-for="Title"></label><span class="text-danger">*</span>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+        <label asp-for="Property.PTypeId"></label><span class="text-danger">*</span>
+        <select asp-for="Property.PTypeId" asp-items="Model.PTypeSelectList" class="form-control">
+            <option value="">Select an item...</option>
+        </select>
+        <span asp-validation-for="Property.PTypeId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Description"></label><span class="text-danger">*</span>
-        <input asp-for="Description" class="form-control" />
-        <span asp-validation-for="Description" class="text-danger"></span>
+        <label asp-for="Property.Title"></label><span class="text-danger">*</span>
+        <input asp-for="Property.Title" class="form-control" />
+        <span asp-validation-for="Property.Title" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Price"></label><span class="text-danger">*</span>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
+        <label asp-for="Property.Description"></label><span class="text-danger">*</span>
+        <input asp-for="Property.Description" class="form-control" />
+        <span asp-validation-for="Property.Description" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
+        <label asp-for="Property.Price"></label><span class="text-danger">*</span>
+        <input asp-for="Property.Price" class="form-control" />
+        <span asp-validation-for="Property.Price" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Guest"></label><span class="text-danger">*</span>
-        <input asp-for="Guest" class="form-control" />
-        <span asp-validation-for="Guest" class="text-danger"></span>
+        <label asp-for="Property.Address"></label>
+        <input asp-for="Property.Address" class="form-control" />
+        <span asp-validation-for="Property.Address" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Bed"></label><span class="text-danger">*</span>
-        <input asp-for="Bed" class="form-control" />
-        <span asp-validation-for="Bed" class="text-danger"></span>
+        <label asp-for="Property.Guest"></label><span class="text-danger">*</span>
+        <input asp-for="Property.Guest" class="form-control" />
+        <span asp-validation-for="Property.Guest" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="BedRooms"></label><span class="text-danger">*</span>
-        <input asp-for="BedRooms" class="form-control" />
-        <span asp-validation-for="BedRooms" class="text-danger"></span>
+        <label asp-for="Property.Bed"></label><span class="text-danger">*</span>
+        <input asp-for="Property.Bed" class="form-control" />
+        <span asp-validation-for="Property.Bed" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="BathRooms"></label><span class="text-danger">*</span>
-        <input asp-for="BathRooms" class="form-control" />
-        <span asp-validation-for="BathRooms" class="text-danger"></span>
+        <label asp-for="Property.BedRooms"></label><span class="text-danger">*</span>
+        <input asp-for="Property.BedRooms" class="form-control" />
+        <span asp-validation-for="Property.BedRooms" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Property.BathRooms"></label><span class="text-danger">*</span>
+        <input asp-for="Property.BathRooms" class="form-control" />
+        <span asp-validation-for="Property.BathRooms" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>Images</label>

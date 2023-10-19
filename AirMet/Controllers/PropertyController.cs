@@ -42,17 +42,28 @@ namespace AirMet.Controllers
         }
         [HttpGet]
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var PTypes = await _propertyRepository.GetAllTypes();
+            var createPropertyViewModel = new CreatePropertyViewModel
+            {
+                Property = new Property(),
+                PTypeSelectList = PTypes.Select(PType => new SelectListItem
+                {
+                    Value = PType.PTypeId.ToString(),
+                    Text = PType.PTypeId.ToString() + ": " + PType.PTypeName
+                }).ToList()
+            };
+            return View(createPropertyViewModel);
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(Property property)
         {
-            if (ModelState.IsValid)
+            try
             {
+                var newType = await _propertyRepository.GetPType(property.PTypeId);
                 if (property.Files != null)
                 {
                     var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
@@ -77,14 +88,44 @@ namespace AirMet.Controllers
 
                     property.Images = images;
                 }
+                var userId = _userManager.GetUserId(User);
+                Customer? customer = await _propertyRepository.Customer(userId);
                 property.UserId = _userManager.GetUserId(User);
+                var newProperty = new Property
+                {
+                    UserId = userId,
+                    Customer = customer,
+                    Title = property.Title,
+                    Price = property.Price,
+                    Address = property.Address,
+                    Description = property.Description,
+                    Guest = property.Guest,
+                    Bed = property.Bed,
+                    BedRooms = property.BedRooms,
+                    BathRooms = property.BathRooms,
+                    PTypeId = property.PTypeId,
+                    
+                    Images = property.Images
 
-                bool returnOk = await _propertyRepository.Create(property);
+                };
+                newProperty.PType = await _propertyRepository.GetPType(newProperty.PTypeId);
+
+                bool returnOk = await _propertyRepository.Create(newProperty);
                 if (returnOk)
                     return RedirectToAction("List", "Home");
+                else
+                {
+                    _logger.LogWarning("[HomeController] Property creation failed {@property}", newProperty);
+                    return View(property); // Return to the same view with the model
+                }
             }
-            _logger.LogWarning("[HomeController] Property creation failed {@property}", property);
-            return View(property);
+            catch (Exception)
+            {
+                var errors = ModelState.SelectMany(x => x.Value?.Errors?.Select(p => p.ErrorMessage) ?? Enumerable.Empty<string>()).ToList();
+                _logger.LogWarning("[HomeController] Model State is not valid. Errors: {@errors}", errors);
+                return BadRequest("OrderItem creation failed.");
+            }
+            
         }
 
 

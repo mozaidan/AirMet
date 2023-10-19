@@ -13,7 +13,17 @@ namespace AirMet.Models
             //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-			if(!context.Properties.Any())
+            if (!context.PTypes.Any())
+            {
+                var pType = new List<PType>
+                {
+                    new PType { PTypeName = "Cabins" },
+                    new PType { PTypeName = "Towers" }
+                };
+                context.AddRange(pType);
+                context.SaveChanges();
+            }
+            if (!context.Properties.Any())
 			{
 				var properties = new List<Property>
 				{
@@ -26,7 +36,8 @@ namespace AirMet.Models
 						Guest = 1,
 						Bed = 2,
 						BedRooms = 3,
-						BathRooms = 4
+						BathRooms = 4,
+						PTypeId = 1
 					},
 
                     new Property
@@ -38,7 +49,8 @@ namespace AirMet.Models
                         Guest = 1,
                         Bed = 2,
                         BedRooms = 3,
-                        BathRooms = 4
+                        BathRooms = 4,
+						PTypeId = 1
                     }
                 };
 				context.AddRange(properties);
@@ -54,6 +66,7 @@ namespace AirMet.Models
 				context.AddRange(imageProperty);
 				context.SaveChanges();
 			}
+			
 		}
 	}
 }

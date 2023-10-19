@@ -28,7 +28,11 @@ namespace AirMet.DAL
 			}
 			
         }
-		public async Task<Property?> GetItemById(int id)
+        public async Task<IEnumerable<Property>?> GetAllByTypeId(int typeId)
+		{
+            return await _db.Properties.Where(p => p.PType.PTypeId == typeId).ToListAsync();
+        }
+        public async Task<Property?> GetItemById(int id)
 		{
 			try
 			{
@@ -41,7 +45,33 @@ namespace AirMet.DAL
 				return null;
 			}
 		}
-		public async Task<bool> Create(Property property)
+
+        public async Task<IEnumerable<PType>?> GetAllTypes()
+        {
+            try
+            {
+                return await _db.PTypes.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[PropertyRepository] property ToListAsync() failed when GetAll(), error message: {e}", e.Message);
+                return null;
+            }
+        }
+        public async Task<PType?> GetPType(int id)
+		{
+            try
+            {
+                return await _db.PTypes.FindAsync(id);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[PropertyRepository] property FirstOrDefaultAsync(id) failed when GetItemById for PropertyId {PropertyId:0000}, error message: {e}", id, e.Message);
+                return null;
+            }
+        }
+        public async Task<bool> Create(Property property)
 		{
 			try
 			{
