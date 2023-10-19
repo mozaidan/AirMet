@@ -11,11 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-<<<<<<<< HEAD:AirMet/Migrations/20231018082224_IdentityAdded.Designer.cs
-    [Migration("20231018082224_IdentityAdded")]
-========
-    [Migration("20231019142634_IdentityAdded")]
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142634_IdentityAdded.Designer.cs
+    [Migration("20231019182712_IdentityAdded")]
     partial class IdentityAdded
     {
         /// <inheritdoc />
@@ -55,8 +51,6 @@ namespace AirMet.Migrations
                     b.ToTable("Customers");
                 });
 
-<<<<<<<< HEAD:AirMet/Migrations/20231018082224_IdentityAdded.Designer.cs
-========
             modelBuilder.Entity("AirMet.Models.PType", b =>
                 {
                     b.Property<int>("PTypeId")
@@ -72,7 +66,6 @@ namespace AirMet.Migrations
                     b.ToTable("PTypes");
                 });
 
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142634_IdentityAdded.Designer.cs
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {
                     b.Property<int>("PropertyId")
@@ -102,12 +95,9 @@ namespace AirMet.Migrations
                     b.Property<int>("Guest")
                         .HasColumnType("INTEGER");
 
-<<<<<<<< HEAD:AirMet/Migrations/20231018082224_IdentityAdded.Designer.cs
-========
                     b.Property<int>("PTypeId")
                         .HasColumnType("INTEGER");
 
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142634_IdentityAdded.Designer.cs
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
@@ -122,11 +112,8 @@ namespace AirMet.Migrations
 
                     b.HasIndex("CustomerId");
 
-<<<<<<<< HEAD:AirMet/Migrations/20231018082224_IdentityAdded.Designer.cs
-========
                     b.HasIndex("PTypeId");
 
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142634_IdentityAdded.Designer.cs
                     b.ToTable("Properties");
                 });
 
@@ -399,9 +386,6 @@ namespace AirMet.Migrations
                         .WithMany("Properties")
                         .HasForeignKey("CustomerId");
 
-<<<<<<<< HEAD:AirMet/Migrations/20231018082224_IdentityAdded.Designer.cs
-                    b.Navigation("Customer");
-========
                     b.HasOne("AirMet.Models.PType", "PType")
                         .WithMany("Properties")
                         .HasForeignKey("PTypeId")
@@ -411,7 +395,6 @@ namespace AirMet.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("PType");
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142634_IdentityAdded.Designer.cs
                 });
 
             modelBuilder.Entity("AirMet.Models.PropertyImage", b =>
@@ -492,14 +475,11 @@ namespace AirMet.Migrations
                     b.Navigation("Properties");
                 });
 
-<<<<<<<< HEAD:AirMet/Migrations/20231018082224_IdentityAdded.Designer.cs
-========
             modelBuilder.Entity("AirMet.Models.PType", b =>
                 {
                     b.Navigation("Properties");
                 });
 
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142634_IdentityAdded.Designer.cs
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {
                     b.Navigation("Images");

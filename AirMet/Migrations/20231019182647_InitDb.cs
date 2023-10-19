@@ -205,12 +205,8 @@ namespace AirMet.Migrations
                     Guest = table.Column<int>(type: "INTEGER", nullable: false),
                     Bed = table.Column<int>(type: "INTEGER", nullable: false),
                     BedRooms = table.Column<int>(type: "INTEGER", nullable: false),
-<<<<<<<< HEAD:AirMet/Migrations/20231018082210_InitDb.cs
-                    BathRooms = table.Column<int>(type: "INTEGER", nullable: false)
-========
                     BathRooms = table.Column<int>(type: "INTEGER", nullable: false),
                     PTypeId = table.Column<int>(type: "INTEGER", nullable: false)
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142615_InitDb.cs
                 },
                 constraints: table =>
                 {
@@ -220,15 +216,12 @@ namespace AirMet.Migrations
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId");
-<<<<<<<< HEAD:AirMet/Migrations/20231018082210_InitDb.cs
-========
                     table.ForeignKey(
                         name: "FK_Properties_PTypes_PTypeId",
                         column: x => x.PTypeId,
                         principalTable: "PTypes",
                         principalColumn: "PTypeId",
                         onDelete: ReferentialAction.Cascade);
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142615_InitDb.cs
                 });
 
             migrationBuilder.CreateTable(
@@ -325,14 +318,11 @@ namespace AirMet.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< HEAD:AirMet/Migrations/20231018082210_InitDb.cs
-========
                 name: "IX_Properties_PTypeId",
                 table: "Properties",
                 column: "PTypeId");
 
             migrationBuilder.CreateIndex(
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142615_InitDb.cs
                 name: "IX_PropertyImages_PropertyId",
                 table: "PropertyImages",
                 column: "PropertyId");
@@ -377,12 +367,9 @@ namespace AirMet.Migrations
                 name: "Customers");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:AirMet/Migrations/20231018082210_InitDb.cs
-========
                 name: "PTypes");
 
             migrationBuilder.DropTable(
->>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f:AirMet/Migrations/20231019142615_InitDb.cs
                 name: "AspNetUsers");
         }
     }
