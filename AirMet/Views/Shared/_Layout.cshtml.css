@@ -52,6 +52,9 @@ button.accept-policy {
 }
 #logo {
    height:100px;
-
+}
+.btn-outline-success {
+    color: #557bb3;
+    border-color: #557bb3;
 }
 
