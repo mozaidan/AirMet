@@ -18,6 +18,6 @@
 
     <form asp-action="DeleteConfirmed" asp-route-id="@Model.PropertyId" method="post">
         <button type="submit" class="btn btn-danger">Delete</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        <a asp-controller="Home" asp-action="List" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

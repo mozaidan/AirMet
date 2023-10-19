@@ -36,7 +36,13 @@ namespace AirMet.Controllers {
                 _logger.LogError("[HomeController] property list not found while executing _propertyRepository.GetAll()");
                 return NotFound("Properties list not found!");
             }
-            var itemListViewModel = new PropertyListViewModel(properties, "Index");
+            Customer? customerInfo = null;
+            var userId = _userManager.GetUserId(User);
+            if (userId != null)
+            {
+                customerInfo = await _propertyRepository.Customer(userId);  // Fetch customer info if user is logged in
+            }
+            var itemListViewModel = new PropertyListViewModel(properties, "Index", customerInfo);
             return View(itemListViewModel);
         }
         public IActionResult Aboutus()
@@ -44,176 +50,15 @@ namespace AirMet.Controllers {
             return View();
         }
 
-        public async Task<IActionResult> Details(int id)
-        {
-            var property = await _propertyRepository.GetItemById(id);
-            if (property == null)
-            { 
-                _logger.LogError("[HomeController] property not found for the PropertyId {PropertyId:0000}", id);
-                return NotFound("Property not found for the PropertyId");
-            }
-            return View(property);
-        }
-
-        [HttpGet]
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> List()
         {
-            return View();
+            var userId = _userManager.GetUserId(User);
+            Customer? customerInfo = await _propertyRepository.Customer(userId);
+            List<Property>? properties = await _propertyRepository.GetAllByUserId(userId) as List<Property>;
+            var itemListViewModel = new PropertyListViewModel(properties, "List", customerInfo);
+            return View(itemListViewModel);
         }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Create(Property property)
-        {
-            if (ModelState.IsValid)
-            {
-                if (property.Files != null)
-                {
-                    var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                    if (!Directory.Exists(uploads))
-                    {
-                        Directory.CreateDirectory(uploads);
-                    }
-
-                    List<PropertyImage> images = new List<PropertyImage>();
-
-                    foreach (var file in property.Files)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        var filePath = Path.Combine(uploads, fileName);
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
-                        {
-                            file.CopyTo(fileStream);
-                        }
-
-                        images.Add(new PropertyImage { ImageUrl = $"/images/{fileName}" });
-                    }
-
-                    property.Images = images;
-                }
-
-                bool returnOk = await _propertyRepository.Create(property);
-                if (returnOk)
-                    return RedirectToAction(nameof(Index));
-            }
-            _logger.LogWarning("[HomeController] Property creation failed {@property}", property);
-            return View(property);
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Update(int id)
-        {
-            var property = await _propertyRepository.GetItemById(id);
-            if (property == null)
-            {
-                _logger.LogWarning("[HomeController] Property not found when updating the PropertyId {PropertyId:0000}", id);
-                return BadRequest("Property not found for the PropertyId");
-            }
-            return View(property);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Update(int id, Property updatedProperty)
-        {
-            if (ModelState.IsValid)
-            {
-                updatedProperty.PropertyId = id;
-
-                // Fetch the existing property from the database
-                var propertyFromDb = await _propertyRepository.GetItemById(updatedProperty.PropertyId);
-
-                if (propertyFromDb == null)
-                {
-                    return NotFound();
-                }
-
-                // Update the properties of the existing property
-                propertyFromDb.Description = updatedProperty.Description;
-                propertyFromDb.Price = updatedProperty.Price;
-                propertyFromDb.Address = updatedProperty.Address;
-
-                // If there are new files/images uploaded
-                if (updatedProperty.Files != null && updatedProperty.Files.Count > 0)
-                {
-                    var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                    var newImages = new List<PropertyImage>();
-
-                    if (!Directory.Exists(uploads))
-                    {
-                        Directory.CreateDirectory(uploads);
-                    }
-
-                    // Save the new images
-                    foreach (var file in updatedProperty.Files)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        var filePath = Path.Combine(uploads, fileName);
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
-                        {
-                            file.CopyTo(fileStream);
-                        }
-
-                        var newImage = new PropertyImage { ImageUrl = $"/images/{fileName}", PropertyId = propertyFromDb.PropertyId };
-                        newImages.Add(newImage);
-                    }
-                    await _propertyRepository.AddNewImages(propertyFromDb.PropertyId, newImages);
-                }
-
-                await _propertyRepository.Update(propertyFromDb);
-
-                return RedirectToAction(nameof(Index));
-            }
-            _logger.LogWarning("[HomeController] Property update failed {@updatedProperty}", updatedProperty);
-            return View(updatedProperty);
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> DeleteImage(int id)
-        {
-            int result = await _propertyRepository.DeleteImage(id);
-            if (result == -1)
-            {
-                _logger.LogError("[HomeController] Image not found when deleting the PropertyId {PropertyId:0000}", id);
-                return BadRequest("Property not found for the PropertyId");
-            }
-
-            // Redirect back to the Update view
-            // Note: You might need to find a way to get the PropertyId if it's needed for the redirect.
-            return RedirectToAction("Update", new {id = result});
-        }
-
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var property = await _propertyRepository.GetItemById(id);
-            if (property == null)
-            {
-                _logger.LogError("[HomeController] Property not found for the PropertyId {PropertyId:0000}", id);
-                return BadRequest("Property not found for the PropertyId");
-
-            }
-            return View(property);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            bool returnOk = await _propertyRepository.Delete(id);
-            if (!returnOk)
-            {
-                _logger.LogError("[HomeController] Property deletion failed for the PropertyId {PropertyId:0000}", id);
-                return BadRequest("Property deletion failed");
-            }
-            return RedirectToAction(nameof(Index));
-        }
-        
 
 
     }

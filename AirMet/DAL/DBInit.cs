@@ -19,16 +19,26 @@ namespace AirMet.Models
 				{
 					new Property
 					{
+						Title = "Home",
 						Price = 399,
 						Address = "Oslo Lufthavn",
-						Description = "Very nice home"
+						Description = "Very nice home",
+						Guest = 1,
+						Bed = 2,
+						BedRooms = 3,
+						BathRooms = 4
 					},
 
                     new Property
                     {
+						Title = "Home",
                         Price = 399,
                         Address = "Bergen Lufthavn",
-                        Description = "Very nice home"
+                        Description = "Very nice home",
+                        Guest = 1,
+                        Bed = 2,
+                        BedRooms = 3,
+                        BathRooms = 4
                     }
                 };
 				context.AddRange(properties);

@@ -1,0 +1,61 @@
+﻿@model Property
+
+<h2>Publish your home</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Title"></label><span class="text-danger">*</span>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label><span class="text-danger">*</span>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price"></label><span class="text-danger">*</span>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest"></label><span class="text-danger">*</span>
+        <input asp-for="Guest" class="form-control" />
+        <span asp-validation-for="Guest" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Bed"></label><span class="text-danger">*</span>
+        <input asp-for="Bed" class="form-control" />
+        <span asp-validation-for="Bed" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BedRooms"></label><span class="text-danger">*</span>
+        <input asp-for="BedRooms" class="form-control" />
+        <span asp-validation-for="BedRooms" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BathRooms"></label><span class="text-danger">*</span>
+        <input asp-for="BathRooms" class="form-control" />
+        <span asp-validation-for="BathRooms" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Images</label>
+        <div id="image-container">
+            <!-- Placeholder for image inputs -->
+        </div>
+        <button type="button" id="add-image" class="btn btn-secondary">Add Image</button>
+        <div id="preview-container">
+            <!-- Placeholder for image previews -->
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-controller="Home" asp-action="List" class="btn btn-secondary">Cancel</a>
+
+</form>
+

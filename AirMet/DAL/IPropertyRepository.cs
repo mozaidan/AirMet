@@ -12,6 +12,17 @@ namespace AirMet.DAL
 		Task<bool> Delete(int id);
         Task<bool> AddNewImages(int propertyId, List<PropertyImage> newImages);
         Task<int> DeleteImage(int id);
+        Task<List<Property>> GetAllByUserId(string userId);
+		Task<Customer?> Customer(string customerId);
+
+        Task<Reservation?> GetReservationById(int reservationId);
+        Task<bool> AddReservation(Reservation reservation);
+        Task<bool> UpdateReservation(Reservation reservation);
+        Task<bool> DeleteReservation(int reservationId);
+        Task<bool> Add(Reservation reservation);
+        Task<List<Reservation>> GetReservationsByUserId(string userId);
+        IEnumerable<Reservation> GetReservationsByPropertyId(int propertyId);      
+
     }
 }
 
