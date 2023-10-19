@@ -30,4 +30,7 @@
     <Folder Include="Views\Property\" />
     <Folder Include="Views\Reservation\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\logo.png" />
+  </ItemGroup>
 </Project>

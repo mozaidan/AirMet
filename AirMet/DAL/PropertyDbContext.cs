@@ -17,6 +17,7 @@ namespace AirMet.Models
         public DbSet<PropertyImage> PropertyImages { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<PType> PTypes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

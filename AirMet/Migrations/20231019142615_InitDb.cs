@@ -51,6 +51,19 @@ namespace AirMet.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PTypes",
+                columns: table => new
+                {
+                    PTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PTypeName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PTypes", x => x.PTypeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -192,7 +205,8 @@ namespace AirMet.Migrations
                     Guest = table.Column<int>(type: "INTEGER", nullable: false),
                     Bed = table.Column<int>(type: "INTEGER", nullable: false),
                     BedRooms = table.Column<int>(type: "INTEGER", nullable: false),
-                    BathRooms = table.Column<int>(type: "INTEGER", nullable: false)
+                    BathRooms = table.Column<int>(type: "INTEGER", nullable: false),
+                    PTypeId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,6 +216,12 @@ namespace AirMet.Migrations
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId");
+                    table.ForeignKey(
+                        name: "FK_Properties_PTypes_PTypeId",
+                        column: x => x.PTypeId,
+                        principalTable: "PTypes",
+                        principalColumn: "PTypeId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -298,6 +318,11 @@ namespace AirMet.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Properties_PTypeId",
+                table: "Properties",
+                column: "PTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PropertyImages_PropertyId",
                 table: "PropertyImages",
                 column: "PropertyId");
@@ -340,6 +365,9 @@ namespace AirMet.Migrations
 
             migrationBuilder.DropTable(
                 name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "PTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

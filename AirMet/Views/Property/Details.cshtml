@@ -2,10 +2,17 @@
 @using System.Linq  <!-- Add this if you haven't -->
 @{
     var reservationMessage = ViewBag.ReservationMessage;
+    var guestMessage = TempData["GuestMessage"] as string;
     if (!string.IsNullOrEmpty(reservationMessage))
     {
         <div class="alert alert-danger">
             @reservationMessage
+        </div>
+    }
+    if (!string.IsNullOrEmpty(guestMessage))
+    {
+        <div class="alert alert-danger">
+            @guestMessage
         </div>
     }
 }
@@ -14,14 +21,8 @@
 <div class="property-details-container">
     <h3 class="property-title">@Model.Title</h3>
     <h3 class="property-address">@Model.Address</h3>
-    <div class="property-additional-info">
-        <span class="property-info-item">Guests: @Model.Guest</span>
-        <span class="property-info-item">Bed: @Model.Bed</span>
-        <span class="property-info-item">Bedrooms: @Model.BedRooms</span>
-        <span class="property-info-item">Bathrooms: @Model.BathRooms</span>
-    </div>
-    <div class="row property-info">
-        <div class="col-md-5">
+    
+        <div class="col-12">
             <!-- Carousel Starts Here -->
             <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -44,20 +45,39 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
+            <!-- Thumbnails -->
+            <div class="row mt-4">
+                @for (int i = 0; i < imageList.Count; i++)
+                {
+                    <div class="col-2">
+                        <img src="@imageList[i].ImageUrl" class="img-thumbnail" data-bs-target="#propertyCarousel" data-bs-slide-to="@i">
+                    </div>
+                }
+            </div>
             <!-- Carousel Ends Here -->
         </div>
-        <div class="col-md-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="property-additional-info">
+                    <span class="property-info-item">Guests: @Model.Guest</span>
+                    <span class="property-info-item">Bed: @Model.Bed</span>
+                    <span class="property-info-item">Bedrooms: @Model.BedRooms</span>
+                    <span class="property-info-item">Bathrooms: @Model.BathRooms</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="property-description">
                 <h5>@Model.Description</h5>
                 <h3 class="property-price">@Model.Price.ToString("0.00 NOK")</h3>
                 <form method="post" asp-controller="Reservation" asp-action="Reserve" asp-route-propertyId="@Model.PropertyId">
                     <div class="form-group">
                         <label for="reservationsDate">Start Date:</label>
-                        <input type="date" class="form-control" id="reservationDate" name="reservationDate" required>
+                        <input type="date" class="form-control" id="reservationDate" name="reservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")">
                     </div>
                     <div class="form-group">
                         <label for="endReservationDate">End Date:</label>
-                        <input type="date" class="form-control" id="endReservationDate" name="endReservationDate" required>
+                        <input type="date" class="form-control" id="endReservationDate" name="endReservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")">
                     </div>
                     <div class="form-group">
                         <label for="numberOfGuests">Number of Guests:</label>
@@ -66,8 +86,8 @@
                     <button type="submit" id="Reserve" class="btn btn-danger">Reserve</button>
                 </form>
                 <a class="back-to-home-link" asp-controller="Home" asp-action="Index">Back to Home</a>
-
             </div>
         </div>
-    </div>
+
+    
 </div>

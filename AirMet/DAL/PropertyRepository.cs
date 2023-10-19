@@ -28,7 +28,11 @@ namespace AirMet.DAL
 			}
 			
         }
-		public async Task<Property?> GetItemById(int id)
+        public async Task<IEnumerable<Property>?> GetAllByTypeId(int typeId)
+		{
+            return await _db.Properties.Where(p => p.PType.PTypeId == typeId).ToListAsync();
+        }
+        public async Task<Property?> GetItemById(int id)
 		{
 			try
 			{
@@ -41,7 +45,33 @@ namespace AirMet.DAL
 				return null;
 			}
 		}
-		public async Task<bool> Create(Property property)
+
+        public async Task<IEnumerable<PType>?> GetAllTypes()
+        {
+            try
+            {
+                return await _db.PTypes.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[PropertyRepository] property ToListAsync() failed when GetAll(), error message: {e}", e.Message);
+                return null;
+            }
+        }
+        public async Task<PType?> GetPType(int id)
+		{
+            try
+            {
+                return await _db.PTypes.FindAsync(id);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[PropertyRepository] property FirstOrDefaultAsync(id) failed when GetItemById for PropertyId {PropertyId:0000}, error message: {e}", id, e.Message);
+                return null;
+            }
+        }
+        public async Task<bool> Create(Property property)
 		{
 			try
 			{
@@ -155,32 +185,6 @@ namespace AirMet.DAL
             return reservations;
         }
 
-        public async Task<bool> AddReservation(Reservation reservation)
-        {
-            _db.Reservations.Add(reservation);
-            await _db.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> UpdateReservation(Reservation reservation)
-        {
-            // Implementation code to update a reservation
-            _db.Reservations.Update(reservation);
-            await _db.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteReservation(int reservationId)
-        {
-            // Implementation code to delete a reservation
-            var reservation = await _db.Reservations.FindAsync(reservationId);
-            if (reservation == null) return false;
-            _db.Reservations.Remove(reservation);
-            await _db.SaveChangesAsync();
-            return true;
-        }
-        
-
         public async Task<bool> Add(Reservation reservation)
         {
             try
@@ -195,10 +199,10 @@ namespace AirMet.DAL
                 return false;
             }
         }
-        public IEnumerable<Reservation> GetReservationsByPropertyId(int propertyId)
+        public async Task<IEnumerable<Reservation>> GetReservationsByPropertyId(int propertyId)
         {
-            return _db.Reservations
-                .Where(r => r.PropertyId == propertyId).ToList();
+            return await _db.Reservations
+                .Where(r => r.PropertyId == propertyId).ToListAsync();
         }
 
     }

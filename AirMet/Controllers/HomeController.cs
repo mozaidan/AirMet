@@ -45,6 +45,24 @@ namespace AirMet.Controllers {
             var itemListViewModel = new PropertyListViewModel(properties, "Index", customerInfo);
             return View(itemListViewModel);
         }
+        public async Task<IActionResult> PropertyTypes(int typeId)
+        {
+            List<Property>? properties = await _propertyRepository.GetAllByTypeId(typeId) as List<Property>;
+            if (properties == null)
+            {
+                _logger.LogError("[HomeController] property list not found while executing _propertyRepository.GetAll()");
+                return NotFound("Properties list not found!");
+            }
+            Customer? customerInfo = null;
+            var userId = _userManager.GetUserId(User);
+            if (userId != null)
+            {
+                customerInfo = await _propertyRepository.Customer(userId);  // Fetch customer info if user is logged in
+            }
+            var itemListViewModel = new PropertyListViewModel(properties, "Index", customerInfo);
+            return View(itemListViewModel);
+
+        }
         public IActionResult Aboutus()
         {
             return View();

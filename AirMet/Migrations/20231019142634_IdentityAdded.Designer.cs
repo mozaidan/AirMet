@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231018074503_InitDb")]
-    partial class InitDb
+    [Migration("20231019142634_IdentityAdded")]
+    partial class IdentityAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,21 @@ namespace AirMet.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("AirMet.Models.PType", b =>
+                {
+                    b.Property<int>("PTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PTypeName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PTypeId");
+
+                    b.ToTable("PTypes");
+                });
+
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {
                     b.Property<int>("PropertyId")
@@ -80,6 +95,9 @@ namespace AirMet.Migrations
                     b.Property<int>("Guest")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("PTypeId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
 
@@ -93,6 +111,8 @@ namespace AirMet.Migrations
                     b.HasKey("PropertyId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("PTypeId");
 
                     b.ToTable("Properties");
                 });
@@ -366,7 +386,15 @@ namespace AirMet.Migrations
                         .WithMany("Properties")
                         .HasForeignKey("CustomerId");
 
+                    b.HasOne("AirMet.Models.PType", "PType")
+                        .WithMany("Properties")
+                        .HasForeignKey("PTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("PType");
                 });
 
             modelBuilder.Entity("AirMet.Models.PropertyImage", b =>
@@ -443,6 +471,11 @@ namespace AirMet.Migrations
                 });
 
             modelBuilder.Entity("AirMet.Models.Customer", b =>
+                {
+                    b.Navigation("Properties");
+                });
+
+            modelBuilder.Entity("AirMet.Models.PType", b =>
                 {
                     b.Navigation("Properties");
                 });
