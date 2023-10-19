@@ -12,11 +12,7 @@
             <th>Total Days</th>
             <th>Price per night</th>
             <th>Total Price</th>
-<<<<<<< HEAD
-            <th>Edit</th>
-=======
-            <th>Actions</th>
->>>>>>> .
+            <th>Actions</th>.
         </tr>
     </thead>
     <tbody>
@@ -30,14 +26,10 @@
                 <td>@reservation.TotalDays</td>
                 <td>@(reservation.Property != null ? reservation.Property.Price.ToString() : "Not Available")</td>
                 <td>@reservation.TotalPrice</td>
-<<<<<<< HEAD
-                
-=======
                 <td>
                     <a asp-controller="Reservation" asp-action="Update" asp-route-id="@reservation.ReservationId">Update</a>
                     <a asp-controller="Reservation" asp-action="Delete" asp-route-id="@reservation.ReservationId">Delete</a>
                 </td>
->>>>>>> .
             </tr>
         
     }

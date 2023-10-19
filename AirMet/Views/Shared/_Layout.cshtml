@@ -32,33 +32,6 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs"> <i class="fas fa-info-circle"></i> About us</a>
                         </li>
                     </ul>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                        <ul class="navbar-nav">
-                            @if (User?.Identity?.IsAuthenticated ?? false)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Customer" asp-action="Profile"> <i class="fas fa-user"></i> Profile</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Reservation" asp-action="Reservation"> <i class="fas fa-bookmark"></i> Reservations</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="List"> <i class="fas fa-list"></i> Lists</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Property" asp-action="Create">Add new home</a>
-                                </li>
-                            }
-                            @if (!User?.Identity?.IsAuthenticated ?? false)
-                            {
-
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Property" asp-action="Create">Register as Publisher</a>
-                                </li>
-                            }
-
-                        </ul>
-                    </div>
                     <partial name="_LoginPartial" />
                 </div>
             </div>

@@ -47,3 +47,17 @@ document.addEventListener("DOMContentLoaded", function () {
         addImageInput();
     });
 });
+
+// Optional: Add some JavaScript to highlight the active thumbnail
+var thumbnails = document.querySelectorAll('.img-thumbnail');
+var carouselInner = document.querySelector('.carousel-inner');
+
+carouselInner.addEventListener('slide.bs.carousel', function (event) {
+    // Remove 'active-thumbnail' class from all thumbnails
+    thumbnails.forEach(function (thumbnail) {
+        thumbnail.classList.remove('active-thumbnail');
+    });
+
+    // Add 'active-thumbnail' class to the new active thumbnail
+    thumbnails[event.to].classList.add('active-thumbnail');
+});

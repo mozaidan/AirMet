@@ -47,8 +47,7 @@ button.accept-policy {
   line-height: 60px;
 }
 .nav-link i {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: contents;
+    
 }
 

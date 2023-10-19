@@ -148,3 +148,16 @@ a {
     font-family: 'Verdana'/* Change this to your desired font */
     
 }
+.active-thumbnail {
+    border: 2px solid blue;
+}
+#propertyCarousel {
+    max-width: 600px; /* Set the maximum width */
+    margin: auto; /* Center the carousel */
+}
+
+#propertyCarousel .carousel-inner img {
+    max-height: 400px; /* Set the maximum height */
+    width: auto; /* Maintain aspect ratio */
+    margin: auto; /* Center the image */
+}
