@@ -1,0 +1,44 @@
+﻿@model Reservation
+@using System.Linq  <!-- Add this if you haven't -->
+@{
+    var reservationMessage = ViewBag.ReservationMessage;
+    var guestMessage = TempData["GuestMessage"] as string;
+    if (!string.IsNullOrEmpty(reservationMessage))
+    {
+        <div class="alert alert-danger">
+            @reservationMessage
+        </div>
+    }
+    if (!string.IsNullOrEmpty(guestMessage))
+    {
+        <div class="alert alert-danger">
+            @guestMessage
+        </div>
+    }
+}
+<div class="text-danger">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+</div>
+<h2>Update</h2>
+
+<form asp-action="Update" asp-route-Id="@Model.ReservationId" asp-route-propertyId="@Model.PropertyId" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input type="date" class="form-control" id="startDate" asp-for="StartDate" required>
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="endDate">End Date:</label>
+        <input type="date" class="form-control" id="endDate" asp-for="EndDate" required>
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="numberOfGuests">Number of Guests:</label>
+        <input type="number" class="form-control" id="numberOfGuests" asp-for="NumberOfGuests" required>
+        <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-controller="Reservation" asp-action="Reservation" class="btn btn-secondary">Cancel</a>
+</form>

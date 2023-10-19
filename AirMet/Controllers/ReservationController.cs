@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using AirMet.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AirMet.Controllers
@@ -51,8 +52,12 @@ namespace AirMet.Controllers
                 // Handle error: property not found
                 return RedirectToAction("ErrorPage"); // Replace with your actual error page
             }
-
-            var existingReservations = _propertyRepository.GetReservationsByPropertyId(propertyId);
+            if (numberOfGuests > property.Guest)
+            {
+                TempData["GuestMessage"] = "The number of guests is more than available!";
+                return RedirectToAction("Details", "Property", new { id = propertyId });
+            }
+            var existingReservations = await _propertyRepository.GetReservationsByPropertyId(propertyId);
             foreach (var res in existingReservations)
             {
                 if ((startDate <= res.EndDate && endDate >= res.StartDate))
@@ -71,12 +76,11 @@ namespace AirMet.Controllers
                 NumberOfGuests = numberOfGuests,
             };
           
-
-
             var days = (reservation.EndDate - reservation.StartDate).Days;
             reservation.TotalDays = days;
             reservation.Property = property;
             reservation.TotalPrice = property.Price * days;
+            
 
             // Save the reservation to your data store (e.g., a database)
             _ = _propertyRepository.Add(reservation); // Implement _reservationRepository accordingly
@@ -97,23 +101,18 @@ namespace AirMet.Controllers
             var reservations = await _propertyRepository.GetReservationsByUserId(userId);
 
             // Create a view model and populate it
-            var viewModel = new ReservationsListViewModel(reservations)
-            {
-                Reservations = reservations
-            };
+            var viewModel = new ReservationsListViewModel(reservations, "Reservstion");
 
             return View(viewModel);
         }
 
         [HttpGet]
-        public JsonResult GetUnavailableDates(int propertyId)
+        public async Task<JsonResult> GetUnavailableDates(int propertyId)
         {
-            var reservations = _propertyRepository.GetReservationsByPropertyId(propertyId);
+            var reservations = await _propertyRepository.GetReservationsByPropertyId(propertyId);
             var unavailableDates = reservations.SelectMany(r => Enumerable.Range(0, (r.EndDate - r.StartDate).Days + 1).Select(offset => r.StartDate.AddDays(offset).ToString("yyyy-MM-dd"))).ToList();
             return Json(new { UnavailableDates = unavailableDates });
         }
-
-
 
     }
 }

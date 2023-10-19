@@ -2,10 +2,17 @@
 @using System.Linq  <!-- Add this if you haven't -->
 @{
     var reservationMessage = ViewBag.ReservationMessage;
+    var guestMessage = TempData["GuestMessage"] as string;
     if (!string.IsNullOrEmpty(reservationMessage))
     {
         <div class="alert alert-danger">
             @reservationMessage
+        </div>
+    }
+    if (!string.IsNullOrEmpty(guestMessage))
+    {
+        <div class="alert alert-danger">
+            @guestMessage
         </div>
     }
 }
