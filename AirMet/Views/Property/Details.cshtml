@@ -21,7 +21,7 @@
 <div class="property-details-container">
     <h3 class="property-title">@Model.Title</h3>
     <h3 class="property-address">@Model.Address</h3>
-    
+
         <div class="col-12">
             <!-- Carousel Starts Here -->
             <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -45,6 +45,7 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
+
             <!-- Thumbnails -->
             <div class="row mt-4">
                 @for (int i = 0; i < imageList.Count; i++)
@@ -80,6 +81,7 @@
                         <input type="date" class="form-control" id="endReservationDate" name="endReservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")">
                     </div>
                     <div class="form-group">
+
                         <label for="numberOfGuests">Number of Guests:</label>
                         <input type="number" class="form-control" id="numberOfGuests" name="numberOfGuests" required>
                     </div>
@@ -88,6 +90,4 @@
                 <a class="back-to-home-link" asp-controller="Home" asp-action="Index">Back to Home</a>
             </div>
         </div>
-
-    
 </div>

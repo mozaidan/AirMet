@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("add-image").addEventListener("click", function () {
         addImageInput();
     });
+
 });
 
 // Optional: Add some JavaScript to highlight the active thumbnail

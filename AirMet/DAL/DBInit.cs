@@ -61,8 +61,7 @@ namespace AirMet.Models
 				var imageProperty = new List<PropertyImage>
 				{
 					new PropertyImage {ImageUrl = "/images/domes1.jpg", PropertyId = 1},
-					new PropertyImage {ImageUrl = "/images/Home.jpg", PropertyId = 1},
-					new PropertyImage {ImageUrl = "/images/domes1.jpg", PropertyId = 2}
+					new PropertyImage {ImageUrl = "/images/Home.jpg", PropertyId = 1}
 				};
 				context.AddRange(imageProperty);
 				context.SaveChanges();
