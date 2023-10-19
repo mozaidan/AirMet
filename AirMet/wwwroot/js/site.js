@@ -4,12 +4,32 @@
 // Write your JavaScript code.
 
 
+/* Set the width of the side navigation to 250px */
+function openNav() {
+    var sideNav = document.getElementById("mySidenav");
+    if (sideNav) {
+        sideNav.style.width = "250px";
+    } else {
+        console.error("Element with ID 'mySidenav' not found.");
+    }
+}
+
+function closeNav() {
+    var sideNav = document.getElementById("mySidenav");
+    if (sideNav) {
+        sideNav.style.width = "0";
+    } else {
+        console.error("Element with ID 'mySidenav' not found.");
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     // Function to add new image input
     function addImageInput() {
         const imageInput = document.createElement("input");
         imageInput.type = "file";
-        imageInput.name = "Files";
+        imageInput.name = "Property.Files";
         imageInput.className = "form-control-file mb-2";
         imageInput.addEventListener("change", function () {
             const file = this.files[0];
@@ -46,4 +66,19 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("add-image").addEventListener("click", function () {
         addImageInput();
     });
+
+});
+
+// Optional: Add some JavaScript to highlight the active thumbnail
+var thumbnails = document.querySelectorAll('.img-thumbnail');
+var carouselInner = document.querySelector('.carousel-inner');
+
+carouselInner.addEventListener('slide.bs.carousel', function (event) {
+    // Remove 'active-thumbnail' class from all thumbnails
+    thumbnails.forEach(function (thumbnail) {
+        thumbnail.classList.remove('active-thumbnail');
+    });
+
+    // Add 'active-thumbnail' class to the new active thumbnail
+    thumbnails[event.to].classList.add('active-thumbnail');
 });

@@ -18,6 +18,11 @@ namespace AirMet.Models
         public int Bed { get; set; }
         public int BedRooms { get; set; }
         public int BathRooms { get; set; }
+<<<<<<< HEAD
+=======
+        public int PTypeId { get; set; }
+        public virtual PType PType { get; set; } = default!;
+>>>>>>> 86b410a596466e0daea38b2558ff038226c5088f
 
         public virtual List<Reservation> Reservations { get; set; } = new List<Reservation>();
          
