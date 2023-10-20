@@ -44,7 +44,7 @@ namespace AirMet.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            var PTypes = await _propertyRepository.GetAllTypes();
+            var PTypes = await _propertyRepository.GetAllTypes() ?? new List<PType>();
             var createPropertyViewModel = new CreatePropertyViewModel
             {
                 Property = new Property(),
@@ -63,7 +63,8 @@ namespace AirMet.Controllers
         {
             try
             {
-                var newType = await _propertyRepository.GetPType(property.PTypeId);
+                var userId = _userManager.GetUserId(User);
+                Customer? customer = await _propertyRepository.Customer(userId);
                 if (property.Files != null)
                 {
                     var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
@@ -88,9 +89,7 @@ namespace AirMet.Controllers
 
                     property.Images = images;
                 }
-                var userId = _userManager.GetUserId(User);
-                Customer? customer = await _propertyRepository.Customer(userId);
-                property.UserId = _userManager.GetUserId(User);
+
                 var newProperty = new Property
                 {
                     UserId = userId,
@@ -104,11 +103,10 @@ namespace AirMet.Controllers
                     BedRooms = property.BedRooms,
                     BathRooms = property.BathRooms,
                     PTypeId = property.PTypeId,
-                    
                     Images = property.Images
 
                 };
-                newProperty.PType = await _propertyRepository.GetPType(newProperty.PTypeId);
+                newProperty.PType = await _propertyRepository.GetPType(newProperty.PTypeId) ?? new PType();
 
                 bool returnOk = await _propertyRepository.Create(newProperty);
                 if (returnOk)
@@ -136,35 +134,47 @@ namespace AirMet.Controllers
             var property = await _propertyRepository.GetItemById(id);
             if (property == null)
             {
-                _logger.LogWarning("[HomeController] Property not found when updating the PropertyId {PropertyId:0000}", id);
-                return BadRequest("Property not found for the PropertyId");
+                return NotFound();
             }
-            return View(property);
+
+            var PTypes = await _propertyRepository.GetAllTypes() ?? new List<PType>();
+            var updatePropertyViewModel = new CreatePropertyViewModel
+            {
+                Property = property,
+                PTypeSelectList = PTypes.Select(PType => new SelectListItem
+                {
+                    Value = PType.PTypeId.ToString(),
+                    Text = PType.PTypeId.ToString() + ": " + PType.PTypeName
+                }).ToList()
+            };
+
+            return View(updatePropertyViewModel);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Update(int id, Property updatedProperty)
+        public async Task<IActionResult> Update(int id, CreatePropertyViewModel updatePropertyViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                updatedProperty.PropertyId = id;
-
-                // Fetch the existing property from the database
-                var propertyFromDb = await _propertyRepository.GetItemById(updatedProperty.PropertyId);
-
-                if (propertyFromDb == null)
+                var property = await _propertyRepository.GetItemById(id);
+                if (property == null)
                 {
-                    return NotFound();
+                    _logger.LogError("[PropertyController] Property not found for the PropertyId {PropertyId:0000}", id);
+                    return NotFound("Property not found for the PropertyId");
                 }
-
-                // Update the properties of the existing property
-                propertyFromDb.Description = updatedProperty.Description;
-                propertyFromDb.Price = updatedProperty.Price;
-                propertyFromDb.Address = updatedProperty.Address;
+                property.Title = updatePropertyViewModel.Property.Title;
+                property.Price = updatePropertyViewModel.Property.Price;
+                property.Address = updatePropertyViewModel.Property.Address;
+                property.Description = updatePropertyViewModel.Property.Description;
+                property.Guest = updatePropertyViewModel.Property.Guest;
+                property.Bed = updatePropertyViewModel.Property.Bed;
+                property.BedRooms = updatePropertyViewModel.Property.BedRooms;
+                property.BathRooms = updatePropertyViewModel.Property.BathRooms;
+                property.PTypeId = updatePropertyViewModel.Property.PTypeId;
 
                 // If there are new files/images uploaded
-                if (updatedProperty.Files != null && updatedProperty.Files.Count > 0)
+                if (updatePropertyViewModel.Property.Files != null && updatePropertyViewModel.Property.Files.Count > 0)
                 {
                     var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
                     var newImages = new List<PropertyImage>();
@@ -175,7 +185,7 @@ namespace AirMet.Controllers
                     }
 
                     // Save the new images
-                    foreach (var file in updatedProperty.Files)
+                    foreach (var file in updatePropertyViewModel.Property.Files)
                     {
                         var fileName = Path.GetFileName(file.FileName);
                         var filePath = Path.Combine(uploads, fileName);
@@ -184,18 +194,29 @@ namespace AirMet.Controllers
                             file.CopyTo(fileStream);
                         }
 
-                        var newImage = new PropertyImage { ImageUrl = $"/images/{fileName}", PropertyId = propertyFromDb.PropertyId };
+                        var newImage = new PropertyImage { ImageUrl = $"/images/{fileName}", PropertyId = property.PropertyId };
                         newImages.Add(newImage);
                     }
-                    await _propertyRepository.AddNewImages(propertyFromDb.PropertyId, newImages);
+                    await _propertyRepository.AddNewImages(property.PropertyId, newImages);
                 }
 
-                await _propertyRepository.Update(propertyFromDb);
+                var result = await _propertyRepository.Update(property);
 
-                return RedirectToAction("List", "Home");
+                if (result)
+                {
+                    return RedirectToAction("List", "Home");
+                }
+                else
+                {
+                    _logger.LogWarning("[HomeController] Property update failed {@property}", updatePropertyViewModel);
+                    return View(updatePropertyViewModel);
+                }
             }
-            _logger.LogWarning("[HomeController] Property update failed {@updatedProperty}", updatedProperty);
-            return View(updatedProperty);
+            catch (Exception e)
+            {
+                _logger.LogError("[HomeController] Error updating property: {Error}", e.Message);
+                return BadRequest("Failed to update property.");
+            }
         }
 
 

@@ -1,61 +1,68 @@
-﻿@model Property
+﻿@model CreatePropertyViewModel
 <h2>Update</h2>
 
 <form asp-action="Update" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label asp-for="Title"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+        <label asp-for="Property.PTypeId"></label>
+        <select asp-for="Property.PTypeId" asp-items="Model.PTypeSelectList" class="form-control">
+            <option value="">Select an item...</option>
+        </select>
+        <span asp-validation-for="Property.PTypeId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Description"></label>
-        <input asp-for="Description" class="form-control" />
-        <span asp-validation-for="Description" class="text-danger"></span>
+        <label asp-for="Property.Title"></label>
+        <input asp-for="Property.Title" class="form-control" />
+        <span asp-validation-for="Property.Title" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
+        <label asp-for="Property.Description"></label>
+        <input asp-for="Property.Description" class="form-control" />
+        <span asp-validation-for="Property.Description" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
+        <label asp-for="Property.Price"></label>
+        <input asp-for="Property.Price" class="form-control" />
+        <span asp-validation-for="Property.Price" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Guest"></label>
-        <input asp-for="Guest" class="form-control" />
-        <span asp-validation-for="Guest" class="text-danger"></span>
+        <label asp-for="Property.Address"></label>
+        <input asp-for="Property.Address" class="form-control" />
+        <span asp-validation-for="Property.Address" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Bed"></label>
-        <input asp-for="Bed" class="form-control" />
-        <span asp-validation-for="Bed" class="text-danger"></span>
+        <label asp-for="Property.Guest"></label>
+        <input asp-for="Property.Guest" class="form-control" />
+        <span asp-validation-for="Property.Guest" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="BedRooms"></label>
-        <input asp-for="BedRooms" class="form-control" />
-        <span asp-validation-for="BedRooms" class="text-danger"></span>
+        <label asp-for="Property.Bed"></label>
+        <input asp-for="Property.Bed" class="form-control" />
+        <span asp-validation-for="Property.Bed" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="BathRooms"></label>
-        <input asp-for="BathRooms" class="form-control" />
-        <span asp-validation-for="BathRooms" class="text-danger"></span>
+        <label asp-for="Property.BedRooms"></label>
+        <input asp-for="Property.BedRooms" class="form-control" />
+        <span asp-validation-for="Property.BedRooms" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Property.BathRooms"></label>
+        <input asp-for="Property.BathRooms" class="form-control" />
+        <span asp-validation-for="Property.BathRooms" class="text-danger"></span>
     </div>
     <!-- Display existing images -->
     <div class="form-group">
         <label>Existing Images</label>
-        @if (Model.Images != null)
+        @if (Model.Property.Images != null)
         {
             <div class="col-md-5">
                 <div class="image-list">
                     @{
-                        var imageList = Model.Images.ToList(); <!-- Convert to List -->
+                        var imageList = Model.Property.Images.ToList(); <!-- Convert to List -->
                     }
                     @for (int i = 0; i < imageList.Count; i++)
                     {
                         <div class="image-item">
-                            <img src="@imageList[i].ImageUrl" class="property-image img-fluid" alt="@Model.Description">
+                            <img src="@imageList[i].ImageUrl" class="property-image img-fluid">
                             <a asp-action="DeleteImage" asp-route-id="@imageList[i].Id" class="btn btn-danger">Delete</a>
                         </div>
                     }

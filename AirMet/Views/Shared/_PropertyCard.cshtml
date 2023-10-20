@@ -4,7 +4,7 @@
 <div class="col">
     <a asp-controller="Property" asp-action="Details" asp-route-id="@Model.PropertyId">
         <div class="card custom-card">
-            <div id="carousel-@Model.PropertyId" class="carousel slide" data-bs-ride="carousel"data-bs-interval="false">
+            <div id="carousel-@Model.PropertyId" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
                 <div class="carousel-inner">
                     @for (int i = 0; i < Model.Images.Count; i++)
                     {
