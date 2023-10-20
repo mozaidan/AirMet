@@ -58,6 +58,10 @@ body {
 .back-to-home-link:hover {
     text-decoration: underline;
 }
+#listnav {
+    margin-right: 2rem;
+    background-color: #557bb3;
+}
 
 .custom-card {
     height: 100%; /* Adjust the height as needed */
