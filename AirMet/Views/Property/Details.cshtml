@@ -1,5 +1,6 @@
 ﻿@model Property
-@using System.Linq  <!-- Add this if you haven't -->
+@using System.Linq
+
 @{
     var reservationMessage = ViewBag.ReservationMessage;
     var guestMessage = TempData["GuestMessage"] as string;
@@ -17,60 +18,73 @@
     }
 }
 
+<div class="property-details-container row">
+    <h3 class="property-title col-12">@Model.Title</h3>
 
-<div class="property-details-container">
-    <h3 class="property-title">@Model.Title</h3>
-    <h3 class="property-address">@Model.Address</h3>
 
-        <div class="col-12">
-            <!-- Carousel Starts Here -->
-            <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    @{
-                        var imageList = Model.Images.ToList(); <!-- Convert to List -->
-                    }
-                    @for (int i = 0; i < imageList.Count; i++)
-                    {
-                        <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <img src="@imageList[i].ImageUrl" class="d-block w-700 property-image img-fluid" alt="@Model.Description">
-                        </div>
-                    }
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-
-            <!-- Thumbnails -->
-            <div class="row mt-4">
+    <div class="col-12">
+        <!-- Carousel Starts Here -->
+        <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @{
+                    var imageList = Model.Images.ToList(); // Convert to List
+                }
                 @for (int i = 0; i < imageList.Count; i++)
                 {
-                    <div class="col-2">
-                        <img src="@imageList[i].ImageUrl" class="img-thumbnail" data-bs-target="#propertyCarousel" data-bs-slide-to="@i">
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <img src="@imageList[i].ImageUrl" class="d-block w-700 property-image img-fluid" alt="@Model.Description">
                     </div>
                 }
             </div>
-            <!-- Carousel Ends Here -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="property-additional-info">
-                    <span class="property-info-item">Guests: @Model.Guest</span>
-                    <span class="property-info-item">Bed: @Model.Bed</span>
-                    <span class="property-info-item">Bedrooms: @Model.BedRooms</span>
-                    <span class="property-info-item">Bathrooms: @Model.BathRooms</span>
+
+   
+        <div class="row mt-4">
+            @for (int i = 0; i < imageList.Count; i++)
+            {
+                <div class="col-2">
+                    <img src="@imageList[i].ImageUrl" class="img-thumbnail" data-bs-target="#propertyCarousel" data-bs-slide-to="@i">
                 </div>
+            }
+        </div>
+    
+    </div>
+
+    <div class="col-md-6">
+        <div class="property-additional-info">
+            <h2>@Model.PType.PTypeName hosted by @Model.Customer.Name</h2>
+            <h3 class="property-price">@Model.Price.ToString("0.00 NOK")</h3>
+            <h3 class="property-address col-12">@Model.Address</h3>
+            <span class="property-info-item">Guests: @Model.Guest</span>
+            <span class="property-info-item">Bed: @Model.Bed</span>
+            <span class="property-info-item">Bedrooms: @Model.BedRooms</span>
+            <span class="property-info-item">Bathrooms: @Model.BathRooms</span>
+            <h5>@Model.Description</h5>
+        </div>
+       
+            <h4>Leave a Review</h4>
+
+            <div class="rating-stars">
+                <span class="star" data-star="1">★</span>
+                <span class="star" data-star="2">★</span>
+                <span class="star" data-star="3">★</span>
+                <span class="star" data-star="4">★</span>
+                <span class="star" data-star="5">★</span>
             </div>
+        
+            <p>Your Rating: <span id="selected-rating">0</span></p>
         </div>
         <div class="col-md-6">
             <div class="property-description">
-                <h5>@Model.Description</h5>
-                <h3 class="property-price">@Model.Price.ToString("0.00 NOK")</h3>
+
                 <form method="post" asp-controller="Reservation" asp-action="Reserve" asp-route-propertyId="@Model.PropertyId">
                     <div class="form-group">
                         <label for="reservationsDate">Start Date:</label>
@@ -81,7 +95,6 @@
                         <input type="date" class="form-control" id="endReservationDate" name="endReservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")">
                     </div>
                     <div class="form-group">
-
                         <label for="numberOfGuests">Number of Guests:</label>
                         <input type="number" class="form-control" id="numberOfGuests" name="numberOfGuests" required>
                     </div>
@@ -90,4 +103,8 @@
                 <a class="back-to-home-link" asp-controller="Home" asp-action="Index">Back to Home</a>
             </div>
         </div>
-</div>
+
+    </div>
+
+   
+

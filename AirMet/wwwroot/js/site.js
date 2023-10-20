@@ -82,3 +82,21 @@ carouselInner.addEventListener('slide.bs.carousel', function (event) {
     // Add 'active-thumbnail' class to the new active thumbnail
     thumbnails[event.to].classList.add('active-thumbnail');
 });
+
+const stars = document.querySelectorAll('.star');
+const rating = document.getElementById('selected-rating');
+
+stars.forEach(star => {
+    star.addEventListener('click', function () {
+        const ratingValue = this.getAttribute('data-star');
+        rating.textContent = ratingValue;
+
+        stars.forEach(s => {
+            s.classList.remove('selected');
+        });
+
+        for (let i = 0; i < ratingValue; i++) {
+            stars[i].classList.add('selected');
+        }
+    });
+});

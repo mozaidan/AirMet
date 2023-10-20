@@ -161,3 +161,17 @@ a {
     width: auto; /* Maintain aspect ratio */
     margin: auto; /* Center the image */
 }
+
+
+
+.selected {
+    color: gold;/* Color for selected stars */
+}
+.rating-stars  {
+    font-size: 20px; /* Adjust the size of the stars as needed */
+   
+   
+}
+.star {
+    background-color: lightgrey;
+}
