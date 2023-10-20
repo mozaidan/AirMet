@@ -167,6 +167,11 @@ a {
 .selected {
     color: gold;/* Color for selected stars */
 }
-.rating-stars .star {
-        font-size: 24px; /* Adjust the size of the stars as needed */
+.rating-stars  {
+    font-size: 20px; /* Adjust the size of the stars as needed */
+   
+   
+}
+.star {
+    background-color: lightgrey;
 }
