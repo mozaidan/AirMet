@@ -17,8 +17,12 @@ namespace AirMet.Models
             {
                 var pType = new List<PType>
                 {
-                    new PType { PTypeName = "Cabins" },
-                    new PType { PTypeName = "Towers" }
+                   new PType { PTypeName = "House" },
+                   new PType { PTypeName = "Apartment" },
+                   new PType { PTypeName = "Cabins" },
+                   new PType { PTypeName = "Domes" },
+                   new PType { PTypeName = "Treehouses" },
+                   new PType { PTypeName = "Amazing Pools" }
                 };
                 context.AddRange(pType);
                 context.SaveChanges();
