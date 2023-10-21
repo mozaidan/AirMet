@@ -68,15 +68,7 @@ namespace AirMet.Controllers {
             return View();
         }
 
-        [Authorize]
-        public async Task<IActionResult> List()
-        {
-            var userId = _userManager.GetUserId(User);
-            Customer? customerInfo = await _propertyRepository.Customer(userId);
-            List<Property>? properties = await _propertyRepository.GetAllByUserId(userId) as List<Property>;
-            var itemListViewModel = new PropertyListViewModel(properties, "List", customerInfo);
-            return View(itemListViewModel);
-        }
+       
 
 
     }

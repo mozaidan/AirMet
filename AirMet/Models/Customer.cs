@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
 namespace AirMet.Models;
@@ -12,7 +13,8 @@ public class Customer
     // Add other properties as needed
 
     // Navigation property
+    public virtual List<Property> Properties { get; set; } = new List<Property>();
     public virtual IdentityUser? IdentityUser { get; set; }
-    public virtual List<Property>? Properties { get; set; }
+    
 }
 

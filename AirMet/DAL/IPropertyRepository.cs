@@ -7,6 +7,7 @@ namespace AirMet.DAL
 	{
 		Task<IEnumerable<Property>?> GetAll();
         Task<IEnumerable<Property>?> GetAllByTypeId(int typeId);
+        Task<bool> Save();
 		Task<Property?> GetItemById(int id);
 		Task<bool> Create(Property property);
 		Task<bool> Update(Property property);
@@ -17,7 +18,6 @@ namespace AirMet.DAL
 		Task<Customer?> Customer(string customerId);
         Task<PType?> GetPType(int id);
         Task<IEnumerable<PType>?> GetAllTypes();
-
         Task<Reservation?> GetReservationById(int reservationId);
         Task<bool> Add(Reservation reservation);
         Task<List<Reservation>> GetReservationsByUserId(string userId);

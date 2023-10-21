@@ -24,11 +24,13 @@
     <None Remove="DAL\" />
     <None Remove="Views\Property\" />
     <None Remove="Views\Reservation\" />
+    <None Remove="Views\Customer\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DAL\" />
     <Folder Include="Views\Property\" />
     <Folder Include="Views\Reservation\" />
+    <Folder Include="Views\Customer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\logo.png" />

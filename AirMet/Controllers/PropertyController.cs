@@ -110,7 +110,7 @@ namespace AirMet.Controllers
 
                 bool returnOk = await _propertyRepository.Create(newProperty);
                 if (returnOk)
-                    return RedirectToAction("List", "Home");
+                    return RedirectToAction("List", "Customer");
                 else
                 {
                     _logger.LogWarning("[HomeController] Property creation failed {@property}", newProperty);
@@ -204,7 +204,7 @@ namespace AirMet.Controllers
 
                 if (result)
                 {
-                    return RedirectToAction("List", "Home");
+                    return RedirectToAction("List", "Customer");
                 }
                 else
                 {
@@ -261,7 +261,7 @@ namespace AirMet.Controllers
                 _logger.LogError("[HomeController] Property deletion failed for the PropertyId {PropertyId:0000}", id);
                 return BadRequest("Property deletion failed");
             }
-            return RedirectToAction("List","Home");
+            return RedirectToAction("List","Customer");
         }
     }
 }

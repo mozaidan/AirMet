@@ -8,6 +8,7 @@ namespace AirMet.Models
 	{
         public string? UserId { get; set; }
         public virtual Customer? Customer { get; set; }
+        public string? CustomerId { get; set; }
         public int PropertyId { get; set; }
 		public decimal Price { get; set; }
         public string Title { get; set; } = string.Empty;
