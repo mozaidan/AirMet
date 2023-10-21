@@ -11,12 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-<<<<<<< HEAD:AirMet/Migrations/20231021125217_InitDb.Designer.cs
-    [Migration("20231021125217_InitDb")]
-=======
-    [Migration("20231020203108_InitDb")]
->>>>>>> 5187bcfebc027af53b33d221224e1868b34ec165:AirMet/Migrations/20231020203108_InitDb.Designer.cs
-    partial class InitDb
+    [Migration("20231021131402_IdentityAdded")]
+    partial class IdentityAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
