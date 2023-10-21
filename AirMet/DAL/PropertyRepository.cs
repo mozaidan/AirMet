@@ -217,7 +217,47 @@ namespace AirMet.DAL
             return await _db.Reservations
                 .Where(r => r.PropertyId == propertyId).ToListAsync();
         }
+        public async Task<bool> UpdateReservation(Reservation reservation)
+        {
+            try
+            {
+                _db.Reservations.Update(reservation);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[ReservationController] property FirstOrDefaultAsync(id) failed when updating the PropertyId {PropertyId:0000}, error message: {e}", reservation, e.Message);
+                return false;
+            }
+        }
+        public async Task<bool> DeleteReservation(int id)
+        {
+            try
+            {
+                var reservation = await _db.Reservations.FindAsync(id);
+                if (reservation == null)
+                {
+                    _logger.LogError("[ReservationController] Reservation deletion failed for Reservation {PropertyId:0000}, error message: {e}", id);
+                    return false;
+                }
 
+                _db.Reservations.Remove(reservation);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[PropertyRepository] property deletion failed for PropertyId {PropertyId:0000}, error message: {e}", id, e.Message);
+                return false;
+            }
+        }
+        public async Task<Reservation?> GetReservationByUserIdAndPropertyId(string userId, int propertyId)
+        {
+            return await _db.Reservations
+                .Where(r => r.UserId == userId && r.PropertyId == propertyId)
+                .FirstOrDefaultAsync();
+        }
     }
 }
 

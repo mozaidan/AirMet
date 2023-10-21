@@ -114,6 +114,105 @@ namespace AirMet.Controllers
             return Json(new { UnavailableDates = unavailableDates });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var reservation = await _propertyRepository.GetReservationById(id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+            return View(reservation);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(Reservation reservation, int id)
+        {
+            try
+            {
+                var userId = _userManager.GetUserId(User);
+                if (userId == null)
+                {
+                    return RedirectToAction("ErrorPage");// Handle null userId
+                }
+                var property = await _propertyRepository.GetItemById(id);
+                if (property == null)
+                {
+                    // Handle error: property not found
+                    return RedirectToAction("ErrorPage"); // Replace with your actual error page
+                }
+                var reservationFromDb = await _propertyRepository.GetReservationByUserIdAndPropertyId(userId, property.PropertyId);
+                if (reservationFromDb == null)
+                {
+                    // Handle error: reservation not found
+                    return RedirectToAction("ErrorPage");
+                }
+                if (reservation.NumberOfGuests > property.Guest)
+                {
+                    TempData["GuestMessage"] = "The number of guests is more than available!";
+                    return RedirectToAction("Update", "Reservation", new { id = reservationFromDb.ReservationId });
+                }
+                var existingReservations = await _propertyRepository.GetReservationsByPropertyId(reservation.PropertyId);
+                foreach (var res in existingReservations)
+                {
+                    if ((reservation.StartDate <= res.EndDate && reservation.EndDate >= res.StartDate))
+                    {
+                        TempData["ReservationMessage"] = "The chosen date is unavailable for this property, please choose another date!";
+                        return RedirectToAction("Update", "Reservation", new { id = reservation.ReservationId });
+                    }
+                }
+                reservationFromDb.StartDate = reservation.StartDate;
+                reservationFromDb.EndDate = reservation.EndDate;
+                reservationFromDb.NumberOfGuests = reservation.NumberOfGuests;
+
+                var days = (reservationFromDb.EndDate - reservationFromDb.StartDate).Days;
+                reservationFromDb.TotalDays = days;
+                reservationFromDb.Property = property;
+                reservationFromDb.TotalPrice = property.Price * days;
+                var result = await _propertyRepository.UpdateReservation(reservationFromDb);
+
+                if (result)
+                {
+                    return RedirectToAction("Reservation");
+                }
+                else
+                {
+                    _logger.LogWarning("[ReservationController] Reservation update failed {@reservation}", reservationFromDb);
+                    return View(reservationFromDb);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[ReservationController] Error updating reservation: {Error}", e.Message);
+                return BadRequest("Failed to update reservation.");
+            }
+
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var reservation = await _propertyRepository.GetReservationById(id);
+            if (reservation == null)
+            {
+                _logger.LogError("[ReservationController] Reservation not found for the ReservationId {ReservationId:0000}", id);
+                return BadRequest("Reservation not found for the ReservationId");
+
+            }
+            return View(reservation);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            bool returnOk = await _propertyRepository.DeleteReservation(id);
+            if (!returnOk)
+            {
+                _logger.LogError("[HomeController] Property deletion failed for the PropertyId {PropertyId:0000}", id);
+                return BadRequest("Property deletion failed");
+            }
+            return RedirectToAction(nameof(Reservation));
+        }
     }
 }
 

@@ -12,7 +12,7 @@ namespace AirMet.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int NumberOfGuests { get; set; }
-        public DateTime Date { get; internal set; }
+        //public DateTime Date { get; internal set; }
         public decimal TotalPrice { get; set; }
         public int TotalDays { get; set; }
         public virtual Property? Property { get; set; }

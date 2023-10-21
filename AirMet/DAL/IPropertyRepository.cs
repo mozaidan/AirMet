@@ -21,7 +21,10 @@ namespace AirMet.DAL
         Task<Reservation?> GetReservationById(int reservationId);
         Task<bool> Add(Reservation reservation);
         Task<List<Reservation>> GetReservationsByUserId(string userId);
-        Task<IEnumerable<Reservation>> GetReservationsByPropertyId(int propertyId);      
+        Task<bool> UpdateReservation(Reservation reservation);
+        Task<bool> DeleteReservation(int id);
+        Task<IEnumerable<Reservation>> GetReservationsByPropertyId(int propertyId);
+        Task<Reservation?> GetReservationByUserIdAndPropertyId(string userId, int propertyId);
 
     }
 }
