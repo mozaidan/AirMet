@@ -176,8 +176,7 @@ a {
     background-color: lightgrey;
 }
 
-<<<<<<< HEAD
-=======
+
 .header-content {
     display: flex;
     justify-content: space-between;
@@ -193,4 +192,3 @@ a {
 .form-control {
     width: 300px; /* Adjust the width as needed */
 }
->>>>>>> d9d9b58 (changed in css)
