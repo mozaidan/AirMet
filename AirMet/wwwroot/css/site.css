@@ -176,3 +176,19 @@ a {
     background-color: lightgrey;
 }
 
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.form-control {
+    width: 300px; /* Adjust the width as needed */
+}
