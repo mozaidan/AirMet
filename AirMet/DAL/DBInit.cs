@@ -32,8 +32,13 @@ namespace AirMet.Models
 				var amanity = new List<Amenity>
 				{
 					new Amenity { AmenityName = "WiFi", AmenityIcon = "fa-solid fa-wifi", IsChecked = false},
-					new Amenity {AmenityName = "Kitchen", AmenityIcon = "fa-solid fa-kitchen-se", IsChecked = false}
-				};
+					new Amenity {AmenityName = "Kitchen", AmenityIcon = "fa-solid fa-kitchen-se", IsChecked = false},
+                    new Amenity { AmenityName = "WiFi", AmenityIcon = "fa-solid fa-wifi", IsChecked = false},
+                    new Amenity { AmenityName = "WiFi", AmenityIcon = "fa-solid fa-wifi", IsChecked = false},
+                    new Amenity { AmenityName = "WiFi", AmenityIcon = "fa-solid fa-wifi", IsChecked = false},
+                    new Amenity { AmenityName = "WiFi", AmenityIcon = "fa-solid fa-wifi", IsChecked = false},
+                    new Amenity { AmenityName = "WiFi", AmenityIcon = "fa-solid fa-wifi", IsChecked = false},
+                };
 				context.AddRange(amanity);
 				context.SaveChanges();
 			}

@@ -11,11 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-<<<<<<<< HEAD:AirMet/Migrations/20231023093710_IdentityAdded.Designer.cs
-    [Migration("20231023093710_IdentityAdded")]
-========
-    [Migration("20231022204847_IdentityAdded")]
->>>>>>>> 69f4f667c62195129b46789a0f7a0f519bfcb3fb:AirMet/Migrations/20231022204847_IdentityAdded.Designer.cs
+    [Migration("20231023094031_IdentityAdded")]
     partial class IdentityAdded
     {
         /// <inheritdoc />
@@ -193,12 +189,9 @@ namespace AirMet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-<<<<<<<< HEAD:AirMet/Migrations/20231023093710_IdentityAdded.Designer.cs
-========
                     b.Property<string>("CustomerId")
                         .HasColumnType("TEXT");
 
->>>>>>>> 69f4f667c62195129b46789a0f7a0f519bfcb3fb:AirMet/Migrations/20231022204847_IdentityAdded.Designer.cs
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 

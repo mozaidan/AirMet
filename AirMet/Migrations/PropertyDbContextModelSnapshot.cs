@@ -186,12 +186,9 @@ namespace AirMet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-<<<<<<< HEAD
-=======
                     b.Property<string>("CustomerId")
                         .HasColumnType("TEXT");
 
->>>>>>> 69f4f667c62195129b46789a0f7a0f519bfcb3fb
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 
