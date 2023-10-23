@@ -1,0 +1,41 @@
+﻿
+
+@model AirMet.Models.ReservationsListViewModel
+
+<h1>The reservations</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Property Title</th>
+            <th>Customer info</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Number of Guests</th>
+            <th>Total Days</th>
+            <th>Price per night</th>
+            <th>Total Price</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reservation in Model.Reservations)
+        {
+            <tr>
+                <td>@(reservation.Property != null ? reservation.Property.Title.ToString() : "Not Available")</td>
+                <td>@reservation.Customer.Name</td>
+                <td>@reservation.StartDate.ToShortDateString()</td>
+                <td>@reservation.EndDate.ToShortDateString()</td>
+                <td>@reservation.NumberOfGuests</td>
+                <td>@reservation.TotalDays</td>
+                <td>@(reservation.Property != null ? reservation.Property.Price.ToString() : "Not Available")</td>
+                <td>@reservation.TotalPrice</td>
+
+                <td>
+                    <a asp-controller="Reservation" asp-action="Details" asp-route-id="@reservation.ReservationId">Details</a>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>

@@ -21,6 +21,28 @@ namespace AirMet.Migrations
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true);
 
+            modelBuilder.Entity("AirMet.Models.Amenity", b =>
+                {
+                    b.Property<int>("AmenityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AmenityIcon")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AmenityName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("AmenityId");
+
+                    b.ToTable("Amenities");
+                });
+
             modelBuilder.Entity("AirMet.Models.Customer", b =>
                 {
                     b.Property<string>("CustomerId")
@@ -40,6 +62,9 @@ namespace AirMet.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("ReservationId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("CustomerId");
 
@@ -114,6 +139,27 @@ namespace AirMet.Migrations
                     b.ToTable("Properties");
                 });
 
+            modelBuilder.Entity("AirMet.Models.PropertyAmenity", b =>
+                {
+                    b.Property<int>("PropertyAmenityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AmenityId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("PropertyAmenityId");
+
+                    b.HasIndex("AmenityId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("PropertyAmenities");
+                });
+
             modelBuilder.Entity("AirMet.Models.PropertyImage", b =>
                 {
                     b.Property<int>("Id")
@@ -140,6 +186,12 @@ namespace AirMet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+<<<<<<< HEAD
+=======
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("TEXT");
+
+>>>>>>> 69f4f667c62195129b46789a0f7a0f519bfcb3fb
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 
@@ -163,6 +215,8 @@ namespace AirMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ReservationId");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("PropertyId");
 
@@ -391,6 +445,25 @@ namespace AirMet.Migrations
                     b.Navigation("PType");
                 });
 
+            modelBuilder.Entity("AirMet.Models.PropertyAmenity", b =>
+                {
+                    b.HasOne("AirMet.Models.Amenity", "Amenity")
+                        .WithMany("PropertyAmenities")
+                        .HasForeignKey("AmenityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AirMet.Models.Property", "Property")
+                        .WithMany("PropertyAmenities")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Amenity");
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("AirMet.Models.PropertyImage", b =>
                 {
                     b.HasOne("AirMet.Models.Property", "Property")
@@ -404,11 +477,17 @@ namespace AirMet.Migrations
 
             modelBuilder.Entity("AirMet.Models.Reservation", b =>
                 {
+                    b.HasOne("AirMet.Models.Customer", "Customer")
+                        .WithMany("Reservations")
+                        .HasForeignKey("CustomerId");
+
                     b.HasOne("AirMet.Models.Property", "Property")
                         .WithMany("Reservations")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Customer");
 
                     b.Navigation("Property");
                 });
@@ -464,9 +543,16 @@ namespace AirMet.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AirMet.Models.Amenity", b =>
+                {
+                    b.Navigation("PropertyAmenities");
+                });
+
             modelBuilder.Entity("AirMet.Models.Customer", b =>
                 {
                     b.Navigation("Properties");
+
+                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("AirMet.Models.PType", b =>
@@ -477,6 +563,8 @@ namespace AirMet.Migrations
             modelBuilder.Entity("AirMet.Models.Property", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("PropertyAmenities");
 
                     b.Navigation("Reservations");
                 });

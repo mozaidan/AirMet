@@ -30,6 +30,23 @@ namespace AirMet.Controllers
             _logger = logger;
             _userManager = userManager;
         }
+        public async Task<IActionResult> ListReservations(int id)
+        {
+            List<Reservation>? reservations = await _propertyRepository.GetReservationsByPropertyId(id) as List<Reservation>;
+            Customer? customerInfo = null;
+            foreach (var reservation in reservations)
+            {
+                customerInfo = await _propertyRepository.GetCustomerByReservationId(reservation.ReservationId);  // Fetch customer info if user is logged in
+            }
+            var viewModel = new ReservationsListViewModel(reservations, "ListReservations", customerInfo);
+
+            return View(viewModel);
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            var reservation = await _propertyRepository.GetReservationById(id);
+            return View(reservation);
+        }
         // GET: /<controller>/
         [HttpGet]
         [Authorize]
@@ -46,6 +63,7 @@ namespace AirMet.Controllers
             var startDate = reservationDate;
             var endDate = endReservationDate; // Initialize the end date
             var userId = _userManager.GetUserId(User);
+            Customer? customer = await _propertyRepository.Customer(userId);
             var property = await _propertyRepository.GetItemById(propertyId);
             if (property == null)
             {
@@ -70,6 +88,7 @@ namespace AirMet.Controllers
             var reservation = new Reservation
             {
                 UserId = userId,
+                Customer = customer,
                 PropertyId = propertyId,
                 StartDate = reservationDate,
                 EndDate = endReservationDate,
@@ -96,12 +115,12 @@ namespace AirMet.Controllers
         public async Task<IActionResult> Reservation()
         {
             var userId = _userManager.GetUserId(User);
-
+            Customer? customer = await _propertyRepository.Customer(userId);
             // Retrieve the user's reservations
             var reservations = await _propertyRepository.GetReservationsByUserId(userId);
 
             // Create a view model and populate it
-            var viewModel = new ReservationsListViewModel(reservations, "Reservstion");
+            var viewModel = new ReservationsListViewModel(reservations, "Reservstion", customer);
 
             return View(viewModel);
         }
