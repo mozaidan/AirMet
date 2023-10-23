@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231021131327_InitDb")]
+    [Migration("20231023093650_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -142,9 +142,6 @@ namespace AirMet.Migrations
                     b.Property<int>("ReservationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");

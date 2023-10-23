@@ -140,9 +140,6 @@ namespace AirMet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
 
