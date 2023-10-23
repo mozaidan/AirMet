@@ -27,6 +27,17 @@ namespace AirMet.Models
                 context.AddRange(pType);
                 context.SaveChanges();
             }
+			if (!context.Amenities.Any())
+			{
+				var amanity = new List<Amenity>
+				{
+					new Amenity { AmenityName = "WiFi", AmenityIcon = "fa-solid fa-wifi", IsChecked = false},
+					new Amenity {AmenityName = "Kitchen", AmenityIcon = "fa-solid fa-kitchen-se", IsChecked = false}
+				};
+				context.AddRange(amanity);
+				context.SaveChanges();
+			}
+
             if (!context.Properties.Any())
 			{
 				var properties = new List<Property>

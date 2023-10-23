@@ -70,6 +70,16 @@
             <span class="property-info-item">Bed: @Model.Bed</span>
             <span class="property-info-item">Bedrooms: @Model.BedRooms</span>
             <span class="property-info-item">Bathrooms: @Model.BathRooms</span>
+            <span class="property-info-item">
+                Amenities:
+                @foreach (var propertyAmenity in Model.PropertyAmenities)
+                {
+                    <span class="amenity-item">
+                        <i class="@propertyAmenity.Amenity.AmenityIcon"></i> <!-- Displaying the icon -->
+                        @propertyAmenity.Amenity.AmenityName <!-- Displaying the name -->
+                    </span>
+                }
+            </span>
             <h5>@Model.Description</h5>
         </div>
 

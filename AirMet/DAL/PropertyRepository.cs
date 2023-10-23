@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using AirMet.Models;
+using Castle.Core.Resource;
 
 namespace AirMet.DAL
 {
@@ -42,6 +43,25 @@ namespace AirMet.DAL
             catch (Exception e)
             {
                 _logger.LogError("[PropertyRepository] property FirstOrDefaultAsync(id) failed when GetItemById for PropertyId {PropertyId:0000}, error message: {e}", id, e.Message);
+                return null;
+            }
+        }
+        public async Task<Property?> GetPropertyByReservationId(int reservationId)
+        {
+            try
+            {
+                var reservation = await _db.Reservations.FirstOrDefaultAsync(r => r.ReservationId == reservationId);
+                if (reservation == null)
+                {
+                    _logger.LogError("[ReservationController] Reservation failed for Reservation {PropertyId:0000}, error message: {e}", reservationId);
+                    return null;
+                }
+                return await _db.Properties.Include(p => p.Images).FirstOrDefaultAsync(i => i.PropertyId == reservation.PropertyId);
+
+            }
+            catch (Exception)
+            {
+                _logger.LogError("[ReservationController] Reservation failed for Reservation {PropertyId:0000}, error message: {e}", reservationId);
                 return null;
             }
         }
@@ -186,6 +206,10 @@ namespace AirMet.DAL
         {
             return await _db.Customers.Where(p => p.CustomerId == customerId).FirstOrDefaultAsync();
         }
+        public async Task<Customer?> GetCustomerByReservationId(int reservationId)
+        {
+            return await _db.Customers.Where(p => p.ReservationId == reservationId).FirstOrDefaultAsync();
+        }
         public async Task<Reservation?> GetReservationById(int reservationId)
         {
             var reservation = await _db.Reservations.FirstOrDefaultAsync(r => r.ReservationId == reservationId);
@@ -258,6 +282,53 @@ namespace AirMet.DAL
                 .Where(r => r.UserId == userId && r.PropertyId == propertyId)
                 .FirstOrDefaultAsync();
         }
+        public async Task<List<Amenity>> GetAllAmenities()
+        {
+            return await _db.Amenities.ToListAsync();
+        }
+        public async Task<bool> RemoveAmenitiesForProperty(int propertyId)
+        {
+            var existingAmenities = await _db.PropertyAmenities
+                .Where(pa => pa.PropertyId == propertyId)
+                .ToListAsync();
+
+            _db.PropertyAmenities.RemoveRange(existingAmenities);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> AddAmenitiesToProperty(int propertyId, List<Amenity> selectedAmenities)
+        {
+            try
+            {
+                // Fetch the property entity from the database
+                var property = await _db.Properties.Include(p => p.PropertyAmenities)
+                                   .SingleOrDefaultAsync(p => p.PropertyId == propertyId);
+
+                // Clear existing amenities if necessary
+                //property.PropertyAmenities.Clear();
+                if (property == null)
+                {
+                    // Log and return false
+                    // Property not found
+                    return false;
+                }
+                // Add the selected amenities
+                foreach (var amenity in selectedAmenities)
+                {
+                    property.PropertyAmenities.Add(new PropertyAmenity { PropertyId = propertyId, AmenityId = amenity.AmenityId });
+                }
+
+                await _db.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Log exception and return false
+                return false;
+            }
+        }
+
     }
 }
 

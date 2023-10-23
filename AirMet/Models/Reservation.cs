@@ -9,6 +9,7 @@ namespace AirMet.Models
         public int PropertyId { get; set; }
         [Required]
         public string? UserId { get; set; }
+        public virtual Customer? Customer { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int NumberOfGuests { get; set; }

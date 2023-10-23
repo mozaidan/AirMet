@@ -37,7 +37,7 @@ namespace AirMet.Controllers
                 _logger.LogError("[HomeController] property not found for the PropertyId {PropertyId:0000}", id);
                 return NotFound("Property not found for the PropertyId");
             }
-            ViewBag.ReservationMessage = TempData["ReservationMessage"]?.ToString();
+            //ViewBag.ReservationMessage = TempData["ReservationMessage"]?.ToString();
             return View(property);
         }
         [HttpGet]
@@ -45,6 +45,7 @@ namespace AirMet.Controllers
         public async Task<IActionResult> Create()
         {
             var PTypes = await _propertyRepository.GetAllTypes() ?? new List<PType>();
+            var Amenities = await _propertyRepository.GetAllAmenities() ?? new List<Amenity>();
             var createPropertyViewModel = new CreatePropertyViewModel
             {
                 Property = new Property(),
@@ -52,14 +53,15 @@ namespace AirMet.Controllers
                 {
                     Value = PType.PTypeId.ToString(),
                     Text = PType.PTypeId.ToString() + ": " + PType.PTypeName
-                }).ToList()
+                }).ToList(),
+                Amenities = Amenities
             };
             return View(createPropertyViewModel);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(Property property)
+        public async Task<IActionResult> Create(Property property, List<Amenity> Amenities)
         {
             try
             {
@@ -89,6 +91,7 @@ namespace AirMet.Controllers
 
                     property.Images = images;
                 }
+                var selectedAmenities = Amenities.Where(a => a.IsChecked).ToList();
 
                 var newProperty = new Property
                 {
@@ -110,7 +113,14 @@ namespace AirMet.Controllers
 
                 bool returnOk = await _propertyRepository.Create(newProperty);
                 if (returnOk)
+                {
+                    bool amenityReturnOk = await _propertyRepository.AddAmenitiesToProperty(newProperty.PropertyId, selectedAmenities);
+                    if (!amenityReturnOk)
+                    {
+                        _logger.LogWarning("[HomeController] Failed to add amenities to property.");
+                    }
                     return RedirectToAction("List", "Customer");
+                }
                 else
                 {
                     _logger.LogWarning("[HomeController] Property creation failed {@property}", newProperty);
@@ -132,6 +142,7 @@ namespace AirMet.Controllers
         public async Task<IActionResult> Update(int id)
         {
             var property = await _propertyRepository.GetItemById(id);
+            var Amenities = await _propertyRepository.GetAllAmenities() ?? new List<Amenity>();
             if (property == null)
             {
                 return NotFound();
@@ -145,7 +156,8 @@ namespace AirMet.Controllers
                 {
                     Value = PType.PTypeId.ToString(),
                     Text = PType.PTypeId.ToString() + ": " + PType.PTypeName
-                }).ToList()
+                }).ToList(),
+                Amenities = Amenities
             };
 
             return View(updatePropertyViewModel);
@@ -199,6 +211,12 @@ namespace AirMet.Controllers
                     }
                     await _propertyRepository.AddNewImages(property.PropertyId, newImages);
                 }
+                // Manage Amenities
+                // First, remove all existing property-amenity relationships for this property.
+                await _propertyRepository.RemoveAmenitiesForProperty(property.PropertyId);
+                // Then, re-add the checked amenities.
+                var checkedAmenities = updatePropertyViewModel.Amenities.Where(a => a.IsChecked).ToList();
+                await _propertyRepository.AddAmenitiesToProperty(property.PropertyId, checkedAmenities);
 
                 var result = await _propertyRepository.Update(property);
 

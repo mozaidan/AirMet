@@ -7,6 +7,7 @@ namespace AirMet.ViewModels
 	{
 		public Property Property { get; set; } = default!;
 		public List<SelectListItem> PTypeSelectList { get; set; } = default!;
+		public List<Amenity> Amenities { get; set; } = default!;
 	}
 }
 

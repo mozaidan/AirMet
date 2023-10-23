@@ -22,6 +22,8 @@ namespace AirMet.Models
         public int PTypeId { get; set; }
         public virtual PType PType { get; set; } = default!;
 
+        public virtual ICollection<PropertyAmenity>? PropertyAmenities { get; set; }
+
         public virtual List<Reservation> Reservations { get; set; } = new List<Reservation>();
          
         public virtual List<PropertyImage> Images { get; set; } = new List<PropertyImage>();

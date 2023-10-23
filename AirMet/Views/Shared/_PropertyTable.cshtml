@@ -24,6 +24,7 @@
                 <td>
                     <a asp-controller="Property" asp-action="Update" asp-route-id="@item.PropertyId">Update</a>
                     <a asp-controller="Property" asp-action="Delete" asp-route-id="@item.PropertyId">Delete</a>
+                    <a asp-controller="Reservation" asp-action="ListReservations" asp-route-id="@item.PropertyId">Reservations</a>
                 </td>
             </tr>
         }

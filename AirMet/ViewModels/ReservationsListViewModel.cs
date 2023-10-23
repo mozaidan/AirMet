@@ -6,10 +6,12 @@ namespace AirMet.Models
     {
         public List<Reservation> Reservations;
         public string? CurrenViewName;
-        public ReservationsListViewModel(List<Reservation> reservations, string? currentViewName)
+        public Customer CustomerInfo;
+        public ReservationsListViewModel(List<Reservation> reservations, string? currentViewName, Customer customerInfo)
         {
             Reservations = reservations;
             CurrenViewName = currentViewName;
+            CustomerInfo = customerInfo;
         }
 
     }
