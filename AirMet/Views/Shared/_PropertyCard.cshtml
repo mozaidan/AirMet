@@ -3,31 +3,31 @@
 
 <div class="col">
     <a asp-controller="Property" asp-action="Details" asp-route-id="@Model.PropertyId">
-        <div class="card custom-card">
-            <div id="carousel-@Model.PropertyId" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
-                <div class="carousel-inner">
-                    @for (int i = 0; i < Model.Images.Count; i++)
-                    {
-                        <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <img src="@Model.Images[i].ImageUrl" class="d-block w-100" alt="@Model.Description">
-                        </div>
-                    }
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@Model.PropertyId" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carousel-@Model.PropertyId" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
 
-            <div class="card-body">
-                <h5 id="card-title" class="card-title">@Model.Address</h5>
-                <p id="card-text" class="card-text">Price: @Model.Price.ToString("0.00 NOK")</p>
-               
+        <div id="carousel-@Model.PropertyId" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+            <div class="carousel-inner">
+                @for (int i = 0; i < Model.Images.Count; i++)
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <img src="@Model.Images[i].ImageUrl" class="d-block w-100" style="height: 200px;" alt="@Model.Description">
+                    </div>
+                }
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@Model.PropertyId" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-@Model.PropertyId" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <div class="card-body">
+            <h5 id="card-title" class="card-title">@Model.Address</h5>
+            <p id="card-text" class="card-text">Price: @Model.Price.ToString("0.00 NOK")</p>
+
+
         </div>
     </a>
 </div>

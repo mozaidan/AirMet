@@ -6,13 +6,14 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <div class="text-center">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" asp-action="Index" asp-controller="Home">
                         <i class="fas fa-home"></i>
-                        <div>Home</div>
+                        <div>All</div>
                         <span class="sr-only">(current)</span>
                     </a>
                 </div>
             </li>
+
             <li class="nav-item">
                 <div class="text-center">
                     <a class="nav-link ms-3" asp-controller="Home" asp-action="PropertyTypes" asp-route-typeId="1">
@@ -61,62 +62,18 @@
                     </a>
                 </div>
             </li>
+
+
+
             <li class="nav-item">
                 <div class="text-center">
                     <a class="nav-link ms-3" asp-controller="Home" asp-action="PropertyTypes" asp-route-typeId="7">
-                        <i class="fas fa-camping"></i>
-                        <div>Camping</div>
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <div class="text-center">
-                    <a class="nav-link ms-3" asp-controller="Home" asp-action="PropertyTypes" asp-route-typeId="8">
-                        <i class="fas fa-drafting-compass"></i>
-                        <div>Design</div>
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <div class="text-center">
-                    <a class="nav-link ms-3" asp-controller="Home" asp-action="PropertyTypes" asp-route-typeId="9">
-                        <i class="fas fa-tower"></i>
-                        <div>Towers</div>
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <div class="text-center">
-                    <a class="nav-link ms-3" asp-controller="Home" asp-action="PropertyTypes" asp-route-typeId="10">
-                        <i class="fas fa-farm"></i>
-                        <div>Farms</div>
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <div class="text-center">
-                    <a class="nav-link ms-3" asp-controller="Home" asp-action="PropertyTypes" asp-route-typeId="11">
                         <i class="fas fa-ship"></i>
                         <div>Houseboats</div>
                     </a>
                 </div>
             </li>
-            <li class="nav-item">
-                <div class="text-center">
-                    <a class="nav-link ms-3" asp-controller="Home" asp-action="PropertyTypes" asp-route-typeId="12">
-                        <i class="fas fa-cycladichome"></i>
-                        <div>Cycladic homes</div>
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <div class="text-center">
-                    <a class="nav-link ms-3" asp-controller="Home" asp-action="PropertyTypes" asp-route-typeId="13">
-                        <i class="fas fa-countryside"></i>
-                        <div>Countryside</div>
-                    </a>
-                </div>
-            </li>
+
         </ul>
     </div>
 </nav>
