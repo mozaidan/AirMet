@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace AirMet.Models;
 public class Customer 
 {
-    public virtual string? CustomerId { get; set; }
-    public virtual string? Name { get; set; }
+    public virtual string CustomerId { get; set; } = string.Empty;
+    public virtual string Name { get; set; } = string.Empty;
     public virtual string? Age { get; set; }
     public virtual string? Address { get; set; }
     public virtual string? PhoneNumber { get; set; }
+    public virtual string Email { get; set; } = string.Empty;
     public virtual int? ReservationId { get; set; }
     // Add other properties as needed
 

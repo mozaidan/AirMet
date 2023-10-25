@@ -1,8 +1,14 @@
 ﻿@model Property
 @using Microsoft.AspNetCore.Identity
 @using System.Linq
+@inject PropertyDbContext _db
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject Customer Customer
+@{
+    var userId = UserManager.GetUserId(User);
+    Customer = _db.Customers.FirstOrDefault(c => c.CustomerId == userId);
+}
 
 @{
     var reservationMessage = ViewBag.ReservationMessage;
@@ -33,11 +39,11 @@
                     var imageList = Model.Images.ToList(); // Convert to List
                 }
                 @for (int i = 0; i < imageList.Count; i++)
-                {
+                    {
                     <div class="carousel-item @(i == 0 ? "active" : "")">
                         <img src="@imageList[i].ImageUrl" class="d-block w-700 property-image img-fluid" alt="@Model.Description">
                     </div>
-                }
+                    }
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -52,11 +58,11 @@
 
         <div class="row mt-4">
             @for (int i = 0; i < imageList.Count; i++)
-            {
+                {
                 <div class="col-2">
                     <img src="@imageList[i].ImageUrl" class="img-thumbnail" data-bs-target="#propertyCarousel" data-bs-slide-to="@i">
                 </div>
-            }
+                }
         </div>
 
     </div>
@@ -73,12 +79,12 @@
             <span class="property-info-item">
                 Amenities:
                 @foreach (var propertyAmenity in Model.PropertyAmenities)
-                {
+                    {
                     <span class="amenity-item">
                         <i class="@propertyAmenity.Amenity.AmenityIcon"></i> <!-- Displaying the icon -->
                         @propertyAmenity.Amenity.AmenityName <!-- Displaying the name -->
                     </span>
-                }
+                    }
             </span>
             <h5>@Model.Description</h5>
         </div>
@@ -96,7 +102,7 @@
         <p>Your Rating: <span id="selected-rating">0</span></p>
     </div>
     <div class="col-md-6">
-        @if (UserManager.GetUserName(User) == Model.Customer.Name)
+        @if (Customer.Name == Model.Customer.Name)
         {
             <a class="btn btn-primary" role="button" asp-controller="Property" asp-action="Update" asp-route-id="@Model.PropertyId">Update</a>
             <a role="button" class="btn btn-danger" asp-controller="Property" asp-action="Delete" asp-route-id="@Model.PropertyId">Delete</a>

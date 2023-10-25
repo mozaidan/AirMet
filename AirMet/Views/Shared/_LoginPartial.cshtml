@@ -1,7 +1,13 @@
 @using Microsoft.AspNetCore.Identity
 
+@inject PropertyDbContext _db
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject Customer Customer
+@{
+    var userId = UserManager.GetUserId(User);
+    Customer = _db.Customers.FirstOrDefault(c => c.CustomerId == userId);
+}
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
@@ -10,7 +16,7 @@
             <ul class="navbar-nav">
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Hello @UserManager.GetUserName(User)</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Hello @Customer.Name</a>
                     <ul class="dropdown-menu">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Reservation" asp-action="Reservation"> <i class="fas fa-bookmark"></i> Reservations</a>

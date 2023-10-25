@@ -37,7 +37,8 @@ builder.Services.AddDefaultIdentity<IdentityUser> (options =>
     .AddEntityFrameworkStores<PropertyDbContext>();
 
 builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
-
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<Customer>();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
 

@@ -1,18 +1,10 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AirMet.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AirMet.ViewModels;
-using Microsoft.EntityFrameworkCore;
 using AirMet.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Castle.Core.Resource;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AirMet.Controllers
 {
@@ -33,8 +25,18 @@ namespace AirMet.Controllers
         public async Task<IActionResult> List()
         {
             var userId = _userManager.GetUserId(User);
+            if (userId == null)
+            {
+                _logger.LogWarning("[CustomerController] User Not found!");
+                return NotFound("User not found!");// Handle null userId
+            }
             Customer? customerInfo = await _propertyRepository.Customer(userId);
-            List<Property>? properties = await _propertyRepository.GetAllByUserId(userId) as List<Property>;
+            List<Property>? properties = (List<Property>?)await _propertyRepository.GetAllByUserId(userId);
+            if (properties == null)
+            {
+                _logger.LogWarning("[CustomerController] property list not found while executing _propertyRepository.GetAllByUserId()");
+                
+            }
             var itemListViewModel = new PropertyListViewModel(properties, "List", customerInfo);
             return View(itemListViewModel);
         }

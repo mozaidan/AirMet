@@ -1,14 +1,12 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AirMet.Models
 {
 	public class Property
 	{
-        public string? UserId { get; set; }
-        public virtual Customer? Customer { get; set; }
-        public string? CustomerId { get; set; }
+        public string UserId { get; set; } = string.Empty;
+        public virtual Customer Customer { get; set; } = default!;
+        public string CustomerId { get; set; } = string.Empty;
         public int PropertyId { get; set; }
 		public decimal Price { get; set; }
         public string Title { get; set; } = string.Empty;
@@ -20,11 +18,12 @@ namespace AirMet.Models
         public int BedRooms { get; set; }
         public int BathRooms { get; set; }
         public int PTypeId { get; set; }
+
         public virtual PType PType { get; set; } = default!;
 
-        public virtual ICollection<PropertyAmenity>? PropertyAmenities { get; set; }
+        public virtual ICollection<PropertyAmenity>? PropertyAmenities { get; set; } = new List<PropertyAmenity>();
 
-        public virtual List<Reservation> Reservations { get; set; } = new List<Reservation>();
+        public virtual List<Reservation>? Reservations { get; set; } = new List<Reservation>();
          
         public virtual List<PropertyImage> Images { get; set; } = new List<PropertyImage>();
         [NotMapped]

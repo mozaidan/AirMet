@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231022204828_InitDb")]
+    [Migration("20231025094155_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -57,10 +57,15 @@ namespace AirMet.Migrations
                     b.Property<string>("Age")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
@@ -111,6 +116,7 @@ namespace AirMet.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -131,6 +137,7 @@ namespace AirMet.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("PropertyId");
@@ -190,6 +197,7 @@ namespace AirMet.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EndDate")
@@ -432,7 +440,9 @@ namespace AirMet.Migrations
                 {
                     b.HasOne("AirMet.Models.Customer", "Customer")
                         .WithMany("Properties")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AirMet.Models.PType", "PType")
                         .WithMany("Properties")
@@ -479,7 +489,9 @@ namespace AirMet.Migrations
                 {
                     b.HasOne("AirMet.Models.Customer", "Customer")
                         .WithMany("Reservations")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AirMet.Models.Property", "Property")
                         .WithMany("Reservations")

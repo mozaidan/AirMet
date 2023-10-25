@@ -1,5 +1,4 @@
-﻿using System;
-namespace AirMet.Models
+﻿namespace AirMet.Models
 {
 	public class Amenity
 	{

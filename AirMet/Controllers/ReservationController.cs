@@ -1,58 +1,63 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AirMet.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AirMet.ViewModels;
-using Microsoft.EntityFrameworkCore;
 using AirMet.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AirMet.Controllers
 {
     public class ReservationController : Controller
     {
-        private readonly IPropertyRepository _propertyRepository;
+        private readonly IReservationRepository _reservationRepository;
         private readonly ILogger<ReservationController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
         
 
-        public ReservationController(IPropertyRepository propertyRepository, ILogger<ReservationController> logger, UserManager<IdentityUser> userManager
-            )
+        public ReservationController(IReservationRepository reservationRepository, ILogger<ReservationController> logger, UserManager<IdentityUser> userManager)
         {
-
-            _propertyRepository = propertyRepository;
+            _reservationRepository = reservationRepository;
             _logger = logger;
             _userManager = userManager;
         }
+
+        [Authorize]
         public async Task<IActionResult> ListReservations(int id)
         {
-            List<Reservation>? reservations = await _propertyRepository.GetReservationsByPropertyId(id) as List<Reservation>;
-            Customer? customerInfo = null;
-            foreach (var reservation in reservations)
+            List<Reservation>? reservations = (List<Reservation>?)await _reservationRepository.GetReservationsByPropertyId(id);
+            if (reservations == null)
             {
-                customerInfo = await _propertyRepository.GetCustomerByReservationId(reservation.ReservationId);  // Fetch customer info if user is logged in
+                _logger.LogError("[HomeController] property list not found while executing _propertyRepository.GetAll()");
             }
+            Customer? customerInfo = null;
             var viewModel = new ReservationsListViewModel(reservations, "ListReservations", customerInfo);
-
+            if (reservations != null)
+            {
+                foreach (var reservation in reservations)
+                {
+                    customerInfo = await _reservationRepository.GetCustomerByReservationId(reservation.ReservationId);  // Fetch customer info if user is logged in
+                }
+                viewModel = new ReservationsListViewModel(reservations, "ListReservations", customerInfo);
+            }
+            
             return View(viewModel);
         }
+
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
-            var reservation = await _propertyRepository.GetReservationById(id);
+            var reservation = await _reservationRepository.GetReservationById(id);
+            if (reservation == null)
+            {
+                _logger.LogWarning("[ReservationController] reservation not found while executing _reservationRepository.GetReservationById()", id);
+                return NotFound("Reservation not found!");
+            }
             return View(reservation);
         }
-        // GET: /<controller>/
+        
         [HttpGet]
         [Authorize]
         public IActionResult Reserve(int propertyId, DateTime reservationDate, int numberOfGuests)
         {
-            var startDate = reservationDate; // Initialize the start date
             return View(new { PropertyId = propertyId, StartDate = reservationDate, NumberOfGuests = numberOfGuests });
         }
 
@@ -60,67 +65,100 @@ namespace AirMet.Controllers
         [Authorize]
         public async Task<IActionResult> Reserve(int propertyId, DateTime reservationDate, int numberOfGuests, DateTime endReservationDate)
         {
-            var startDate = reservationDate;
-            var endDate = endReservationDate; // Initialize the end date
-            var userId = _userManager.GetUserId(User);
-            Customer? customer = await _propertyRepository.Customer(userId);
-            var property = await _propertyRepository.GetItemById(propertyId);
-            if (property == null)
+            try
             {
-                // Handle error: property not found
-                return RedirectToAction("ErrorPage"); // Replace with your actual error page
-            }
-            if (numberOfGuests > property.Guest)
-            {
-                TempData["GuestMessage"] = "The number of guests is more than available!";
-                return RedirectToAction("Details", "Property", new { id = propertyId });
-            }
-            var existingReservations = await _propertyRepository.GetReservationsByPropertyId(propertyId);
-            foreach (var res in existingReservations)
-            {
-                if ((startDate <= res.EndDate && endDate >= res.StartDate))
+
+
+                var startDate = reservationDate;
+                var endDate = endReservationDate; // Initialize the end date
+
+                var userId = _userManager.GetUserId(User);
+                if (userId == null)
                 {
-                    TempData["ReservationMessage"] = "The chosen date is unavailable for this property, please choose another date!";
+                    _logger.LogWarning("[ReservationController] User Not found!");
+                    return NotFound("User not found!");// Handle null userId
+                }
+
+                Customer? customer = await _reservationRepository.Customer(userId);
+                if (customer == null)
+                {
+                    _logger.LogWarning("[PropertyController] User Not found!");
+                    return NotFound("User not found!");// Handle null userId
+                }
+
+                var property = await _reservationRepository.GetPropertyById(propertyId);
+                if (property == null)
+                {
+                    _logger.LogError("[ReservationController] property not found for the PropertyId {PropertyId:0000}", propertyId);
+                    return NotFound("Property not found for the PropertyId");
+                }
+
+                if (numberOfGuests > property.Guest)
+                {
+                    TempData["GuestMessage"] = "The number of guests is more than available!";
                     return RedirectToAction("Details", "Property", new { id = propertyId });
                 }
+
+                var existingReservations = await _reservationRepository.GetReservationsByPropertyId(propertyId);
+                if (existingReservations != null)
+                {
+                    foreach (var res in existingReservations)
+                    {
+                        if ((startDate <= res.EndDate && endDate >= res.StartDate))
+                        {
+                            TempData["ReservationMessage"] = "The chosen date is unavailable for this property, please choose another date!";
+                            return RedirectToAction("Details", "Property", new { id = propertyId });
+                        }
+                    }
+                }
+
+                // Create and save a reservation
+                var reservation = new Reservation
+                {
+                    UserId = userId,
+                    Customer = customer,
+                    PropertyId = propertyId,
+                    StartDate = reservationDate,
+                    EndDate = endReservationDate,
+                    NumberOfGuests = numberOfGuests,
+                };
+
+                var days = (reservation.EndDate - reservation.StartDate).Days;
+                reservation.TotalDays = days;
+                reservation.Property = property;
+                reservation.TotalPrice = property.Price * days;
+
+
+                // Save the reservation to your data store (e.g., a database)
+                _ = _reservationRepository.Add(reservation); // Implement _reservationRepository accordingly
+
+                return RedirectToAction("Reservation"); // Redirect to the reservation list page after a successful reservation.
             }
-            // Create and save a reservation
-            var reservation = new Reservation
+            catch
             {
-                UserId = userId,
-                Customer = customer,
-                PropertyId = propertyId,
-                StartDate = reservationDate,
-                EndDate = endReservationDate,
-                NumberOfGuests = numberOfGuests,
-            };
-          
-            var days = (reservation.EndDate - reservation.StartDate).Days;
-            reservation.TotalDays = days;
-            reservation.Property = property;
-            reservation.TotalPrice = property.Price * days;
-            
-
-            // Save the reservation to your data store (e.g., a database)
-            _ = _propertyRepository.Add(reservation); // Implement _reservationRepository accordingly
-
-            return RedirectToAction("Reservation"); // Redirect to the reservation list page after a successful reservation.
+                var errors = ModelState.SelectMany(x => x.Value?.Errors?.Select(p => p.ErrorMessage) ?? Enumerable.Empty<string>()).ToList();
+                _logger.LogWarning("[ReservationController] Model State is not valid. Errors: {@errors}", errors);
+                return BadRequest("Reservation creation failed.");
+            }
         }
 
         
-        
-
 
         [Authorize]
         public async Task<IActionResult> Reservation()
         {
             var userId = _userManager.GetUserId(User);
-            Customer? customer = await _propertyRepository.Customer(userId);
+            Customer? customer = await _reservationRepository.Customer(userId);
+            if (customer == null)
+            {
+                _logger.LogWarning("[ReservationController] Customer info not found");
+                return NotFound("Customer Not found");
+            }
             // Retrieve the user's reservations
-            var reservations = await _propertyRepository.GetReservationsByUserId(userId);
+            var reservations = await _reservationRepository.GetReservationsByUserId(userId);
 
             // Create a view model and populate it
-            var viewModel = new ReservationsListViewModel(reservations, "Reservstion", customer);
+            var viewModel = new ReservationsListViewModel((List<Reservation>?)reservations, "Reservstion", customer);
 
             return View(viewModel);
         }
@@ -128,21 +166,30 @@ namespace AirMet.Controllers
         [HttpGet]
         public async Task<JsonResult> GetUnavailableDates(int propertyId)
         {
-            var reservations = await _propertyRepository.GetReservationsByPropertyId(propertyId);
-            var unavailableDates = reservations.SelectMany(r => Enumerable.Range(0, (r.EndDate - r.StartDate).Days + 1).Select(offset => r.StartDate.AddDays(offset).ToString("yyyy-MM-dd"))).ToList();
-            return Json(new { UnavailableDates = unavailableDates });
+            var reservations = await _reservationRepository.GetReservationsByPropertyId(propertyId);
+            if (reservations != null)
+            {
+                var unavailableDates = reservations.SelectMany(r => Enumerable.Range(0, (r.EndDate - r.StartDate).Days + 1).Select(offset => r.StartDate.AddDays(offset).ToString("yyyy-MM-dd"))).ToList();
+                return Json(new { UnavailableDates = unavailableDates });
+            }
+            else
+            {
+                return Json(new { UnavailableDates = Array.Empty<string>() });
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var reservation = await _propertyRepository.GetReservationById(id);
+            var reservation = await _reservationRepository.GetReservationById(id);
             if (reservation == null)
             {
-                return NotFound();
+                _logger.LogWarning("[ReservationController] reservation not found while executing _reservationRepository.GetReservationById()", id);
+                return NotFound("Reservation not found!");
             }
             return View(reservation);
         }
+
         [HttpPost]
         public async Task<IActionResult> Update(Reservation reservation, int id)
         {
@@ -151,34 +198,43 @@ namespace AirMet.Controllers
                 var userId = _userManager.GetUserId(User);
                 if (userId == null)
                 {
-                    return RedirectToAction("ErrorPage");// Handle null userId
+                    _logger.LogWarning("[ReservationController] User Not found!");
+                    return NotFound("User not found!");// Handle null userId
                 }
-                var property = await _propertyRepository.GetItemById(id);
+
+                var property = await _reservationRepository.GetPropertyById(id);
                 if (property == null)
                 {
-                    // Handle error: property not found
-                    return RedirectToAction("ErrorPage"); // Replace with your actual error page
+                    _logger.LogError("[ReservationController] property not found for the PropertyId {PropertyId:0000}", id);
+                    return NotFound("Property not found for the PropertyId");
                 }
-                var reservationFromDb = await _propertyRepository.GetReservationByUserIdAndPropertyId(userId, property.PropertyId);
+
+                var reservationFromDb = await _reservationRepository.GetReservationByUserIdAndPropertyId(userId, property.PropertyId);
                 if (reservationFromDb == null)
                 {
-                    // Handle error: reservation not found
-                    return RedirectToAction("ErrorPage");
+                    _logger.LogWarning("[ReservationController] reservation not found while executing _reservationRepository.GetReservationByUserIdAndPropertyId()", property.PropertyId);
+                    return NotFound("Reservation not found!");
                 }
+
                 if (reservation.NumberOfGuests > property.Guest)
                 {
                     TempData["GuestMessage"] = "The number of guests is more than available!";
                     return RedirectToAction("Update", "Reservation", new { id = reservationFromDb.ReservationId });
                 }
-                var existingReservations = await _propertyRepository.GetReservationsByPropertyId(reservation.PropertyId);
-                foreach (var res in existingReservations)
+
+                var existingReservations = await _reservationRepository.GetReservationsByPropertyId(reservation.PropertyId);
+                if (existingReservations != null)
                 {
-                    if ((reservation.StartDate <= res.EndDate && reservation.EndDate >= res.StartDate))
+                    foreach (var res in existingReservations)
                     {
-                        TempData["ReservationMessage"] = "The chosen date is unavailable for this property, please choose another date!";
-                        return RedirectToAction("Update", "Reservation", new { id = reservation.ReservationId });
+                        if ((reservation.StartDate <= res.EndDate && reservation.EndDate >= res.StartDate))
+                        {
+                            TempData["ReservationMessage"] = "The chosen date is unavailable for this property, please choose another date!";
+                            return RedirectToAction("Update", "Reservation", new { id = reservation.ReservationId });
+                        }
                     }
                 }
+                
                 reservationFromDb.StartDate = reservation.StartDate;
                 reservationFromDb.EndDate = reservation.EndDate;
                 reservationFromDb.NumberOfGuests = reservation.NumberOfGuests;
@@ -187,11 +243,11 @@ namespace AirMet.Controllers
                 reservationFromDb.TotalDays = days;
                 reservationFromDb.Property = property;
                 reservationFromDb.TotalPrice = property.Price * days;
-                var result = await _propertyRepository.UpdateReservation(reservationFromDb);
+                var result = await _reservationRepository.Update(reservationFromDb);
 
                 if (result)
                 {
-                    return RedirectToAction("Reservation");
+                    return RedirectToAction(nameof(Reservation));
                 }
                 else
                 {
@@ -210,7 +266,7 @@ namespace AirMet.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            var reservation = await _propertyRepository.GetReservationById(id);
+            var reservation = await _reservationRepository.GetReservationById(id);
             if (reservation == null)
             {
                 _logger.LogError("[ReservationController] Reservation not found for the ReservationId {ReservationId:0000}", id);
@@ -224,11 +280,11 @@ namespace AirMet.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            bool returnOk = await _propertyRepository.DeleteReservation(id);
+            bool returnOk = await _reservationRepository.Delete(id);
             if (!returnOk)
             {
-                _logger.LogError("[HomeController] Property deletion failed for the PropertyId {PropertyId:0000}", id);
-                return BadRequest("Property deletion failed");
+                _logger.LogError("[ReservationController] Reservation deletion failed for the ReservationId {ReservationId:0000}", id);
+                return BadRequest("Reservation deletion failed");
             }
             return RedirectToAction(nameof(Reservation));
         }

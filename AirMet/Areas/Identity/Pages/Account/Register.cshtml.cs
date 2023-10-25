@@ -132,7 +132,7 @@ namespace AirMet.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Name, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -158,7 +158,6 @@ namespace AirMet.Areas.Identity.Pages.Account
                         Age = Input.Age,
                         Address = Input.Address,
                         PhoneNumber = Input.PhoneNumber,
-                        // ... set other properties
                     };
                     _context.Customers.Add(customer);
                     await _context.SaveChangesAsync();

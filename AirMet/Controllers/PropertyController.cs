@@ -1,12 +1,6 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AirMet.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AirMet.ViewModels;
-using Microsoft.EntityFrameworkCore;
 using AirMet.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,16 +22,15 @@ namespace AirMet.Controllers
             _logger = logger;
             _userManager = userManager;
         }
-        // GET: /<controller>/
+        
         public async Task<IActionResult> Details(int id)
         {
-            var property = await _propertyRepository.GetItemById(id);
+            var property = await _propertyRepository.GetPropertyById(id);
             if (property == null)
             {
-                _logger.LogError("[HomeController] property not found for the PropertyId {PropertyId:0000}", id);
+                _logger.LogError("[PropertyController] property not found for the PropertyId {PropertyId:0000}", id);
                 return NotFound("Property not found for the PropertyId");
             }
-            //ViewBag.ReservationMessage = TempData["ReservationMessage"]?.ToString();
             return View(property);
         }
         [HttpGet]
@@ -46,17 +39,26 @@ namespace AirMet.Controllers
         {
             var PTypes = await _propertyRepository.GetAllTypes() ?? new List<PType>();
             var Amenities = await _propertyRepository.GetAllAmenities() ?? new List<Amenity>();
-            var createPropertyViewModel = new CreatePropertyViewModel
+            if (PTypes == null || Amenities == null)
             {
-                Property = new Property(),
-                PTypeSelectList = PTypes.Select(PType => new SelectListItem
+                _logger.LogWarning("[PropertyController] PTypes or Amenities Not found!");
+                return NotFound("PTypes or Amenities Not found!");
+            }
+            else
+            {
+                var createPropertyViewModel = new CreatePropertyViewModel
                 {
-                    Value = PType.PTypeId.ToString(),
-                    Text = PType.PTypeId.ToString() + ": " + PType.PTypeName
-                }).ToList(),
-                Amenities = Amenities
-            };
-            return View(createPropertyViewModel);
+                    Property = new Property(),
+                    PTypeSelectList = PTypes.Select(PType => new SelectListItem
+                    {
+                        Value = PType.PTypeId.ToString(),
+                        Text = PType.PTypeId.ToString() + ": " + PType.PTypeName
+                    }).ToList(),
+                    Amenities = (List<Amenity>)Amenities
+                };
+                return View(createPropertyViewModel);
+            }
+            
         }
 
         [HttpPost]
@@ -66,7 +68,17 @@ namespace AirMet.Controllers
             try
             {
                 var userId = _userManager.GetUserId(User);
+                if (userId == null)
+                {
+                    _logger.LogWarning("[PropertyController] User Not found!");
+                    return NotFound("User not found!");// Handle null userId
+                }
                 Customer? customer = await _propertyRepository.Customer(userId);
+                if (customer == null)
+                {
+                    _logger.LogWarning("[PropertyController] User Not found!");
+                    return NotFound("User not found!");// Handle null userId
+                }
                 if (property.Files != null)
                 {
                     var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
@@ -75,7 +87,7 @@ namespace AirMet.Controllers
                         Directory.CreateDirectory(uploads);
                     }
 
-                    List<PropertyImage> images = new List<PropertyImage>();
+                    List<PropertyImage> images = new();
 
                     foreach (var file in property.Files)
                     {
@@ -91,7 +103,6 @@ namespace AirMet.Controllers
 
                     property.Images = images;
                 }
-                var selectedAmenities = Amenities.Where(a => a.IsChecked).ToList();
 
                 var newProperty = new Property
                 {
@@ -107,9 +118,10 @@ namespace AirMet.Controllers
                     BathRooms = property.BathRooms,
                     PTypeId = property.PTypeId,
                     Images = property.Images
-
                 };
+
                 newProperty.PType = await _propertyRepository.GetPType(newProperty.PTypeId) ?? new PType();
+                var selectedAmenities = Amenities.Where(a => a.IsChecked).ToList();
 
                 bool returnOk = await _propertyRepository.Create(newProperty);
                 if (returnOk)
@@ -117,21 +129,21 @@ namespace AirMet.Controllers
                     bool amenityReturnOk = await _propertyRepository.AddAmenitiesToProperty(newProperty.PropertyId, selectedAmenities);
                     if (!amenityReturnOk)
                     {
-                        _logger.LogWarning("[HomeController] Failed to add amenities to property.");
+                        _logger.LogWarning("[PropertyController] Failed to add amenities to property.");
                     }
                     return RedirectToAction("List", "Customer");
                 }
                 else
                 {
-                    _logger.LogWarning("[HomeController] Property creation failed {@property}", newProperty);
+                    _logger.LogWarning("[PropertyController] Property creation failed {@property}", newProperty);
                     return View(property); // Return to the same view with the model
                 }
             }
             catch (Exception)
             {
                 var errors = ModelState.SelectMany(x => x.Value?.Errors?.Select(p => p.ErrorMessage) ?? Enumerable.Empty<string>()).ToList();
-                _logger.LogWarning("[HomeController] Model State is not valid. Errors: {@errors}", errors);
-                return BadRequest("OrderItem creation failed.");
+                _logger.LogWarning("[PropertyController] Model State is not valid. Errors: {@errors}", errors);
+                return BadRequest("Property creation failed.");
             }
             
         }
@@ -141,14 +153,21 @@ namespace AirMet.Controllers
         [Authorize]
         public async Task<IActionResult> Update(int id)
         {
-            var property = await _propertyRepository.GetItemById(id);
-            var Amenities = await _propertyRepository.GetAllAmenities() ?? new List<Amenity>();
+            var property = await _propertyRepository.GetPropertyById(id);
             if (property == null)
             {
-                return NotFound();
+                _logger.LogError("[PropertyController] property not found for the PropertyId {PropertyId:0000}", id);
+                return NotFound("Property not found for the PropertyId");
             }
 
+            var Amenities = await _propertyRepository.GetAllAmenities() ?? new List<Amenity>();
             var PTypes = await _propertyRepository.GetAllTypes() ?? new List<PType>();
+            if (PTypes == null || Amenities == null)
+            {
+                _logger.LogWarning("[PropertyController] PTypes or Amenities Not found!");
+                return NotFound("PTypes or Amenities Not found!");
+            }
+
             var updatePropertyViewModel = new CreatePropertyViewModel
             {
                 Property = property,
@@ -157,7 +176,7 @@ namespace AirMet.Controllers
                     Value = PType.PTypeId.ToString(),
                     Text = PType.PTypeId.ToString() + ": " + PType.PTypeName
                 }).ToList(),
-                Amenities = Amenities
+                Amenities = (List<Amenity>)Amenities
             };
 
             return View(updatePropertyViewModel);
@@ -169,7 +188,7 @@ namespace AirMet.Controllers
         {
             try
             {
-                var property = await _propertyRepository.GetItemById(id);
+                var property = await _propertyRepository.GetPropertyById(id);
                 if (property == null)
                 {
                     _logger.LogError("[PropertyController] Property not found for the PropertyId {PropertyId:0000}", id);
@@ -226,13 +245,13 @@ namespace AirMet.Controllers
                 }
                 else
                 {
-                    _logger.LogWarning("[HomeController] Property update failed {@property}", updatePropertyViewModel);
+                    _logger.LogWarning("[PropertyController] Property update failed {@property}", updatePropertyViewModel);
                     return View(updatePropertyViewModel);
                 }
             }
             catch (Exception e)
             {
-                _logger.LogError("[HomeController] Error updating property: {Error}", e.Message);
+                _logger.LogError("[PropertyController] Error updating property: {Error}", e.Message);
                 return BadRequest("Failed to update property.");
             }
         }
@@ -245,12 +264,11 @@ namespace AirMet.Controllers
             int result = await _propertyRepository.DeleteImage(id);
             if (result == -1)
             {
-                _logger.LogError("[HomeController] Image not found when deleting the PropertyId {PropertyId:0000}", id);
+                _logger.LogError("[PropertyController] Image not found when deleting the PropertyId {PropertyId:0000}", id);
                 return BadRequest("Property not found for the PropertyId");
             }
 
             // Redirect back to the Update view
-            // Note: You might need to find a way to get the PropertyId if it's needed for the redirect.
             return RedirectToAction("Update", new { id = result });
         }
 
@@ -259,10 +277,10 @@ namespace AirMet.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            var property = await _propertyRepository.GetItemById(id);
+            var property = await _propertyRepository.GetPropertyById(id);
             if (property == null)
             {
-                _logger.LogError("[HomeController] Property not found for the PropertyId {PropertyId:0000}", id);
+                _logger.LogError("[PropertyController] Property not found for the PropertyId {PropertyId:0000}", id);
                 return BadRequest("Property not found for the PropertyId");
 
             }
@@ -276,7 +294,7 @@ namespace AirMet.Controllers
             bool returnOk = await _propertyRepository.Delete(id);
             if (!returnOk)
             {
-                _logger.LogError("[HomeController] Property deletion failed for the PropertyId {PropertyId:0000}", id);
+                _logger.LogError("[PropertyController] Property deletion failed for the PropertyId {PropertyId:0000}", id);
                 return BadRequest("Property deletion failed");
             }
             return RedirectToAction("List","Customer");

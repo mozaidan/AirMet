@@ -192,3 +192,27 @@ a {
 .form-control {
     width: 300px; /* Adjust the width as needed */
 }
+
+.table {
+    font-family: Arial, sans-serif;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+td a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+td a:hover {
+    text-decoration: underline;
+}
+

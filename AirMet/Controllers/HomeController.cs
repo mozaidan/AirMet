@@ -1,14 +1,7 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AirMet.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AirMet.ViewModels;
-using Microsoft.EntityFrameworkCore;
 using AirMet.DAL;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace AirMet.Controllers {
@@ -27,10 +20,9 @@ namespace AirMet.Controllers {
             _userManager = userManager;
         }
 
-        // GET: /<controller>/
         public async Task<IActionResult> Index()
         {
-            List<Property>? properties = await _propertyRepository.GetAll() as List<Property>;
+            List<Property>? properties = (List<Property>?)await _propertyRepository.GetAll();
             if (properties == null)
             {
                 _logger.LogError("[HomeController] property list not found while executing _propertyRepository.GetAll()");
@@ -47,7 +39,7 @@ namespace AirMet.Controllers {
         }
         public async Task<IActionResult> PropertyTypes(int typeId)
         {
-            List<Property>? properties = await _propertyRepository.GetAllByTypeId(typeId) as List<Property>;
+            List<Property>? properties = (List<Property>?)await _propertyRepository.GetAllByTypeId(typeId);
             if (properties == null)
             {
                 _logger.LogError("[HomeController] property list not found while executing _propertyRepository.GetAll()");
