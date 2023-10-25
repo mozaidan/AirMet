@@ -4,12 +4,12 @@ using AirMet.Models;
 
 namespace AirMet.Models
 {
-    public static class DBInit
-    {
-        public static void Seed(IApplicationBuilder app)
-        {
-            using var serviceScope = app.ApplicationServices.CreateScope();
-            PropertyDbContext context = serviceScope.ServiceProvider.GetRequiredService<PropertyDbContext>();
+	public static class DBInit
+	{
+		public static void Seed(IApplicationBuilder app)
+		{
+			using var serviceScope = app.ApplicationServices.CreateScope();
+			PropertyDbContext context = serviceScope.ServiceProvider.GetRequiredService<PropertyDbContext>();
             //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
@@ -463,16 +463,6 @@ namespace AirMet.Models
                     new PropertyImage {ImageUrl = "/images/h5.jpg", PropertyId = 2},
                     new PropertyImage {ImageUrl = "/images/h6.jpg", PropertyId = 2},
 
-                    new PropertyImage {ImageUrl = "/images/90.jpg", PropertyId = 22},
-                    new PropertyImage {ImageUrl = "/images/91.jpg", PropertyId = 22},
-                    new PropertyImage {ImageUrl = "/images/92.jpg", PropertyId = 22},
-                    new PropertyImage {ImageUrl = "/images/93.jpg", PropertyId = 22},
-
-                    new PropertyImage {ImageUrl = "/images/94.jpg", PropertyId = 23},
-                    new PropertyImage {ImageUrl = "/images/95.jpg", PropertyId = 23},
-                    new PropertyImage {ImageUrl = "/images/96.jpg", PropertyId = 23},
-                    new PropertyImage {ImageUrl = "/images/97.jpg", PropertyId = 23},
-
                     new PropertyImage {ImageUrl = "/images/1.jpg", PropertyId = 3},
                     new PropertyImage {ImageUrl = "/images/2.jpg", PropertyId = 3},
                     new PropertyImage {ImageUrl = "/images/3.jpg", PropertyId = 3},
@@ -583,7 +573,15 @@ namespace AirMet.Models
                     new PropertyImage {ImageUrl = "/images/88.jpg", PropertyId = 21},
                     new PropertyImage {ImageUrl = "/images/89.jpg", PropertyId = 21},
 
-                    
+                    new PropertyImage {ImageUrl = "/images/90.jpg", PropertyId = 22},
+                    new PropertyImage {ImageUrl = "/images/91.jpg", PropertyId = 22},
+                    new PropertyImage {ImageUrl = "/images/92.jpg", PropertyId = 22},
+                    new PropertyImage {ImageUrl = "/images/93.jpg", PropertyId = 22},
+
+                    new PropertyImage {ImageUrl = "/images/94.jpg", PropertyId = 23},
+                    new PropertyImage {ImageUrl = "/images/95.jpg", PropertyId = 23},
+                    new PropertyImage {ImageUrl = "/images/96.jpg", PropertyId = 23},
+                    new PropertyImage {ImageUrl = "/images/97.jpg", PropertyId = 23},
 
                     new PropertyImage {ImageUrl = "/images/98.jpg", PropertyId = 24},
                     new PropertyImage {ImageUrl = "/images/99.jpg", PropertyId = 24},
@@ -611,3 +609,4 @@ namespace AirMet.Models
         }
 	}
 }
+
