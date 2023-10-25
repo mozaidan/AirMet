@@ -185,7 +185,7 @@ namespace AirMet.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "Customers",
                 columns: table => new
                 {
                     CustomerId = table.Column<string>(type: "TEXT", nullable: false),
@@ -194,14 +194,13 @@ namespace AirMet.Migrations
                     Address = table.Column<string>(type: "TEXT", nullable: true),
                     PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
                     ReservationId = table.Column<int>(type: "INTEGER", nullable: true),
-                    PropertyId = table.Column<int>(type: "INTEGER", nullable: false),
                     IdentityUserId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.CustomerId);
+                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
                     table.ForeignKey(
-                        name: "FK_Customer_AspNetUsers_IdentityUserId",
+                        name: "FK_Customers_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -229,9 +228,9 @@ namespace AirMet.Migrations
                 {
                     table.PrimaryKey("PK_Properties", x => x.PropertyId);
                     table.ForeignKey(
-                        name: "FK_Properties_Customer_CustomerId",
+                        name: "FK_Properties_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        principalTable: "Customers",
                         principalColumn: "CustomerId");
                     table.ForeignKey(
                         name: "FK_Properties_PTypes_PTypeId",
@@ -306,9 +305,9 @@ namespace AirMet.Migrations
                 {
                     table.PrimaryKey("PK_Reservations", x => x.ReservationId);
                     table.ForeignKey(
-                        name: "FK_Reservations_Customer_CustomerId",
+                        name: "FK_Reservations_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        principalTable: "Customers",
                         principalColumn: "CustomerId");
                     table.ForeignKey(
                         name: "FK_Reservations_Properties_PropertyId",
@@ -356,8 +355,8 @@ namespace AirMet.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customer_IdentityUserId",
-                table: "Customer",
+                name: "IX_Customers_IdentityUserId",
+                table: "Customers",
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
@@ -433,7 +432,7 @@ namespace AirMet.Migrations
                 name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "PTypes");

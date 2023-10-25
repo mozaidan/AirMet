@@ -21,9 +21,19 @@ namespace AirMet.Models
 				   {
                      CustomerId = "1",
 					 Name = "Talhat Hamdy",
-					 Age = "17",
+					 Age = "28",
 					 Address = "OsloVeien",
 					 PhoneNumber = "92983929"
+
+                   },
+
+                    new Customer
+                   {
+                     CustomerId = "2",
+                     Name = "Per Hansen",
+                     Age = "47",
+                     Address = "SkiVeien",
+                     PhoneNumber = "93483929"
 
                    }
                 };
@@ -71,7 +81,7 @@ namespace AirMet.Models
 					{
 						Title = "Home",
 						Price = 2000,
-						Address = "Oslo Norway",
+						Address = "Bro Sweden",
 						Description = "Cozy house featuring a comfortable bedroom, well-equipped kitchen, and a refreshing pool, perfect for a relaxing getaway.",
 						Guest = 2,
 						Bed = 1,
@@ -103,7 +113,7 @@ namespace AirMet.Models
                     {
                         Title = "Home",
                         Price = 3000,
-                        Address = "Bergen Norway",
+                        Address = "Pandrup Denmark",
                         Description = "Charming home featuring a refreshing pool, fully equipped kitchen, two comfortable bedrooms with double beds, and a clean bathroom. Ideal for a relaxing and enjoyable stay",
                         Guest = 4,
                         Bed = 2,
@@ -137,6 +147,7 @@ namespace AirMet.Models
                         Price = 2000,
                         Address = "Moss Norway",
                         Description = "Idyllic home featuring a private pool outside, an inviting kitchen, and a cozy bedroom furnished with a double bed. Enjoy the perfect blend of comfort and serenity in this delightful abode, ideal for a relaxing getaway",
+                        Guest = 4,
                         Bed = 2,
                         BedRooms = 2,
                         BathRooms = 1,
@@ -162,7 +173,7 @@ namespace AirMet.Models
                     new Property
                     {
                         Title = "Home",
-                        Price = 3500,
+                        Price = 1500,
                         Address = "Verdal Norway",
                         Description = "Charming retreat boasting 2 bedrooms, one elegantly furnished with a double bed for adults and the other thoughtfully arranged with a comfortable bed for children. Discover the tranquil ambiance and delightful amenities, perfect for a memorable family vacation",
                         Bed = 1,
@@ -176,7 +187,7 @@ namespace AirMet.Models
                     new Property
                     {
                         Title = "Home",
-                        Price = 3500,
+                        Price = 3000,
                         Address = "Dal Norway",
                         Description = "Charming retreat boasting 2 bedrooms, one elegantly furnished with a double bed for adults and the other thoughtfully arranged with a comfortable bed for children. Discover the tranquil ambiance and delightful amenities, perfect for a memorable family vacation",
                         Bed = 2,
@@ -186,7 +197,251 @@ namespace AirMet.Models
                         CustomerId = "1",
                         UserId = "1",
                     },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 2000,
+                        Address = "London UK",
+                        Description = "Charming retreat boasting 2 bedrooms, one elegantly furnished with a double bed for adults and the other thoughtfully arranged with a comfortable bed for children. Discover the tranquil ambiance and delightful amenities, perfect for a memorable family vacation",
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 6,
+                        CustomerId = "1",
+                        UserId = "1",
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 1750,
+                        Address = "Gdańsk Poland",
+                        Description = "Charming retreat boasting 2 bedrooms, one elegantly furnished with a double bed for adults and the other thoughtfully arranged with a comfortable bed for children. Discover the tranquil ambiance and delightful amenities, perfect for a memorable family vacation",
+                        Bed = 2,
+                        BedRooms = 2,
+                        BathRooms = 1,
+                        PTypeId = 6,
+                        CustomerId = "1",
+                        UserId = "1",
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 1500,
+                        Address = "Copenhagen Denmark",
+                        Description = "Charming retreat boasting 2 bedrooms, one elegantly furnished with a double bed for adults and the other thoughtfully arranged with a comfortable bed for children. Discover the tranquil ambiance and delightful amenities, perfect for a memorable family vacation",
+                        Bed = 2,
+                        BedRooms = 2,
+                        BathRooms = 1,
+                        PTypeId = 6,
+                        CustomerId = "1",
+                        UserId = "1",
+                    },
+
+                     new Property
+                    {
+                        Title = "Home",
+                        Price = 1200,
+                        Address = "Stockholms Sweden",
+                        Description = "Charming retreat boasting 2 bedrooms, one elegantly furnished with a double bed for adults and the other thoughtfully arranged with a comfortable bed for children. Discover the tranquil ambiance and delightful amenities, perfect for a memorable family vacation",
+                        Bed = 2,
+                        BedRooms = 2,
+                        BathRooms = 1,
+                        PTypeId = 6,
+                        CustomerId = "1",
+                        UserId = "1",
+                    },
+
+                     new Property
+                    {
+                        Title = "Home",
+                        Price = 1600,
+                        Address = "Uppsala Sweden",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest = 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 2500,
+                        Address = "Opddal Norway",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest = 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId =1 ,
+                        CustomerId = "2",
+                        UserId = "2",
+
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 3500,
+                        Address = " Hamburg Germany",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest = 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 1850,
+                        Address = "North Berwick, Scotland, UK",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest = 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 1400,
+                        Address = "Bygdøy Norway",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest = 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 3500,
+                        Address = "Trondheim Norway",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest =2,
+                        Bed = 1,
+                        BedRooms = 2,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 1100,
+                        Address = "Ski Norway",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest =2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 3500,
+                        Address = "Dal Norway",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest= 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 3500,
+                        Address = "Skagen Denmark",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest= 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 2700,
+                        Address = "Amestrdam Netherlands",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest= 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 1400,
+                        Address = "Paris France",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest= 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+                    },
+
+                    new Property
+                    {
+                        Title = "Home",
+                        Price = 2300,
+                        Address = "Berlin Germany",
+                        Description = "Charming home with a well-equipped kitchen, a comfortable bedroom featuring a double bed, and a modern bathroom. Perfect for a relaxing and convenient stay",
+                        Guest= 2,
+                        Bed = 1,
+                        BedRooms = 1,
+                        BathRooms = 1,
+                        PTypeId = 1,
+                        CustomerId = "2",
+                        UserId = "2",
+                    },
+
+
                 };
+
 				context.AddRange(properties);
 				context.SaveChanges();
 			}
@@ -246,6 +501,92 @@ namespace AirMet.Models
                     new PropertyImage {ImageUrl = "/images/30.jpg", PropertyId = 8},
                     new PropertyImage {ImageUrl = "/images/31.jpg", PropertyId = 8},
                     new PropertyImage {ImageUrl = "/images/32.jpg", PropertyId = 8},
+
+                    new PropertyImage {ImageUrl = "/images/33.jpg", PropertyId = 9},
+                    new PropertyImage {ImageUrl = "/images/34.jpg", PropertyId = 9},
+                    new PropertyImage {ImageUrl = "/images/35.jpg", PropertyId = 9},
+                    new PropertyImage {ImageUrl = "/images/36.jpg", PropertyId = 9},
+
+                    new PropertyImage {ImageUrl = "/images/37.jpg", PropertyId = 10},
+                    new PropertyImage {ImageUrl = "/images/38.jpg", PropertyId = 10},
+                    new PropertyImage {ImageUrl = "/images/39.jpg", PropertyId = 10},
+                    new PropertyImage {ImageUrl = "/images/40.jpg", PropertyId = 10},
+                    new PropertyImage {ImageUrl = "/images/41.jpg", PropertyId = 10},
+                    new PropertyImage {ImageUrl = "/images/42.jpg", PropertyId = 10},
+
+
+                    new PropertyImage {ImageUrl = "/images/43.jpg", PropertyId = 11},
+                    new PropertyImage {ImageUrl = "/images/44.jpg", PropertyId = 11},
+                    new PropertyImage {ImageUrl = "/images/45.jpg", PropertyId = 11},
+                    new PropertyImage {ImageUrl = "/images/46.jpg", PropertyId = 11},
+                    new PropertyImage {ImageUrl = "/images/47.jpg", PropertyId = 11},
+                    new PropertyImage {ImageUrl = "/images/48.jpg", PropertyId = 11},
+
+                    new PropertyImage {ImageUrl = "/images/49.jpg", PropertyId = 12},
+                    new PropertyImage {ImageUrl = "/images/50.jpg", PropertyId = 12},
+                    new PropertyImage {ImageUrl = "/images/51.jpg", PropertyId = 12},
+                    new PropertyImage {ImageUrl = "/images/52.jpg", PropertyId = 12},
+                    new PropertyImage {ImageUrl = "/images/53.jpg", PropertyId = 12},
+
+                    new PropertyImage {ImageUrl = "/images/54.jpg", PropertyId = 13},
+                    new PropertyImage {ImageUrl = "/images/55.jpg", PropertyId = 13},
+                    new PropertyImage {ImageUrl = "/images/56.jpg", PropertyId = 13},
+                    new PropertyImage {ImageUrl = "/images/57.jpg", PropertyId = 13},
+
+                    new PropertyImage {ImageUrl = "/images/58.jpg", PropertyId = 14},
+                    new PropertyImage {ImageUrl = "/images/59.jpg", PropertyId = 14},
+                    new PropertyImage {ImageUrl = "/images/60.jpg", PropertyId = 14},
+                    new PropertyImage {ImageUrl = "/images/61.jpg", PropertyId = 14},
+
+                    new PropertyImage {ImageUrl = "/images/62.jpg", PropertyId = 15},
+                    new PropertyImage {ImageUrl = "/images/63.jpg", PropertyId = 15},
+                    new PropertyImage {ImageUrl = "/images/64.jpg", PropertyId = 15},
+                    new PropertyImage {ImageUrl = "/images/65.jpg", PropertyId = 15},
+
+                    new PropertyImage {ImageUrl = "/images/66.jpg", PropertyId = 16},
+                    new PropertyImage {ImageUrl = "/images/67.jpg", PropertyId = 16},
+                    new PropertyImage {ImageUrl = "/images/68.jpg", PropertyId = 16},
+                    new PropertyImage {ImageUrl = "/images/69.jpg", PropertyId = 16},
+
+                    new PropertyImage {ImageUrl = "/images/70.jpg", PropertyId = 17},
+                    new PropertyImage {ImageUrl = "/images/71.jpg", PropertyId = 17},
+                    new PropertyImage {ImageUrl = "/images/72.jpg", PropertyId = 17},
+                    new PropertyImage {ImageUrl = "/images/73.jpg", PropertyId = 17},
+
+                    new PropertyImage {ImageUrl = "/images/74.jpg", PropertyId = 18},
+                    new PropertyImage {ImageUrl = "/images/75.jpg", PropertyId = 18},
+                    new PropertyImage {ImageUrl = "/images/76.jpg", PropertyId = 18},
+                    new PropertyImage {ImageUrl = "/images/77.jpg", PropertyId = 18},
+
+                    new PropertyImage {ImageUrl = "/images/78.jpg", PropertyId = 19},
+                    new PropertyImage {ImageUrl = "/images/79.jpg", PropertyId = 19},
+                    new PropertyImage {ImageUrl = "/images/80.jpg", PropertyId = 19},
+                    new PropertyImage {ImageUrl = "/images/81.jpg", PropertyId = 19},
+
+                    new PropertyImage {ImageUrl = "/images/82.jpg", PropertyId = 20},
+                    new PropertyImage {ImageUrl = "/images/83.jpg", PropertyId = 20},
+                    new PropertyImage {ImageUrl = "/images/84.jpg", PropertyId = 20},
+                    new PropertyImage {ImageUrl = "/images/85.jpg", PropertyId = 20},
+
+                    new PropertyImage {ImageUrl = "/images/86.jpg", PropertyId = 21},
+                    new PropertyImage {ImageUrl = "/images/87.jpg", PropertyId = 21},
+                    new PropertyImage {ImageUrl = "/images/88.jpg", PropertyId = 21},
+                    new PropertyImage {ImageUrl = "/images/89.jpg", PropertyId = 21},
+
+                    new PropertyImage {ImageUrl = "/images/90.jpg", PropertyId = 22},
+                    new PropertyImage {ImageUrl = "/images/91.jpg", PropertyId = 22},
+                    new PropertyImage {ImageUrl = "/images/92.jpg", PropertyId = 22},
+                    new PropertyImage {ImageUrl = "/images/93.jpg", PropertyId = 22},
+
+                    new PropertyImage {ImageUrl = "/images/94.jpg", PropertyId = 23},
+                    new PropertyImage {ImageUrl = "/images/95.jpg", PropertyId = 23},
+                    new PropertyImage {ImageUrl = "/images/96.jpg", PropertyId = 23},
+                    new PropertyImage {ImageUrl = "/images/97.jpg", PropertyId = 23},
+
+                    new PropertyImage {ImageUrl = "/images/98.jpg", PropertyId = 24},
+                    new PropertyImage {ImageUrl = "/images/99.jpg", PropertyId = 24},
+                    new PropertyImage {ImageUrl = "/images/100.jpg", PropertyId = 24},
+                    new PropertyImage {ImageUrl = "/images/101.jpg", PropertyId = 24},
 
                 };
 				context.AddRange(imageProperty);

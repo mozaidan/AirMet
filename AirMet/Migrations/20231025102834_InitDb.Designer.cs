@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231024110014_IdentityAdded")]
-    partial class IdentityAdded
+    [Migration("20231025102834_InitDb")]
+    partial class InitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,9 +66,6 @@ namespace AirMet.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PropertyId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int?>("ReservationId")
                         .HasColumnType("INTEGER");
 
@@ -76,7 +73,7 @@ namespace AirMet.Migrations
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("AirMet.Models.PType", b =>
