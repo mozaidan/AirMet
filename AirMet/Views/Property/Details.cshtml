@@ -76,18 +76,25 @@
             <span class="property-info-item">Bed: @Model.Bed</span>
             <span class="property-info-item">Bedrooms: @Model.BedRooms</span>
             <span class="property-info-item">Bathrooms: @Model.BathRooms</span>
-            <span class="property-info-item">
-                Amenities:
+            <h4>What this place offers</h4>
+            <span class="property-info-item"> <br />
                 @foreach (var propertyAmenity in Model.PropertyAmenities)
                     {
                     <span class="amenity-item">
                         <i class="@propertyAmenity.Amenity.AmenityIcon"></i> <!-- Displaying the icon -->
                         @propertyAmenity.Amenity.AmenityName <!-- Displaying the name -->
+<<<<<<< HEAD
                     </span>
                     }
+=======
+                    </span> <br>
+                }
+>>>>>>> 2e331f6561805efb9d84e355cd37e9f25bae99e2
             </span>
             <h5>@Model.Description</h5>
         </div>
+        
+        
 
         <h4>Leave a Review</h4>
 
