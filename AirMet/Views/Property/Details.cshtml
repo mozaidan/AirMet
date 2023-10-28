@@ -2,16 +2,14 @@
 @using Microsoft.AspNetCore.Identity
 @using System.Linq
 @inject PropertyDbContext _db
-@inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-@inject Customer Customer
+@inject Customer? Customer
+
 @{
     var userId = UserManager.GetUserId(User);
     Customer = _db.Customers.FirstOrDefault(c => c.CustomerId == userId);
-}
 
-@{
-    var reservationMessage = ViewBag.ReservationMessage;
+    var reservationMessage = TempData["GuestMessage"] as string;
     var guestMessage = TempData["GuestMessage"] as string;
     if (!string.IsNullOrEmpty(reservationMessage))
     {
@@ -28,10 +26,11 @@
 }
 
 <div class="property-details-container row">
-    <h3 class="property-title col-12">@Model.Title</h3>
+    <h3 class="col-12 fs-2">@Model.Title</h3>
+    <h6 class="property-address col-12 fs-5">@Model.Address</h6>
 
 
-    <div class="col-12">
+    <div class="col-12 mb-3 mt-4">
         <!-- Carousel Starts Here -->
         <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -39,11 +38,11 @@
                     var imageList = Model.Images.ToList(); // Convert to List
                 }
                 @for (int i = 0; i < imageList.Count; i++)
-                    {
+                {
                     <div class="carousel-item @(i == 0 ? "active" : "")">
                         <img src="@imageList[i].ImageUrl" class="d-block w-700 property-image img-fluid" alt="@Model.Description">
                     </div>
-                    }
+                }
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -58,81 +57,102 @@
 
         <div class="row mt-4">
             @for (int i = 0; i < imageList.Count; i++)
-                {
+            {
                 <div class="col-2">
                     <img src="@imageList[i].ImageUrl" class="img-thumbnail" data-bs-target="#propertyCarousel" data-bs-slide-to="@i">
                 </div>
-                }
+            }
         </div>
 
     </div>
 
     <div class="col-md-6">
         <div class="property-additional-info">
-            <h2>@Model.PType.PTypeName hosted by @Model.Customer.Name</h2>
-            <h3 class="property-price">@Model.Price.ToString("0.00 NOK")</h3>
-            <h3 class="property-address col-12">@Model.Address</h3>
-            <span class="property-info-item">Guests: @Model.Guest</span>
-            <span class="property-info-item">Bed: @Model.Bed</span>
-            <span class="property-info-item">Bedrooms: @Model.BedRooms</span>
-            <span class="property-info-item">Bathrooms: @Model.BathRooms</span>
-            <h4>What this place offers</h4>
-            <span class="property-info-item"> <br />
-                @foreach (var propertyAmenity in Model.PropertyAmenities)
-                    {
-                    <span class="amenity-item">
-                        <i class="@propertyAmenity.Amenity.AmenityIcon"></i> <!-- Displaying the icon -->
-                        @propertyAmenity.Amenity.AmenityName <!-- Displaying the name -->
-                    </span> <br>
-                }
-            </span>
-            <h5>@Model.Description</h5>
-        </div>
-        
-        
-
-        <h4>Leave a Review</h4>
-
-        <div class="rating-stars">
-            <span class="star" data-star="1">★</span>
-            <span class="star" data-star="2">★</span>
-            <span class="star" data-star="3">★</span>
-            <span class="star" data-star="4">★</span>
-            <span class="star" data-star="5">★</span>
-        </div>
-
-        <p>Your Rating: <span id="selected-rating">0</span></p>
-    </div>
-    <div class="col-md-6">
-        @if (Customer.Name == Model.Customer.Name)
-        {
-            <a class="btn btn-primary" role="button" asp-controller="Property" asp-action="Update" asp-route-id="@Model.PropertyId">Update</a>
-            <a role="button" class="btn btn-danger" asp-controller="Property" asp-action="Delete" asp-route-id="@Model.PropertyId">Delete</a>
-        }
-        else
-        {
-            <div class="property-description">
-
-                <form method="post" asp-controller="Reservation" asp-action="Reserve" asp-route-propertyId="@Model.PropertyId">
-                    <div class="form-group">
-                        <label for="reservationsDate">Start Date:</label>
-                        <input type="date" class="form-control" id="reservationDate" name="reservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")">
-                    </div>
-                    <div class="form-group">
-                        <label for="endReservationDate">End Date:</label>
-                        <input type="date" class="form-control" id="endReservationDate" name="endReservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")">
-                    </div>
-                    <div class="form-group">
-                        <label for="numberOfGuests">Number of Guests:</label>
-                        <input type="number" class="form-control" id="numberOfGuests" name="numberOfGuests" required>
-                    </div>
-                    <button type="submit" id="Reserve" class="btn btn-danger">Reserve</button>
-                </form>
-                <a class="back-to-home-link" asp-controller="Home" asp-action="Index">Back to Home</a>
+            <div class="border-bottom border-2 mb-4 mt-3">
+                <h3>@Model.PType.PTypeName hosted by @Model.Customer.Name</h3>
+                <span class="property-info-item">Guests: @Model.Guest</span>
+                <span class="property-info-item">Bed: @Model.Bed</span>
+                <span class="property-info-item">Bedrooms: @Model.BedRooms</span>
+                <span class="property-info-item">Bathrooms: @Model.BathRooms</span>
             </div>
-        }
+            <p class="fs-5 border-bottom border-2 mb-4 space">@Model.Description</p>
 
+            @if (Model.PropertyAmenities != null)
+            {
+                <div class="border-bottom border-2 mb-4">
+                    <h4>What this place offers</h4>
+                    <div class="col-sm-10 fs-6 mb-4">
+                        <div class="row row-cols-2">
+                            @foreach (var propertyAmenity in Model.PropertyAmenities)
+                            {
+                                <span class="amenity-item">
+                                    <i class="@propertyAmenity?.Amenity?.AmenityIcon"></i> <!-- Displaying the icon -->
+                                    @propertyAmenity?.Amenity?.AmenityName <!-- Displaying the name -->
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+        <div class="border-bottom border-2 mb-4">
+            <h4>Leave a Review</h4>
+
+            <div class="rating-stars">
+                <span class="star" data-star="1">★</span>
+                <span class="star" data-star="2">★</span>
+                <span class="star" data-star="3">★</span>
+                <span class="star" data-star="4">★</span>
+                <span class="star" data-star="5">★</span>
+            </div>
+
+            <p>Your Rating: <span id="selected-rating">0</span></p>
+        </div>
     </div>
+
+    @if (Customer?.Name == Model.Customer.Name)
+    {
+        <div class="col-md-6">
+            <div class="property-description">
+                <span class="d-inline-block property-price" id="singleDayPrice">@Model.Price.ToString("0.00 NOK") <span class="text-muted fs-6">night</span></span>
+                <div class="row row-cols-3">
+                    <a class="btn btn-primary" role="button" asp-controller="Property" asp-action="Update" asp-route-id="@Model.PropertyId">Update</a>
+                    <a role="button" class="btn btn-danger" asp-controller="Property" asp-action="Delete" asp-route-id="@Model.PropertyId">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+    <div class="col-md-6">
+        <div class="property-description">
+
+            <span class="d-inline-block property-price" id="singleDayPrice">@Model.Price.ToString("0.00 NOK") <span class="text-muted fs-6">night</span></span>
+
+            <form method="post" asp-controller="Reservation" asp-action="Reserve" asp-route-propertyId="@Model.PropertyId">
+                <div class="form-group text-left">
+                    <label for="reservationsDate">Start Date:</label>
+                    <input type="date" class="form-control" id="reservationDate" name="reservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.AddDays(3).ToString("yyyy-MM-dd")">
+                </div>
+                <div class="form-group text-left">
+                    <label for="endReservationDate">End Date:</label>
+                    <input type="date" class="form-control" id="endReservationDate" name="endReservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.AddDays(10).ToString("yyyy-MM-dd")">
+                </div>
+                <div class="form-group text-left">
+                    <label for="numberOfGuests">Number of Guests:</label>
+                    <input type="number" class="form-control number-resize" min="1" id="numberOfGuests" name="numberOfGuests" required>
+                </div>
+                <button type="submit" id="Reserve" class="btn btn-danger">Reserve</button>
+            </form>
+            <!-- This span will hold the total price -->
+            <dl class="row mx-auto text-left" id="totalPrice"></dl>
+        </div>
+    </div>
+    }
+
+
 
 </div>
 

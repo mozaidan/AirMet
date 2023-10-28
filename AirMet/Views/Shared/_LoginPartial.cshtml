@@ -3,21 +3,21 @@
 @inject PropertyDbContext _db
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-@inject Customer Customer
+@inject Customer? Customer
 @{
     var userId = UserManager.GetUserId(User);
     Customer = _db.Customers.FirstOrDefault(c => c.CustomerId == userId);
 }
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
+
+@if (SignInManager.IsSignedIn(User))
+{
         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
             <ul class="navbar-nav">
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Hello @Customer.Name</a>
-                    <ul class="dropdown-menu">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Hello @Customer?.Name</a>
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Reservation" asp-action="Reservation"> <i class="fas fa-bookmark"></i> Reservations</a>
                         </li>
@@ -40,17 +40,19 @@
             </ul>
         </div>
 
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Property" asp-action="Create">Register as Publisher</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
-</ul>
+}
+else
+{
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Property" asp-action="Create">Register as Publisher</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>
+        </ul>
+}
+    

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AirMet.Models;
 using Microsoft.CodeAnalysis;
-using Castle.Core.Resource;
 
 namespace AirMet.DAL
 {
@@ -16,7 +15,7 @@ namespace AirMet.DAL
             _logger = logger;
         }
 
-
+        // Retrieves all reservations for a specific user
         public async Task<IEnumerable<Reservation>?> GetReservationsByUserId(string userId)
         {
             try
@@ -32,7 +31,7 @@ namespace AirMet.DAL
 
         }
 
-
+        // Retrieves all reservations for a specific property
         public async Task<IEnumerable<Reservation>?> GetReservationsByPropertyId(int propertyId)
         {
             try
@@ -48,7 +47,7 @@ namespace AirMet.DAL
 
 
 
-
+        // Adds a new reservation to database
         public async Task<bool> Add(Reservation reservation)
         {
             try
@@ -64,7 +63,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Updates an existing reservation
         public async Task<bool> Update(Reservation reservation)
         {
             try
@@ -80,7 +79,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Deletes a reservation from the database
         public async Task<bool> Delete(int id)
         {
             try
@@ -105,7 +104,7 @@ namespace AirMet.DAL
 
 
 
-
+        // Retrieves a reservation by its id
         public async Task<Reservation?> GetReservationById(int reservationId)
         {
             try
@@ -120,7 +119,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Retrieves a reservation for a given user and property id's
         public async Task<Reservation?> GetReservationByUserIdAndPropertyId(string userId, int propertyId)
         {
             try
@@ -136,7 +135,7 @@ namespace AirMet.DAL
 
 
 
-
+        // Retrieves the property associated with a given reservation id
         public async Task<Property?> GetPropertyByReservationId(int reservationId)
         {
             try
@@ -157,7 +156,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Retrieves the property by its id
         public async Task<Property?> GetPropertyById(int id)
         {
             try
@@ -174,7 +173,7 @@ namespace AirMet.DAL
 
 
 
-
+        // Retrieves the customer associated with a given reservation id
         public async Task<Customer?> GetCustomerByReservationId(int reservationId)
         {
             try
@@ -188,7 +187,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Retrieves a customer by their customer id
         public async Task<Customer?> Customer(string customerId)
         {
             try

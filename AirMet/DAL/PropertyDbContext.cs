@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AirMet.Models
 {
-
+    // Represents the Entity Framework context for the Property application, inheriting from IdentityDbContext for identity features.
     public class PropertyDbContext : IdentityDbContext
     {
         public PropertyDbContext(DbContextOptions<PropertyDbContext> options) : base(options)
@@ -11,6 +11,7 @@ namespace AirMet.Models
             //Database.EnsureCreated();
         }
 
+        // DbSets
         public DbSet<Property> Properties { get; set; }
         public DbSet<PropertyImage> PropertyImages { get; set; }
         public DbSet<Customer> Customers { get; set; }
@@ -21,6 +22,7 @@ namespace AirMet.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // Enable Lazy Loading.
             optionsBuilder.UseLazyLoadingProxies();
         }
 

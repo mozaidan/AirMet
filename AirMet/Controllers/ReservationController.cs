@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AirMet.Controllers
 {
+    // Controller for handling reservations
     public class ReservationController : Controller
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly ILogger<ReservationController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
         
-
+        // Constructor
         public ReservationController(IReservationRepository reservationRepository, ILogger<ReservationController> logger, UserManager<IdentityUser> userManager)
         {
             _reservationRepository = reservationRepository;
@@ -20,16 +21,22 @@ namespace AirMet.Controllers
             _userManager = userManager;
         }
 
+        // List reservations for a property
         [Authorize]
         public async Task<IActionResult> ListReservations(int id)
         {
+            // Get reservations based on Property id
             List<Reservation>? reservations = (List<Reservation>?)await _reservationRepository.GetReservationsByPropertyId(id);
             if (reservations == null)
             {
                 _logger.LogError("[HomeController] property list not found while executing _propertyRepository.GetAll()");
             }
+
+            // If there is no reservation, it will return empty table
             Customer? customerInfo = null;
             var viewModel = new ReservationsListViewModel(reservations, "ListReservations", customerInfo);
+
+            // Fetch customer information and populate ViewModel if reservations exists
             if (reservations != null)
             {
                 foreach (var reservation in reservations)
@@ -42,6 +49,7 @@ namespace AirMet.Controllers
             return View(viewModel);
         }
 
+        // View details of a reservation
         [Authorize]
         public async Task<IActionResult> Details(int id)
         {
@@ -53,7 +61,8 @@ namespace AirMet.Controllers
             }
             return View(reservation);
         }
-        
+
+        // Initiate the reservation process
         [HttpGet]
         [Authorize]
         public IActionResult Reserve(int propertyId, DateTime reservationDate, int numberOfGuests)
@@ -61,14 +70,14 @@ namespace AirMet.Controllers
             return View(new { PropertyId = propertyId, StartDate = reservationDate, NumberOfGuests = numberOfGuests });
         }
 
+        // Complete the reservation (POST)
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Reserve(int propertyId, DateTime reservationDate, int numberOfGuests, DateTime endReservationDate)
         {
             try
             {
-
-
+                // Validate and prepare reservation data
                 var startDate = reservationDate;
                 var endDate = endReservationDate; // Initialize the end date
 
@@ -78,7 +87,6 @@ namespace AirMet.Controllers
                     _logger.LogWarning("[ReservationController] User Not found!");
                     return NotFound("User not found!");// Handle null userId
                 }
-
                 Customer? customer = await _reservationRepository.Customer(userId);
                 if (customer == null)
                 {
@@ -92,6 +100,7 @@ namespace AirMet.Controllers
                     _logger.LogError("[ReservationController] property not found for the PropertyId {PropertyId:0000}", propertyId);
                     return NotFound("Property not found for the PropertyId");
                 }
+
 
                 if (numberOfGuests > property.Guest)
                 {
@@ -129,7 +138,7 @@ namespace AirMet.Controllers
                 reservation.TotalPrice = property.Price * days;
 
 
-                // Save the reservation to your data store (e.g., a database)
+                // Save the reservation to database
                 _ = _reservationRepository.Add(reservation); // Implement _reservationRepository accordingly
 
                 return RedirectToAction("Reservation"); // Redirect to the reservation list page after a successful reservation.
@@ -143,7 +152,7 @@ namespace AirMet.Controllers
         }
 
         
-
+        // View user's own reservations
         [Authorize]
         public async Task<IActionResult> Reservation()
         {
@@ -163,6 +172,7 @@ namespace AirMet.Controllers
             return View(viewModel);
         }
 
+        // Get unavailable dates for a property
         [HttpGet]
         public async Task<JsonResult> GetUnavailableDates(int propertyId)
         {
@@ -178,6 +188,7 @@ namespace AirMet.Controllers
             }
         }
 
+        // Update a reservation (GET)
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
@@ -190,6 +201,7 @@ namespace AirMet.Controllers
             return View(reservation);
         }
 
+        // Update a reservation (POST)
         [HttpPost]
         public async Task<IActionResult> Update(Reservation reservation, int id)
         {
@@ -209,6 +221,7 @@ namespace AirMet.Controllers
                     return NotFound("Property not found for the PropertyId");
                 }
 
+                // Fetch the reservation from the database using the user id and property id
                 var reservationFromDb = await _reservationRepository.GetReservationByUserIdAndPropertyId(userId, property.PropertyId);
                 if (reservationFromDb == null)
                 {
@@ -234,15 +247,19 @@ namespace AirMet.Controllers
                         }
                     }
                 }
-                
+
+                // Update the reservation fields
                 reservationFromDb.StartDate = reservation.StartDate;
                 reservationFromDb.EndDate = reservation.EndDate;
                 reservationFromDb.NumberOfGuests = reservation.NumberOfGuests;
 
+                // Calculate the total days and price for the reservation
                 var days = (reservationFromDb.EndDate - reservationFromDb.StartDate).Days;
                 reservationFromDb.TotalDays = days;
                 reservationFromDb.Property = property;
                 reservationFromDb.TotalPrice = property.Price * days;
+
+
                 var result = await _reservationRepository.Update(reservationFromDb);
 
                 if (result)
@@ -260,8 +277,9 @@ namespace AirMet.Controllers
                 _logger.LogError("[ReservationController] Error updating reservation: {Error}", e.Message);
                 return BadRequest("Failed to update reservation.");
             }
-
         }
+
+        // Delete a reservation (GET)
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Delete(int id)
@@ -276,6 +294,7 @@ namespace AirMet.Controllers
             return View(reservation);
         }
 
+        // Delete a reservation (POST)
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)

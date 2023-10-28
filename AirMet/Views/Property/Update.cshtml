@@ -2,63 +2,78 @@
 <h2>Update</h2>
 
 <form asp-action="Update" method="post" enctype="multipart/form-data">
+
     <div class="form-group">
-        <label asp-for="Property.PTypeId"></label>
-        <select asp-for="Property.PTypeId" asp-items="Model.PTypeSelectList" class="form-control">
+        <label asp-for="Property.Title">Title</label>
+        <input asp-for="Property.Title" class="form-control custom-resize" />
+        <span asp-validation-for="Property.Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Property.Address">Address</label>
+        <input asp-for="Property.Address" class="form-control custom-resize" />
+        <span asp-validation-for="Property.Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Property.PTypeId">Type</label>
+        <select asp-for="Property.PTypeId" asp-items="Model.PTypeSelectList" class="form-control custom-resize">
             <option value="">Select an item...</option>
         </select>
         <span asp-validation-for="Property.PTypeId" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Property.Title"></label>
-        <input asp-for="Property.Title" class="form-control" />
-        <span asp-validation-for="Property.Title" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Property.Description"></label>
-        <input asp-for="Property.Description" class="form-control" />
-        <span asp-validation-for="Property.Description" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Property.Price"></label>
-        <input asp-for="Property.Price" class="form-control" />
-        <span asp-validation-for="Property.Price" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Property.Address"></label>
-        <input asp-for="Property.Address" class="form-control" />
-        <span asp-validation-for="Property.Address" class="text-danger"></span>
-    </div>
+
     <div class="form-group">
         <label asp-for="Property.Guest"></label>
-        <input asp-for="Property.Guest" class="form-control" />
+        <input asp-for="Property.Guest" type="number" class="form-control number-resize" min="1" />
         <span asp-validation-for="Property.Guest" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Property.Bed"></label>
-        <input asp-for="Property.Bed" class="form-control" />
+        <input asp-for="Property.Bed" type="number" class="form-control number-resize" min="0" />
         <span asp-validation-for="Property.Bed" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Property.BedRooms"></label>
-        <input asp-for="Property.BedRooms" class="form-control" />
+        <input asp-for="Property.BedRooms" type="number" class="form-control number-resize" min="0" />
         <span asp-validation-for="Property.BedRooms" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Property.BathRooms"></label>
-        <input asp-for="Property.BathRooms" class="form-control" />
+        <input asp-for="Property.BathRooms" type="number" class="form-control number-resize" min="0" />
         <span asp-validation-for="Property.BathRooms" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        @for (var i = 0; i < Model.Amenities.Count; i++)
-        {
-            <input type="checkbox" asp-for="Amenities[i].IsChecked" />
-            <input type="hidden" asp-for="Amenities[i].AmenityId" />
-            <input type="hidden" asp-for="Amenities[i].AmenityName" />
-            <input type="hidden" asp-for="Amenities[i].AmenityIcon" />
-            @Model.Amenities[i].AmenityName <i class="@Model.Amenities[i].AmenityIcon"></i><br />
-        }
+        <label class="mb-2">Amenities:</label>
+        <div class="grid grid--cols2to3">
+            @for (var i = 0; i < Model.Amenities.Count; i++)
+            {
+                <label class="custom-checkbox">
+                    @Model.Amenities[i].AmenityName <i class="@Model.Amenities[i].AmenityIcon"></i>
+                    <input type="checkbox" asp-for="Amenities[i].IsChecked" />
+                    <span class="checkmark"></span>
+                    <input type="hidden" asp-for="Amenities[i].AmenityId" />
+                    <input type="hidden" asp-for="Amenities[i].AmenityName" />
+                    <input type="hidden" asp-for="Amenities[i].AmenityIcon" />
+
+                </label>
+            }
+        </div>
     </div>
+
+    <div class="form-group">
+        <label class="form-label" asp-for="Property.Price"></label>
+        <div class="input-group mb-3 custom-resize">
+            <input id="postfix" asp-for="Property.Price" class="form-control custom-resize" type="text" />
+            <span class="input-group-text">NOK</span>
+        </div>
+        <span asp-validation-for="Property.Price" class="text-danger"></span>
+    </div>
+
     <!-- Display existing images -->
     <div class="form-group">
         <label>Existing Images</label>
@@ -97,6 +112,14 @@
             <!-- Placeholder for image previews -->
         </div>
     </div>
+
+    <div class="form-group">
+        <label asp-for="Property.Description"></label>
+        <textarea asp-for="Property.Description" class="form-control custom-resize" rows="5" placeholder="Description..."></textarea>
+        <span asp-validation-for="Property.Description" class="text-danger"></span>
+    </div>
+
+
     <button type="submit" class="btn btn-primary">Save Changes</button>
     <a asp-controller="Customer" asp-action="List" class="btn btn-secondary">Cancel</a>
 </form>

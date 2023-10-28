@@ -5,15 +5,76 @@
 <div>
    
     <dl class="row">
+        <dt class="col-sm-2">Title</dt>
+        <dd class="col-sm-10">@Model.Title</dd>
 
-        <dt class="col-sm-2">Description</dt>
-        <dd class="col-sm-10">@Model.Description</dd>
+        <dt class="col-sm-2">Address</dt>
+        <dd class="col-sm-10">@Model.Address</dd>
+
+        <dt class="col-sm-2">Type</dt>
+        <dd class="col-sm-10">@Model.PType.PTypeName</dd>
+
+        <dt class="col-sm-2">Guest</dt>
+        <dd class="col-sm-10">@Model.Guest</dd>
+
+        <dt class="col-sm-2">Bed</dt>
+        <dd class="col-sm-10">@Model.Bed</dd>
+
+        <dt class="col-sm-2">Bedrooms</dt>
+        <dd class="col-sm-10">@Model.BedRooms</dd>
+
+        <dt class="col-sm-2">Bathrooms</dt>
+        <dd class="col-sm-10">@Model.BathRooms</dd>
+
+        @if (Model.PropertyAmenities != null)
+        {
+            <dt class="col-sm-2">Amenities</dt>
+            <dd class="col-sm-10">
+                <div class="grid grid--cols2to3">
+                    @foreach (var propertyAmenity in Model.PropertyAmenities)
+                    {
+                        <span class="amenity-item">
+                            <i class="@propertyAmenity?.Amenity?.AmenityIcon"></i> <!-- Displaying the icon -->
+                            @propertyAmenity?.Amenity?.AmenityName <!-- Displaying the name -->
+                        </span>
+                    }
+                </div>
+            </dd>
+        }
 
         <dt class="col-sm-2">Price</dt>
         <dd class="col-sm-10">@Model.Price</dd>
 
-        <dt class="col-sm-2">Address</dt>
-        <dd class="col-sm-10">@Model.Address</dd>
+        <dt class="col-sm-2">Images</dt>
+        <dd class="col-sm-10">
+            <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @{
+                        var imageList = Model.Images.ToList(); // Convert to List
+                    }
+                    @for (int i = 0; i < imageList.Count; i++)
+                    {
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <img src="@imageList[i].ImageUrl" class="d-block w-700 property-image img-fluid" alt="@Model.Description">
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </dd>
+
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-10">@Model.Description</dd>
+
+
+
     </dl>
 
     <form asp-action="DeleteConfirmed" asp-route-id="@Model.PropertyId" method="post">

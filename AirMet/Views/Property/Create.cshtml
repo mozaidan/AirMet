@@ -1,65 +1,80 @@
 @model CreatePropertyViewModel
 
-<h2>Publish your home</h2>
+<h2 class="ml-50">Publish your home</h2>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+<form class="create-page" asp-action="Create" method="post" enctype="multipart/form-data">
+
     <div class="form-group">
-        <label asp-for="Property.PTypeId"></label><span class="text-danger">*</span>
-        <select asp-for="Property.PTypeId" asp-items="Model.PTypeSelectList" class="form-control">
+        <label asp-for="Property.Title">Title</label><span class="text-danger">*</span>
+        <input asp-for="Property.Title" class="form-control custom-resize" placeholder="Title" />
+        <span asp-validation-for="Property.Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Property.Address"></label><span class="text-danger">*</span>
+        <input asp-for="Property.Address" class="form-control custom-resize" placeholder="Address" />
+        <span asp-validation-for="Property.Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Property.PTypeId">Type</label><span class="text-danger">*</span>
+        <select asp-for="Property.PTypeId" asp-items="Model.PTypeSelectList" class="form-control custom-resize">
             <option value="">Select an item...</option>
         </select>
         <span asp-validation-for="Property.PTypeId" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Property.Title"></label><span class="text-danger">*</span>
-        <input asp-for="Property.Title" class="form-control" />
-        <span asp-validation-for="Property.Title" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Property.Description"></label><span class="text-danger">*</span>
-        <input asp-for="Property.Description" class="form-control" />
-        <span asp-validation-for="Property.Description" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Property.Price"></label><span class="text-danger">*</span>
-        <input asp-for="Property.Price" class="form-control" />
-        <span asp-validation-for="Property.Price" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Property.Address"></label>
-        <input asp-for="Property.Address" class="form-control" />
-        <span asp-validation-for="Property.Address" class="text-danger"></span>
-    </div>
+
     <div class="form-group">
         <label asp-for="Property.Guest"></label><span class="text-danger">*</span>
-        <input asp-for="Property.Guest" class="form-control" />
+        <input asp-for="Property.Guest" type="number" class="form-control number-resize" min="1" />
         <span asp-validation-for="Property.Guest" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Property.Bed"></label><span class="text-danger">*</span>
-        <input asp-for="Property.Bed" class="form-control" />
+        <input type="number" asp-for="Property.Bed" class="form-control number-resize" min="0" />
         <span asp-validation-for="Property.Bed" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Property.BedRooms"></label><span class="text-danger">*</span>
-        <input asp-for="Property.BedRooms" class="form-control" />
+        <input type="number" asp-for="Property.BedRooms" class="form-control number-resize" min="0" />
         <span asp-validation-for="Property.BedRooms" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Property.BathRooms"></label><span class="text-danger">*</span>
-        <input asp-for="Property.BathRooms" class="form-control" />
+        <input type="number" asp-for="Property.BathRooms" class="form-control number-resize" min="0" />
         <span asp-validation-for="Property.BathRooms" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        @for (var i = 0; i < Model.Amenities.Count; i++)
-        {
-            <input type="checkbox" asp-for="Amenities[i].IsChecked" />
-            <input type="hidden" asp-for="Amenities[i].AmenityId" />
-            <input type="hidden" asp-for="Amenities[i].AmenityName" />
-            <input type="hidden" asp-for="Amenities[i].AmenityIcon" />
-            @Model.Amenities[i].AmenityName <i class="@Model.Amenities[i].AmenityIcon"></i><br />
-        }
+        <label class="mb-2">Amenities:</label>
+        <div class="grid grid--cols2to3">
+            @for (var i = 0; i < Model.Amenities.Count; i++)
+            {
+                <label class="custom-checkbox">
+                    @Model.Amenities[i].AmenityName <i class="@Model.Amenities[i].AmenityIcon"></i>
+                    <input type="checkbox" asp-for="Amenities[i].IsChecked" />
+                    <span class="checkmark"></span>
+                    <input type="hidden" asp-for="Amenities[i].AmenityId" />
+                    <input type="hidden" asp-for="Amenities[i].AmenityName" />
+                    <input type="hidden" asp-for="Amenities[i].AmenityIcon" />
+
+                </label>
+            }
+        </div>
     </div>
+
+    <div class="form-group">
+        <label class="form-label" asp-for="Property.Price"></label><span class="text-danger">*</span>
+        <div class="input-group mb-3 custom-resize">
+            <input id="postfix" asp-for="Property.Price" class="form-control custom-resize" placeholder="0.00NOK" type="text" />
+            <span class="input-group-text">NOK</span>
+        </div>
+        <span asp-validation-for="Property.Price" class="text-danger"></span>
+    </div>
+
     <div class="form-group">
         <label>Images</label>
         <div id="image-container">
@@ -69,6 +84,12 @@
         <div id="preview-container">
             <!-- Placeholder for image previews -->
         </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Property.Description">Description</label><span class="text-danger">*</span>
+        <textarea asp-for="Property.Description" class="form-control custom-resize" rows="5" placeholder="Description..."></textarea>
+        <span asp-validation-for="Property.Description" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Create</button>

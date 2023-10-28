@@ -4,8 +4,10 @@ using Microsoft.CodeAnalysis;
 
 namespace AirMet.DAL
 {
+    // Implementation of the IPropertyRepository interface
     public class PropertyRepository : IPropertyRepository
     {
+        // Dependency injection of DbContext and Logger
         private readonly PropertyDbContext _db;
         private readonly ILogger<PropertyRepository> _logger;
 
@@ -15,12 +17,12 @@ namespace AirMet.DAL
             _logger = logger;
         }
 
-
+        // Retrieve all properties
         public async Task<IEnumerable<Property>?> GetAll()
         {
             try
             {
-                return await _db.Properties.Include(p => p.Images).ToListAsync();
+                return await _db.Properties.Include(p => p.Images).ToListAsync(); // Include images
             }
             catch (Exception e)
             {
@@ -30,7 +32,7 @@ namespace AirMet.DAL
 
         }
 
-
+        // Retrieve properties by their type id
         public async Task<IEnumerable<Property>?> GetAllByTypeId(int typeId)
         {
             try
@@ -44,7 +46,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Retrieve properties owned by a specific user
         public async Task<IEnumerable<Property>?> GetAllByUserId(string userId)
         {
             try
@@ -58,11 +60,12 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Retrieve a single property by its id
         public async Task<Property?> GetPropertyById(int id)
         {
             try
             {
+                // Include images
                 return await _db.Properties.Include(p => p.Images).FirstOrDefaultAsync(i => i.PropertyId == id);
 
             }
@@ -73,7 +76,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Creates a new property in the database
         public async Task<bool> Create(Property property)
         {
             try
@@ -89,7 +92,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Updates an existing in the database
         public async Task<bool> Update(Property property)
         {
             try
@@ -105,7 +108,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Deletes a property by its id
         public async Task<bool> Delete(int id)
         {
             try
@@ -128,7 +131,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Adds new images to an existing property
         public async Task<bool> AddNewImages(int propertyId, List<PropertyImage> newImages)
         {
             try
@@ -144,7 +147,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Deletes an image by its id
         public async Task<int> DeleteImage(int id)
         {
             try
@@ -176,7 +179,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Retrieves property type details by its id
         public async Task<PType?> GetPType(int id)
         {
             try
@@ -191,7 +194,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Retrieves all available property types
         public async Task<IEnumerable<PType>?> GetAllTypes()
         {
             try
@@ -207,7 +210,7 @@ namespace AirMet.DAL
         
         
 
-
+        // Retrieves all available amenities
         public async Task<IEnumerable<Amenity>?> GetAllAmenities()
         {
             try
@@ -221,7 +224,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Removes all amenities for a specific property
         public async Task<bool> RemoveAmenitiesForProperty(int propertyId)
         {
             try
@@ -245,7 +248,7 @@ namespace AirMet.DAL
             }
         }
 
-
+        // Adds selected amenities to a specific property
         public async Task<bool> AddAmenitiesToProperty(int propertyId, List<Amenity> selectedAmenities)
         {
             try
@@ -284,7 +287,7 @@ namespace AirMet.DAL
 
 
 
-
+        // Retrieves customer details by their id
         public async Task<Customer?> Customer(string customerId)
         {
             try

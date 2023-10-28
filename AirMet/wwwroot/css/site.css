@@ -20,10 +20,10 @@ body {
 .property-details-container {
     padding: 20px;
     background-color: #ffffff;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #ddd;
     border-radius: 5px;
+    margin: 20px;
 }
-
 .property-address {
     font-size: 24px;
     color: #333;
@@ -40,14 +40,20 @@ body {
 }
 
 .property-description {
-    padding: 20px;
+    margin-top: 40px;
     background-color: #f5f5f5;
     border-radius: 5px;
+    margin-left: 100px;
 }
 
 .property-price {
     font-size: 30px;
     color: #333;
+}
+#totalPrice{
+    margin-left: 0;
+    font-size: 15px;
+    margin-top: 20px;
 }
 
 .back-to-home-link {
@@ -116,21 +122,18 @@ a {
     margin-left: 5px;
 }
 
-.property-details-container {
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin: 20px;
+
+
+.space {
+    line-height: 200%;
 }
 
-.property-title, .property-address, .property-price {
-    margin-bottom: 15px;
-}
 
 .property-info-item {
     display: inline-block;
     margin-right: 20px;
     font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .property-description {
@@ -192,6 +195,18 @@ a {
 .form-control {
     width: 300px; /* Adjust the width as needed */
 }
+.custom-resize {
+    width: 600px;
+}
+
+.number-resize {
+    width: 200px;
+}
+
+.form-group {
+    margin-bottom: 20px; /* Adjust the value as needed */
+}
+
 
 .table {
     font-family: Arial, sans-serif;
@@ -216,3 +231,76 @@ td a:hover {
     text-decoration: underline;
 }
 
+/* Custom Checkbox */
+.custom-checkbox {
+    position: relative;
+    padding-left: 25px; /* Reduced from 35px */
+    cursor: pointer;
+    font-size: 16px; /* Reduced from 22px */
+    user-select: none;
+}
+
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.custom-checkbox .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px; /* Reduced from 25px */
+    width: 18px; /* Reduced from 25px */
+    background-color: #ccc;
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* CSS for grid with 2 to 3 columns */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-left: 0px; /* Center align */
+    width: fit-content; /* Adjust width to content */
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+    .grid.grid--cols2to3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.create-page{
+    margin: auto;
+    margin-left: 50px;
+}
+
+.ml-50{
+    margin-left: 50px;
+    margin-bottom: 20px;
+    border-bottom: groove;
+}
+
+.bg-image-vertical {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+}
+
+@media (min-width: 1025px) {
+    .h-custom-2 {
+        height: 100%;
+    }
+}
+#logo {
+    height: 100px;
+}

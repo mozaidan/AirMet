@@ -5,7 +5,8 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Property Title</th>
+            <th>Property</th>
+            <th>Address</th>
             <th>Start Date</th>
             <th>End Date</th>
             <th>Number of Guests</th>
@@ -16,10 +17,19 @@
         </tr>
     </thead>
     <tbody>
+        @if (Model.Reservations != null)
         @foreach (var reservation in Model.Reservations)
         {
             <tr>
-                <td>@(reservation.Property != null ? reservation.Property.Title.ToString() : "Not Available")</td>
+                <td>
+                    <a asp-controller="Property"
+                       asp-action="Details"
+                       asp-route-id="@reservation.PropertyId">
+                        @(reservation.Property != null ? reservation.Property.Title.ToString() : "Not Available")
+                    </a>
+                </td>
+
+                <td>@(reservation.Property != null ? reservation.Property.Address : "Not Available")</td>
                 <td>@reservation.StartDate.ToShortDateString()</td>
                 <td>@reservation.EndDate.ToShortDateString()</td>
                 <td>@reservation.NumberOfGuests</td>

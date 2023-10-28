@@ -9,4 +9,3 @@ namespace AirMet.ViewModels
 		public List<Amenity> Amenities { get; set; } = default!;
 	}
 }
-

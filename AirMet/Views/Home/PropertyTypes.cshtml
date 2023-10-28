@@ -9,7 +9,6 @@
                     <a class="nav-link" asp-action="Index" asp-controller="Home">
                         <i class="fas fa-home"></i>
                         <div>All</div>
-                        <span class="sr-only">(current)</span>
                     </a>
                 </div>
             </li>
@@ -78,9 +77,19 @@
     </div>
 </nav>
 
-<div class="row row-cols-1 row-cols-md-4 g-3">
-    @foreach (var property in Model.Properties)
-    {
-        <partial name="_PropertyCard" model="property" />
-    }
-</div>
+
+@if (Model?.Properties != null)
+{
+    <div class="row row-cols-1 row-cols-md-4 g-3">
+        @foreach (var property in Model.Properties)
+        {
+            <partial name="_PropertyCard" model="property" />
+        }
+    </div>
+ }
+else
+{
+<div><h3>No properties found.</h3></div>
+}
+
+    

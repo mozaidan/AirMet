@@ -4,26 +4,6 @@
 // Write your JavaScript code.
 
 
-/* Set the width of the side navigation to 250px */
-function openNav() {
-    var sideNav = document.getElementById("mySidenav");
-    if (sideNav) {
-        sideNav.style.width = "250px";
-    } else {
-        console.error("Element with ID 'mySidenav' not found.");
-    }
-}
-
-function closeNav() {
-    var sideNav = document.getElementById("mySidenav");
-    if (sideNav) {
-        sideNav.style.width = "0";
-    } else {
-        console.error("Element with ID 'mySidenav' not found.");
-    }
-}
-
-
 document.addEventListener("DOMContentLoaded", function () {
     // Function to add new image input
     function addImageInput() {
@@ -83,6 +63,7 @@ carouselInner.addEventListener('slide.bs.carousel', function (event) {
     thumbnails[event.to].classList.add('active-thumbnail');
 });
 
+
 const stars = document.querySelectorAll('.star');
 const rating = document.getElementById('selected-rating');
 
@@ -101,4 +82,41 @@ stars.forEach(star => {
     });
 });
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Capture the price per day from the HTML.
+    const pricePerDay = parseFloat(document.getElementById("singleDayPrice").textContent.split(" ")[0]);
+
+    // Get the date input elements.
+    const startDateInput = document.getElementById("reservationDate");
+    const endDateInput = document.getElementById("endReservationDate");
+
+    
+
+    function calculateTotalPrice() {
+        // Get the start and end dates from the input fields.
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+
+        // Calculate the number of days between the two dates.
+        const timeDifference = endDate - startDate;
+        const numberOfDays = timeDifference / (1000 * 3600 * 24);
+
+        // Only update the total price and days if the number of days is greater than 0.
+        if (numberOfDays > 0) {
+            const totalPrice = numberOfDays * pricePerDay;
+            const content = `
+            <dt class="col-sm-7 fw-lighter">${pricePerDay} NOK x ${numberOfDays} nights</dt>
+            <dd class="col-sm-5 fw-bold">${totalPrice.toFixed(2)} NOK</dd>`;
+            document.getElementById("totalPrice").innerHTML = content;
+        } else {
+            document.getElementById("totalPrice").innerHTML = '';
+        }
+    }
+    // Listen for changes in the date input fields.
+    startDateInput.addEventListener("change", calculateTotalPrice);
+    endDateInput.addEventListener("change", calculateTotalPrice);
+    calculateTotalPrice();
+
+});
 
