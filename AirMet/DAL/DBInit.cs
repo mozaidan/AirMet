@@ -4,12 +4,12 @@ using AirMet.Models;
 
 namespace AirMet.Models
 {
-    public static class DBInit
-    {
-        public static void Seed(IApplicationBuilder app)
-        {
-            using var serviceScope = app.ApplicationServices.CreateScope();
-            PropertyDbContext context = serviceScope.ServiceProvider.GetRequiredService<PropertyDbContext>();
+	public static class DBInit
+	{
+		public static void Seed(IApplicationBuilder app)
+		{
+			using var serviceScope = app.ApplicationServices.CreateScope();
+			PropertyDbContext context = serviceScope.ServiceProvider.GetRequiredService<PropertyDbContext>();
             //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
@@ -609,3 +609,4 @@ namespace AirMet.Models
         }
 	}
 }
+
