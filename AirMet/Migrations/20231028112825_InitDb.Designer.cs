@@ -11,7 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
+<<<<<<<< HEAD:AirMet/Migrations/20231028112825_InitDb.Designer.cs
     [Migration("20231028112825_InitDb")]
+========
+    [Migration("20231026203501_InitDb")]
+>>>>>>>> 7eb9223 (Add in DbInit):AirMet/Migrations/20231026203501_InitDb.Designer.cs
     partial class InitDb
     {
         /// <inheritdoc />
