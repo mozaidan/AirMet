@@ -118,39 +118,54 @@
             <div class="property-description">
                 <span class="d-inline-block property-price" id="singleDayPrice">@Model.Price.ToString("0.00 NOK") <span class="text-muted fs-6">night</span></span>
                 <div class="row row-cols-2">
-                    <a role="button" class="btn btn-primary" asp-controller="Property" asp-action="Update" asp-route-id="@Model.PropertyId">Update</a>
-                    <a role="button" class="btn btn-danger" asp-controller="Property" asp-action="Delete" asp-route-id="@Model.PropertyId">Delete</a>
-                    <a role="button" class="btn btn-success" asp-controller="Reservation" asp-action="ListReservations" asp-route-id="@Model.PropertyId">Reservations</a>
+                    <div class="d-block mb-3">
+                        <a role="button" class="btn btn-primary" asp-controller="Property" asp-action="Update" asp-route-id="@Model.PropertyId">Update</a>
+                    </div>
+                    <div class="d-block mb-3">
+                        <a role="button" class="btn btn-danger" asp-controller="Property" asp-action="Delete" asp-route-id="@Model.PropertyId">Delete</a>
+                    </div>
+                    <div class="d-block mb-3">
+                        <a role="button" class="btn btn-success" asp-controller="Reservation" asp-action="ListReservations" asp-route-id="@Model.PropertyId">Reservations</a>
+                    </div>
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+
+
     }
     else
     {
-    <div class="col-md-6">
-        <div class="property-description">
+        <div class="col-md-6">
+            <div class="property-description">
 
-            <span class="d-inline-block property-price" id="singleDayPrice">@Model.Price.ToString("0.00 NOK") <span class="text-muted fs-6">night</span></span>
+                <span class="d-inline-block property-price" id="singleDayPrice">@Model.Price.ToString("0.00 NOK") <span class="text-muted fs-6">night</span></span>
 
-            <form method="post" asp-controller="Reservation" asp-action="Reserve" asp-route-propertyId="@Model.PropertyId">
-                <div class="form-group text-left">
-                    <label for="reservationsDate">Start Date:</label>
-                    <input type="date" class="form-control" id="reservationDate" name="reservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.AddDays(3).ToString("yyyy-MM-dd")">
-                </div>
-                <div class="form-group text-left">
-                    <label for="endReservationDate">End Date:</label>
-                    <input type="date" class="form-control" id="endReservationDate" name="endReservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.AddDays(10).ToString("yyyy-MM-dd")">
-                </div>
-                <div class="form-group text-left">
-                    <label for="numberOfGuests">Number of Guests:</label>
-                    <input type="number" class="form-control number-resize" min="1" id="numberOfGuests" name="numberOfGuests" required>
-                </div>
-                <button type="submit" id="Reserve" class="btn btn-danger">Reserve</button>
-            </form>
-            <!-- This span will hold the total price -->
-            <dl class="row mx-auto text-left" id="totalPrice"></dl>
+                <form method="post" asp-controller="Reservation" asp-action="Reserve" asp-route-propertyId="@Model.PropertyId">
+                    <div class="form-group text-left">
+                        <label for="reservationsDate">Start Date:</label>
+                        <input type="date" class="form-control" id="reservationDate" name="reservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.AddDays(3).ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="endReservationDate">End Date:</label>
+                        <input type="date" class="form-control" id="endReservationDate" name="endReservationDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@DateTime.Now.AddDays(10).ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="form-group text-left">
+                        <label for="numberOfGuests">Number of Guests:</label>
+                        <input type="number" class="form-control number-resize" min="1" id="numberOfGuests" name="numberOfGuests" required>
+                    </div>
+                    <button type="submit" id="Reserve" class="btn btn-danger">Reserve</button>
+                </form>
+                <!-- This span will hold the total price -->
+                <dl class="row mx-auto text-left" id="totalPrice"></dl>
+            </div>
         </div>
-    </div>
     }
 
 
