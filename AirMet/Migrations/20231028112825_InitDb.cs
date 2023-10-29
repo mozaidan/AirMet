@@ -17,7 +17,7 @@ namespace AirMet.Migrations
                 {
                     AmenityId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    AmenityName = table.Column<string>(type: "TEXT", nullable: false),
+                    AmenityName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     AmenityIcon = table.Column<string>(type: "TEXT", nullable: false),
                     IsChecked = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
@@ -71,7 +71,7 @@ namespace AirMet.Migrations
                 {
                     PTypeId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    PTypeName = table.Column<string>(type: "TEXT", nullable: false)
+                    PTypeName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,7 +218,7 @@ namespace AirMet.Migrations
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Address = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 800, nullable: false),
                     Guest = table.Column<int>(type: "INTEGER", nullable: false),
                     Bed = table.Column<int>(type: "INTEGER", nullable: false),
                     BedRooms = table.Column<int>(type: "INTEGER", nullable: false),

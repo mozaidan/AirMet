@@ -107,13 +107,13 @@ namespace AirMet.Areas.Identity.Pages.Account
             [Required]
             public string Name { get; set; }
 
-            [Required]
+            
             public string Age { get; set; }
 
-            [Required]
+            
             public string Address { get; set; }
 
-            [Required]
+            
             public string PhoneNumber { get; set; }
         }
 
@@ -157,6 +157,7 @@ namespace AirMet.Areas.Identity.Pages.Account
                         Name = Input.Name,
                         Age = Input.Age,
                         Address = Input.Address,
+                        Email = Input.Email,
                         PhoneNumber = Input.PhoneNumber,
                     };
                     _context.Customers.Add(customer);

@@ -3,7 +3,6 @@ using System;
 using AirMet.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,11 +10,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231025105808_IdentityAdded")]
-    partial class IdentityAdded
+    partial class PropertyDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,6 +33,7 @@ namespace AirMet.Migrations
 
                     b.Property<string>("AmenityName")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsChecked")
@@ -89,6 +87,7 @@ namespace AirMet.Migrations
 
                     b.Property<string>("PTypeName")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("PTypeId");
@@ -121,6 +120,7 @@ namespace AirMet.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(800)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Guest")

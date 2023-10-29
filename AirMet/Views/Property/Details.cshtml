@@ -9,7 +9,7 @@
     var userId = UserManager.GetUserId(User);
     Customer = _db.Customers.FirstOrDefault(c => c.CustomerId == userId);
 
-    var reservationMessage = TempData["GuestMessage"] as string;
+    var reservationMessage = TempData["ReservationMessage"] as string;
     var guestMessage = TempData["GuestMessage"] as string;
     if (!string.IsNullOrEmpty(reservationMessage))
     {
@@ -117,9 +117,10 @@
         <div class="col-md-6">
             <div class="property-description">
                 <span class="d-inline-block property-price" id="singleDayPrice">@Model.Price.ToString("0.00 NOK") <span class="text-muted fs-6">night</span></span>
-                <div class="row row-cols-3">
-                    <a class="btn btn-primary" role="button" asp-controller="Property" asp-action="Update" asp-route-id="@Model.PropertyId">Update</a>
+                <div class="row row-cols-2">
+                    <a role="button" class="btn btn-primary" asp-controller="Property" asp-action="Update" asp-route-id="@Model.PropertyId">Update</a>
                     <a role="button" class="btn btn-danger" asp-controller="Property" asp-action="Delete" asp-route-id="@Model.PropertyId">Delete</a>
+                    <a role="button" class="btn btn-success" asp-controller="Reservation" asp-action="ListReservations" asp-route-id="@Model.PropertyId">Reservations</a>
                 </div>
             </div>
         </div>

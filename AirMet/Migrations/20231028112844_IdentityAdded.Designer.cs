@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231025105759_InitDb")]
-    partial class InitDb
+    [Migration("20231028112844_IdentityAdded")]
+    partial class IdentityAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,7 @@ namespace AirMet.Migrations
 
                     b.Property<string>("AmenityName")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsChecked")
@@ -89,6 +90,7 @@ namespace AirMet.Migrations
 
                     b.Property<string>("PTypeName")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("PTypeId");
@@ -121,6 +123,7 @@ namespace AirMet.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(800)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Guest")
