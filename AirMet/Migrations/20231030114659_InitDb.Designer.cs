@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirMet.Migrations
 {
     [DbContext(typeof(PropertyDbContext))]
-    [Migration("20231029173007_InitDb")]
+    [Migration("20231030114659_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
